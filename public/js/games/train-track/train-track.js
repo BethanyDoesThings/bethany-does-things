@@ -3,15 +3,15 @@
   const size = 5;
   // Verified route: enters at the top, turns right, then exits at the bottom.
   const solution = [
-    0,0,6,0,0,
-    0,0,6,0,0,
-    0,0,2,4,0,
-    0,0,0,6,0,
-    0,0,0,6,0
+    0,0,2,0,0,
+    0,0,2,0,0,
+    0,0,3,4,0,
+    0,0,0,2,0,
+    0,0,0,2,0
   ];
   const rowClues = [1,1,2,1,1];
   const colClues = [0,0,3,3,0];
-  const locked = new Set([2,22]);
+  const locked = new Set([2,23]);
   const names = ["blank","no track","vertical straight","north-east corner","south-east corner","south-west corner","north-west corner","horizontal straight"];
   const svgShapes = {
     2:"<path class='track' d='M30 5 V55'/>",
@@ -26,7 +26,7 @@
   const undoButton = document.querySelector("#undo-button");
   const history = [];
   let cells = Array(size * size).fill(0);
-  cells[2] = 2; cells[22] = 2; // The two known edge endpoints are supplied clues.
+  cells[2] = 2; cells[23] = 2; // The two known edge endpoints are supplied clues.
   const initial = cells.slice();
 
   function cellSvg(value) {
