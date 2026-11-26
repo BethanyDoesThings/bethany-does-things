@@ -27,10 +27,7 @@
     for(let col=0;col<size;col++)solution[routeRow*size+col]=7;
     return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with one continuous route."};
   }
-  function cellSvg(value) {
-    if(value===1) return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
-    return "<svg viewBox='0 0 60 60' aria-hidden='true'>"+(svgShapes[value]||"")+"</svg>";
-  }
+  function cellSvg(value,index) { return window.TrainTrackArt ? window.TrainTrackArt.render(value,index) : ""; }
   function makeClue(value) {
     const el=document.createElement("div"); el.className="clue"; el.textContent=value===""?"":value; return el;
   }
@@ -44,7 +41,7 @@
       for(let col=0;col<puzzle.size;col++) {
         const index=row*puzzle.size+col, button=document.createElement("button");
         button.type="button"; button.className="cell"+(locked.has(index)?" locked":"")+(row===0?" edge-top":"")+(row===puzzle.size-1?" edge-bottom":"")+(col===0?" edge-left":"")+(col===puzzle.size-1?" edge-right":"");
-        button.innerHTML=cellSvg(cells[index]);
+        button.innerHTML=cellSvg(cells[index],index);
         button.setAttribute("aria-label","Row "+(row+1)+", column "+(col+1)+": "+names[cells[index]]+(locked.has(index)?", fixed clue":""));
         button.disabled=locked.has(index);
         button.addEventListener("click",()=>cycle(index));
@@ -92,6 +89,7 @@
     if(level==="easy") puzzle=makeEasyPuzzle();
     else if(level==="normal") puzzle=makeSingleRoutePuzzle(8);
     else puzzle=makeSingleRoutePuzzle(10);
+    if(window.TrainTrackArt) window.TrainTrackArt.configure(puzzle.solution,puzzle.size,puzzle.locked);
     cells=Array(puzzle.size*puzzle.size).fill(0);
     locked=new Set(puzzle.locked); puzzle.locked.forEach(i=>cells[i]=puzzle.solution[i]);
     initial=cells.slice(); history.length=0; clearFeedback();
