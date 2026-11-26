@@ -57,7 +57,9 @@
   function clearFeedback(){board.querySelectorAll(".cell").forEach(c=>c.classList.remove("correct","incorrect"));}
   function cycle(index){
     history.push(cells.slice());
-    cells[index]=cells[index]===0||cells[index]===1?2:(cells[index]===7?0:cells[index]+1);
+    const cycleOrder=[7,2,3,4,5,6];
+    const current=cycleOrder.indexOf(cells[index]);
+    cells[index]=current===-1?cycleOrder[0]:(current===cycleOrder.length-1?0:cycleOrder[current+1]);
     clearFeedback();
     status.className="status"; status.textContent=""; render();
   }
