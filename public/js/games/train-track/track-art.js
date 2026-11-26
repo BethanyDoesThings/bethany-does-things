@@ -20,7 +20,7 @@
       if(row===0)ends[index]="top"; else if(row===size-1)ends[index]="bottom"; else if(col===0)ends[index]="left"; else if(col===size-1)ends[index]="right";
     });
   }
-  function sleeper(x,y,angle){return "<rect class='wood-tie' x='"+(x-5.5)+"' y='"+(y-3)+"' width='11' height='6' rx='1.5' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-3)+" "+y+" h6' transform='rotate("+angle+" "+x+" "+y+")'/>";}
+  function sleeper(x,y,angle){return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-5.5)+"' y='"+(y-3)+"' width='11' height='6' rx='1.5' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-3)+" "+y+" h6' transform='rotate("+angle+" "+x+" "+y+")'/>";}
   function tunnel(side){
     const transform=side==="top"?"rotate(0 30 30)":side==="bottom"?"rotate(180 30 30)":side==="left"?"rotate(-90 30 30)":"rotate(90 30 30)";
     let arch="";
