@@ -43,7 +43,7 @@
       board.append(makeClue(puzzle.rowClues[row]));
       for(let col=0;col<puzzle.size;col++) {
         const index=row*puzzle.size+col, button=document.createElement("button");
-        button.type="button"; button.className="cell"+(locked.has(index)?" locked":"");
+        button.type="button"; button.className="cell"+(locked.has(index)?" locked":"")+(row===0?" edge-top":"")+(row===puzzle.size-1?" edge-bottom":"")+(col===0?" edge-left":"")+(col===puzzle.size-1?" edge-right":"");
         button.innerHTML=cellSvg(cells[index]);
         button.setAttribute("aria-label","Row "+(row+1)+", column "+(col+1)+": "+names[cells[index]]+(locked.has(index)?", fixed clue":""));
         button.disabled=locked.has(index);
