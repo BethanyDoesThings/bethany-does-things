@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#8b5cf6">
+  <meta name="theme-color" content="#08060d">
   <meta name="description" content="Bethany Does Things — puzzles, projects and a little bit of fun.">
   <title>Bethany Does Things</title>
   <style>
@@ -14,7 +14,108 @@
       background: #fffaff;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 82px; }
     body { min-width: 320px; min-height: 100vh; margin: 0; }
+
+    .site-header {
+      position: sticky;
+      z-index: 20;
+      top: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(1rem, 2vw, 2rem);
+      min-height: 72px;
+      padding: 6px clamp(1rem, 3vw, 2.75rem);
+      color: #fff;
+      background: #08070b;
+      border-bottom: 1px solid rgb(225 75 255 / 22%);
+      box-shadow: 0 4px 22px rgb(0 0 0 / 28%);
+    }
+    .brand-link {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      width: clamp(142px, 14vw, 190px);
+      min-width: 0;
+      text-decoration: none;
+    }
+    .brand-logo {
+      display: block;
+      width: 100%;
+      max-height: 60px;
+      object-fit: contain;
+      object-position: left center;
+    }
+    .primary-nav {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(.65rem, 1.55vw, 1.65rem);
+      min-width: 0;
+    }
+    .nav-link {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      min-height: 62px;
+      padding: 0 .12rem;
+      color: #f8f5fb;
+      font-size: clamp(.78rem, 1.05vw, .98rem);
+      font-weight: 750;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color .18s ease;
+    }
+    .nav-link:hover, .nav-link:focus-visible, .nav-link[aria-current="page"] {
+      color: #ff59c7;
+    }
+    .nav-link[aria-current="page"]::after {
+      position: absolute;
+      right: -9px;
+      bottom: -1px;
+      left: -9px;
+      height: 4px;
+      content: "";
+      background: #ed2ba9;
+      box-shadow: 0 0 12px rgb(237 43 169 / 65%);
+    }
+    .nav-icon { font-size: 1.2em; line-height: 1; }
+    .tiktok-link {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      min-height: 44px;
+      padding: .65rem 1.15rem;
+      border: 1px solid #ff83d8;
+      border-radius: 999px;
+      color: #fff;
+      background: linear-gradient(135deg, #ff65c5, #e6008e);
+      box-shadow: 0 3px 15px rgb(255 36 169 / 28%), inset 0 1px 0 rgb(255 255 255 / 35%);
+      font-size: .9rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .tiktok-link:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border: 1px solid #8b3e9d;
+      border-radius: 12px;
+      color: #fff;
+      background: #21112b;
+      font-size: 1.45rem;
+      cursor: pointer;
+    }
 
     .hero {
       position: relative;
@@ -33,12 +134,7 @@
       z-index: -1;
       inset: 0;
       content: "";
-      background: linear-gradient(
-        90deg,
-        rgb(20 12 35 / 18%) 0%,
-        rgb(20 12 35 / 7%) 38%,
-        rgb(20 12 35 / 0%) 68%
-      );
+      background: linear-gradient(90deg, rgb(20 12 35 / 18%) 0%, rgb(20 12 35 / 7%) 38%, rgb(20 12 35 / 0%) 68%);
     }
     .hero-background {
       position: absolute;
@@ -67,61 +163,108 @@
         linear-gradient(135deg, #fffaff, #eef4ff);
     }
     .intro-content { width: min(100%, 48rem); margin: 0 auto; }
-    h1 {
-      margin: 0 0 1rem;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-      line-height: 1.1;
-    }
-    .intro p {
-      max-width: 42rem;
-      margin: 0 auto 1rem;
-      font-size: clamp(1rem, 2.5vw, 1.15rem);
-      line-height: 1.75;
-    }
+    h1 { margin: 0 0 1rem; font-size: clamp(2rem, 6vw, 3.5rem); line-height: 1.1; }
+    .intro p { max-width: 42rem; margin: 0 auto 1rem; font-size: clamp(1rem, 2.5vw, 1.15rem); line-height: 1.75; }
 
-    @media (max-width: 600px) {
-      .hero {
-        min-height: 62vh;
-        min-height: 62svh;
-        justify-content: center;
-        padding: 2rem 1.25rem;
+    @media (max-width: 1050px) {
+      .site-header { gap: .9rem; padding-inline: 1rem; }
+      .brand-link { width: 132px; }
+      .primary-nav { gap: .75rem; }
+      .nav-link { font-size: .78rem; gap: .3rem; }
+      .tiktok-link { padding-inline: .9rem; font-size: .8rem; }
+    }
+    @media (max-width: 820px) {
+      .site-header { min-height: 68px; }
+      .brand-link { width: 150px; }
+      .brand-logo { max-height: 56px; }
+      .menu-toggle { display: inline-flex; align-items: center; justify-content: center; margin-left: auto; }
+      .primary-nav {
+        position: absolute;
+        top: calc(100% + 1px);
+        right: 0;
+        left: 0;
+        display: none;
+        align-items: stretch;
+        gap: 0;
+        padding: .45rem 1rem 1rem;
+        background: #08070b;
+        border-bottom: 1px solid #9135a6;
+        box-shadow: 0 14px 22px rgb(0 0 0 / 30%);
       }
-      .hero-logo {
-        width: min(78vw, 390px);
-        max-height: 44vh;
-      }
+      .primary-nav.is-open { display: flex; flex-direction: column; }
+      .nav-link { justify-content: flex-start; min-height: 48px; padding: .4rem .65rem; font-size: .98rem; }
+      .nav-link[aria-current="page"]::after { top: 9px; right: auto; bottom: 9px; left: 0; width: 3px; height: auto; }
+      .tiktok-link { min-height: 42px; padding-inline: .85rem; font-size: .78rem; }
+    }
+    @media (max-width: 480px) {
+      .site-header { gap: .5rem; padding-inline: .75rem; }
+      .brand-link { width: 124px; }
+      .tiktok-link { gap: .3rem; padding: .55rem .65rem; font-size: .72rem; }
+      .hero { min-height: 62vh; min-height: 62svh; justify-content: center; padding: 2rem 1.25rem; }
+      .hero-logo { width: min(78vw, 390px); max-height: 44vh; }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; }
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
     }
   </style>
 </head>
-<body>
-  <header class="hero" aria-label="Bethany Does Things">
-    <img
-      class="hero-background"
-      src="assets/images/backgrounds/main-page-hero-background.png"
-      alt=""
-      fetchpriority="high"
-    >
-    <img
-      class="hero-logo"
-      src="assets/images/branding/website-logo.png"
-      alt="Bethany Does Things"
-      fetchpriority="high"
-    >
+<body id="home">
+  <header class="site-header">
+    <a class="brand-link" href="#home" aria-label="Bethany Does Things home">
+      <img class="brand-logo" src="assets/images/branding/website-logo.png" alt="Bethany Does Things">
+    </a>
+
+    <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+      <span aria-hidden="true">☰</span>
+    </button>
+
+    <nav class="primary-nav" id="primary-navigation" aria-label="Main navigation">
+      <a class="nav-link" href="#home" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span>Home</a>
+      <a class="nav-link" href="#puzzle-room"><span class="nav-icon" aria-hidden="true">🧩</span>Puzzle Room</a>
+      <a class="nav-link" href="#challenge-board"><span class="nav-icon" aria-hidden="true">🏆</span>Challenge Board</a>
+      <a class="nav-link" href="#meet-bethany"><span class="nav-icon" aria-hidden="true">👤</span>Meet Bethany</a>
+      <a class="nav-link" href="#latest-things"><span class="nav-icon" aria-hidden="true">🎬</span>Latest Things</a>
+      <a class="nav-link" href="#get-in-touch"><span class="nav-icon" aria-hidden="true">✉</span>Get in Touch</a>
+    </nav>
+
+    <a class="tiktok-link" href="https://www.tiktok.com/@bethany.does.thing" target="_blank" rel="noopener noreferrer">
+      <span aria-hidden="true">♪</span> Watch on TikTok <span aria-hidden="true">↗</span>
+    </a>
   </header>
+
+  <section class="hero" aria-label="Bethany Does Things">
+    <img class="hero-background" src="assets/images/backgrounds/main-page-hero-background.png" alt="" fetchpriority="high">
+    <img class="hero-logo" src="assets/images/branding/website-logo.png" alt="Bethany Does Things" fetchpriority="high">
+  </section>
 
   <main>
     <section class="intro" aria-labelledby="intro-heading">
       <div class="intro-content">
         <h1 id="intro-heading">A little puzzle magic is on its way.</h1>
-        <p>
-          We're building a new home for puzzles, challenges, creative projects
-          and more.
-        </p>
+        <p>We're building a new home for puzzles, challenges, creative projects and more.</p>
       </div>
     </section>
   </main>
+
+  <script>
+    const menuButton = document.querySelector(".menu-toggle");
+    const navigation = document.querySelector("#primary-navigation");
+
+    menuButton.addEventListener("click", () => {
+      const isOpen = navigation.classList.toggle("is-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+      menuButton.querySelector("span").textContent = isOpen ? "×" : "☰";
+    });
+
+    navigation.addEventListener("click", (event) => {
+      if (event.target.closest("a")) {
+        navigation.classList.remove("is-open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Open navigation menu");
+        menuButton.querySelector("span").textContent = "☰";
+      }
+    });
+  </script>
 </body>
 </html>
