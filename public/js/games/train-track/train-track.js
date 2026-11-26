@@ -18,14 +18,14 @@
   function makeEasyPuzzle() {
     return {size:5, solution:[0,0,2,0,0, 0,0,2,0,0, 0,0,3,4,0, 0,0,0,2,0, 0,0,0,2,0], rowClues:[1,1,2,1,1], colClues:[0,0,3,3,0], locked:[2,23], description:"5×5 beginner puzzle with one continuous route."};
   }
-  function makeParallelPuzzle(size,minTracks,maxTracks) {
-    const count=minTracks+Math.floor(Math.random()*(maxTracks-minTracks+1));
-    const rows=Array.from({length:size},(_,i)=>i);
-    for(let i=rows.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[rows[i],rows[j]]=[rows[j],rows[i]];}
-    const routeRows=rows.slice(0,count).sort((a,b)=>a-b);
-    const solution=Array(size*size).fill(0),rowClues=Array(size).fill(0),colClues=Array(size).fill(count),locked=[];
-    routeRows.forEach(row=>{rowClues[row]=size;for(let col=0;col<size;col++)solution[row*size+col]=7;locked.push(row*size,row*size+size-1);});
-    return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with "+count+" separate tracks."};
+  function makeSingleRoutePuzzle(size) {
+    const routeRow=Math.floor(Math.random()*size);
+    const solution=Array(size*size).fill(0),rowClues=Array(size).fill(0),colClues=Array(size).fill(0);
+    const locked=[routeRow*size,routeRow*size+size-1];
+    rowClues[routeRow]=size;
+    colClues.fill(1);
+    for(let col=0;col<size;col++)solution[routeRow*size+col]=7;
+    return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with one continuous route."};
   }
   function cellSvg(value) {
     if(value===1) return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
@@ -90,8 +90,8 @@
   }
   function setDifficulty(level){
     if(level==="easy") puzzle=makeEasyPuzzle();
-    else if(level==="normal") puzzle=makeParallelPuzzle(8,2,3);
-    else puzzle=makeParallelPuzzle(10,4,5);
+    else if(level==="normal") puzzle=makeSingleRoutePuzzle(8);
+    else puzzle=makeSingleRoutePuzzle(10);
     cells=Array(puzzle.size*puzzle.size).fill(0);
     locked=new Set(puzzle.locked); puzzle.locked.forEach(i=>cells[i]=puzzle.solution[i]);
     initial=cells.slice(); history.length=0; clearFeedback();
