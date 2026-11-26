@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#21163d">
+  <meta name="description" content="Play the Bethany Does Things Train Track puzzle.">
+  <title>Train Track | Bethany Does Things</title>
+  <link rel="stylesheet" href="../../css/games/train-track/train-track.css">
+  <script src="../../js/games/train-track/train-track.js" defer></script>
+</head>
+<body>
+  <main class="game-shell">
+    <header class="game-header">
+      <a class="back-link" href="../../">← Bethany Does Things</a>
+      <p class="eyebrow">THE PUZZLE ROOM</p>
+      <h1>Train Track</h1>
+      <p class="intro">Let's Start with What We Know</p>
+    </header>
+    <section class="game-panel" aria-labelledby="instructions-title">
+      <div class="panel-heading">
+        <div><p class="eyebrow">BEGINNER • DEMO PUZZLE</p><h2 id="instructions-title">Build the route</h2></div>
+        <span class="train-mark" aria-hidden="true">🚂</span>
+      </div>
+      <p class="instructions">Tap a square to cycle through the track pieces. Match the number of track squares in every row and column, then connect the two ends without gaps or branches.</p>
+      <div class="legend" aria-label="Track piece key">
+        <span><i class="legend-piece straight-v"></i> Straight</span>
+        <span><i class="legend-piece corner-ne"></i> Corner</span>
+        <span><i class="legend-x">X</i> No track</span>
+      </div>
+      <div class="board-wrap"><div id="puzzle-board" class="puzzle-board" role="group" aria-label="Train Track puzzle grid"></div></div>
+      <p id="game-status" class="status" role="status" aria-live="polite">A little route is waiting to be discovered.</p>
+      <div class="controls">
+        <button id="undo-button" class="button secondary" type="button" disabled>Undo</button>
+        <button id="reset-button" class="button secondary" type="button">Reset</button>
+        <button id="check-button" class="button primary" type="button">Check Puzzle</button>
+      </div>
+      <details class="how-to"><summary>How to play</summary><p>Each row number tells you how many squares contain track in that row. The numbers above the grid do the same for columns. Every track piece must connect to exactly two neighbours, except where the route enters or leaves the edge of the board. No crossings or branches.</p></details>
+    </section>
+    <footer>Every puzzle starts with what we know. <span>✦</span></footer>
+  </main>
+</body>
+</html>
