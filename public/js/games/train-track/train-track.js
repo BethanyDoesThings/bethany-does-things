@@ -48,6 +48,7 @@
         button.setAttribute("aria-label","Row "+(row+1)+", column "+(col+1)+": "+names[cells[index]]+(locked.has(index)?", fixed clue":""));
         button.disabled=locked.has(index);
         button.addEventListener("click",()=>cycle(index));
+        button.addEventListener("contextmenu",event=>{event.preventDefault();markNoTrack(index);});
         board.append(button);
       }
     }
@@ -55,8 +56,17 @@
   }
   function clearFeedback(){board.querySelectorAll(".cell").forEach(c=>c.classList.remove("correct","incorrect"));}
   function cycle(index){
-    history.push(cells.slice()); cells[index]=(cells[index]+1)%8; clearFeedback();
+    history.push(cells.slice());
+    cells[index]=cells[index]===0||cells[index]===1?2:(cells[index]===7?0:cells[index]+1);
+    clearFeedback();
     status.className="status"; status.textContent="Selected: "+names[cells[index]]+". Keep following the clues."; render();
+  }
+  function markNoTrack(index){
+    history.push(cells.slice());
+    cells[index]=cells[index]===1?0:1;
+    clearFeedback();
+    status.className="status"; status.textContent=cells[index]===1?"Marked as no track.":"X mark cleared.";
+    render();
   }
   function undo(){
     if(!history.length)return; cells=history.pop(); clearFeedback();
