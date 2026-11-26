@@ -4,6 +4,7 @@
   const status = document.querySelector("#game-status");
   const undoButton = document.querySelector("#undo-button");
   const difficultySelect = document.querySelector("#difficulty-select");
+  const newPuzzleButton = document.querySelector("#new-puzzle-button");
   const names = ["blank","no track","vertical straight","north-east corner","south-east corner","south-west corner","north-west corner","horizontal straight"];
   const svgShapes = {
     2:"<path class='track' d='M30 5 V55'/>",
@@ -13,24 +14,18 @@
     6:"<path class='track' d='M5 30 H30 V5'/>",
     7:"<path class='track' d='M5 30 H55'/>"
   };
-  const puzzles = {
-    easy: {
-      size:5, solution:[0,0,2,0,0, 0,0,2,0,0, 0,0,3,4,0, 0,0,0,2,0, 0,0,0,2,0],
-      rowClues:[1,1,2,1,1], colClues:[0,0,3,3,0], locked:[2,23],
-      description:"5×5 beginner puzzle with one continuous route."
-    },
-    normal: makeParallelPuzzle(8,[1,4,7]),
-    difficult: makeParallelPuzzle(10,[0,2,4,6,8])
-  };
   let puzzle, cells, initial, locked, history=[];
-  function makeParallelPuzzle(size, routeRows) {
-    const solution=Array(size*size).fill(0), rowClues=Array(size).fill(0), colClues=Array(size).fill(routeRows.length), locked=[];
-    routeRows.forEach(row=>{
-      rowClues[row]=size;
-      for(let col=0;col<size;col++) solution[row*size+col]=7;
-      locked.push(row*size,row*size+size-1);
-    });
-    return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with "+routeRows.length+" separate edge-to-edge tracks."};
+  function makeEasyPuzzle() {
+    return {size:5, solution:[0,0,2,0,0, 0,0,2,0,0, 0,0,3,4,0, 0,0,0,2,0, 0,0,0,2,0], rowClues:[1,1,2,1,1], colClues:[0,0,3,3,0], locked:[2,23], description:"5×5 beginner puzzle with one continuous route."};
+  }
+  function makeParallelPuzzle(size,minTracks,maxTracks) {
+    const count=minTracks+Math.floor(Math.random()*(maxTracks-minTracks+1));
+    const rows=Array.from({length:size},(_,i)=>i);
+    for(let i=rows.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[rows[i],rows[j]]=[rows[j],rows[i]];}
+    const routeRows=rows.slice(0,count).sort((a,b)=>a-b);
+    const solution=Array(size*size).fill(0),rowClues=Array(size).fill(0),colClues=Array(size).fill(count),locked=[];
+    routeRows.forEach(row=>{rowClues[row]=size;for(let col=0;col<size;col++)solution[row*size+col]=7;locked.push(row*size,row*size+size-1);});
+    return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with "+count+" separate tracks."};
   }
   function cellSvg(value) {
     if(value===1) return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
@@ -82,12 +77,16 @@
     else{status.className="status error";status.textContent="The totals match, but check the route pieces and connections.";}
   }
   function setDifficulty(level){
-    puzzle=puzzles[level]; cells=Array(puzzle.size*puzzle.size).fill(0);
+    if(level==="easy") puzzle=makeEasyPuzzle();
+    else if(level==="normal") puzzle=makeParallelPuzzle(8,2,3);
+    else puzzle=makeParallelPuzzle(10,4,5);
+    cells=Array(puzzle.size*puzzle.size).fill(0);
     locked=new Set(puzzle.locked); puzzle.locked.forEach(i=>cells[i]=puzzle.solution[i]);
     initial=cells.slice(); history.length=0; clearFeedback();
     status.className="status"; status.textContent=puzzle.description+" Let's start with what we know."; render();
   }
   difficultySelect.addEventListener("change",()=>setDifficulty(difficultySelect.value));
+  newPuzzleButton.addEventListener("click",()=>setDifficulty(difficultySelect.value));
   document.querySelector("#undo-button").addEventListener("click",undo);
   document.querySelector("#reset-button").addEventListener("click",reset);
   document.querySelector("#check-button").addEventListener("click",check);
