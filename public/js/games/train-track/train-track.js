@@ -59,22 +59,22 @@
     history.push(cells.slice());
     cells[index]=cells[index]===0||cells[index]===1?2:(cells[index]===7?0:cells[index]+1);
     clearFeedback();
-    status.className="status"; status.textContent="Selected: "+names[cells[index]]+". Keep following the clues."; render();
+    status.className="status"; status.textContent=""; render();
   }
   function markNoTrack(index){
     history.push(cells.slice());
     cells[index]=cells[index]===1?0:1;
     clearFeedback();
-    status.className="status"; status.textContent=cells[index]===1?"Marked as no track.":"X mark cleared.";
+    status.className="status"; status.textContent="";
     render();
   }
   function undo(){
     if(!history.length)return; cells=history.pop(); clearFeedback();
-    status.className="status"; status.textContent="Last move undone."; render();
+    status.className="status"; status.textContent=""; render();
   }
   function reset(){
     cells=initial.slice(); history.length=0; clearFeedback();
-    status.className="status"; status.textContent="Board reset. The route is ready when you are."; render();
+    status.className="status"; status.textContent=""; render();
   }
   function check(){
     const actualRows=Array(puzzle.size).fill(0),actualCols=Array(puzzle.size).fill(0);
@@ -93,7 +93,7 @@
     cells=Array(puzzle.size*puzzle.size).fill(0);
     locked=new Set(puzzle.locked); puzzle.locked.forEach(i=>cells[i]=puzzle.solution[i]);
     initial=cells.slice(); history.length=0; clearFeedback();
-    status.className="status"; status.textContent=puzzle.description+" Let's start with what we know."; render();
+    status.className="status"; status.textContent=""; render();
   }
   difficultySelect.addEventListener("change",()=>setDifficulty(difficultySelect.value));
   newPuzzleButton.addEventListener("click",()=>setDifficulty(difficultySelect.value));
