@@ -1,17 +1,9 @@
 (() => {
   "use strict";
-  const size = 5;
-  // Verified route: enters at the top, turns right, then exits at the bottom.
-  const solution = [
-    0,0,2,0,0,
-    0,0,2,0,0,
-    0,0,3,4,0,
-    0,0,0,2,0,
-    0,0,0,2,0
-  ];
-  const rowClues = [1,1,2,1,1];
-  const colClues = [0,0,3,3,0];
-  const locked = new Set([2,23]);
+  const board = document.querySelector("#puzzle-board");
+  const status = document.querySelector("#game-status");
+  const undoButton = document.querySelector("#undo-button");
+  const difficultySelect = document.querySelector("#difficulty-select");
   const names = ["blank","no track","vertical straight","north-east corner","south-east corner","south-west corner","north-west corner","horizontal straight"];
   const svgShapes = {
     2:"<path class='track' d='M30 5 V55'/>",
@@ -21,91 +13,83 @@
     6:"<path class='track' d='M5 30 H30 V5'/>",
     7:"<path class='track' d='M5 30 H55'/>"
   };
-  const board = document.querySelector("#puzzle-board");
-  const status = document.querySelector("#game-status");
-  const undoButton = document.querySelector("#undo-button");
-  const history = [];
-  let cells = Array(size * size).fill(0);
-  cells[2] = 2; cells[23] = 2; // The two known edge endpoints are supplied clues.
-  const initial = cells.slice();
-
+  const puzzles = {
+    easy: {
+      size:5, solution:[0,0,2,0,0, 0,0,2,0,0, 0,0,3,4,0, 0,0,0,2,0, 0,0,0,2,0],
+      rowClues:[1,1,2,1,1], colClues:[0,0,3,3,0], locked:[2,23],
+      description:"5×5 beginner puzzle with one continuous route."
+    },
+    normal: makeParallelPuzzle(8,[1,4,7]),
+    difficult: makeParallelPuzzle(10,[0,2,4,6,8])
+  };
+  let puzzle, cells, initial, locked, history=[];
+  function makeParallelPuzzle(size, routeRows) {
+    const solution=Array(size*size).fill(0), rowClues=Array(size).fill(0), colClues=Array(size).fill(routeRows.length), locked=[];
+    routeRows.forEach(row=>{
+      rowClues[row]=size;
+      for(let col=0;col<size;col++) solution[row*size+col]=7;
+      locked.push(row*size,row*size+size-1);
+    });
+    return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with "+routeRows.length+" separate edge-to-edge tracks."};
+  }
   function cellSvg(value) {
-    if (value === 1) return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
-    return "<svg viewBox='0 0 60 60' aria-hidden='true'>" + (svgShapes[value] || "") + "</svg>";
+    if(value===1) return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
+    return "<svg viewBox='0 0 60 60' aria-hidden='true'>"+(svgShapes[value]||"")+"</svg>";
+  }
+  function makeClue(value) {
+    const el=document.createElement("div"); el.className="clue"; el.textContent=value===""?"":value; return el;
   }
   function render() {
-    board.innerHTML = "";
+    board.innerHTML="";
+    board.style.setProperty("--size",puzzle.size);
     board.append(makeClue(""));
-    colClues.forEach(n => board.append(makeClue(n)));
-    for (let row=0; row<size; row++) {
-      board.append(makeClue(rowClues[row]));
-      for (let col=0; col<size; col++) {
-        const index = row*size+col;
-        const button = document.createElement("button");
-        button.type = "button";
-        button.className = "cell" + (locked.has(index) ? " locked" : "");
-        button.innerHTML = cellSvg(cells[index]);
-        button.setAttribute("aria-label", "Row " + (row+1) + ", column " + (col+1) + ": " + names[cells[index]] + (locked.has(index) ? ", fixed clue" : ""));
-        button.disabled = locked.has(index);
-        button.addEventListener("click", () => cycle(index));
+    puzzle.colClues.forEach(n=>board.append(makeClue(n)));
+    for(let row=0;row<puzzle.size;row++) {
+      board.append(makeClue(puzzle.rowClues[row]));
+      for(let col=0;col<puzzle.size;col++) {
+        const index=row*puzzle.size+col, button=document.createElement("button");
+        button.type="button"; button.className="cell"+(locked.has(index)?" locked":"");
+        button.innerHTML=cellSvg(cells[index]);
+        button.setAttribute("aria-label","Row "+(row+1)+", column "+(col+1)+": "+names[cells[index]]+(locked.has(index)?", fixed clue":""));
+        button.disabled=locked.has(index);
+        button.addEventListener("click",()=>cycle(index));
         board.append(button);
       }
     }
-    undoButton.disabled = history.length === 0;
+    undoButton.disabled=history.length===0;
   }
-  function makeClue(value) {
-    const el = document.createElement("div");
-    el.className = "clue";
-    el.textContent = value === "" ? "" : value;
-    return el;
+  function clearFeedback(){board.querySelectorAll(".cell").forEach(c=>c.classList.remove("correct","incorrect"));}
+  function cycle(index){
+    history.push(cells.slice()); cells[index]=(cells[index]+1)%8; clearFeedback();
+    status.className="status"; status.textContent="Selected: "+names[cells[index]]+". Keep following the clues."; render();
   }
-  function cycle(index) {
-    history.push(cells.slice());
-    cells[index] = (cells[index] + 1) % 8;
-    clearFeedback();
-    status.className = "status";
-    status.textContent = "Selected: " + names[cells[index]] + ". Keep following the clues.";
-    render();
+  function undo(){
+    if(!history.length)return; cells=history.pop(); clearFeedback();
+    status.className="status"; status.textContent="Last move undone."; render();
   }
-  function clearFeedback() {
-    board.querySelectorAll(".cell").forEach(c => c.classList.remove("correct","incorrect"));
+  function reset(){
+    cells=initial.slice(); history.length=0; clearFeedback();
+    status.className="status"; status.textContent="Board reset. The route is ready when you are."; render();
   }
-  function undo() {
-    if (!history.length) return;
-    cells = history.pop();
-    clearFeedback();
-    status.className = "status";
-    status.textContent = "Last move undone.";
-    render();
+  function check(){
+    const actualRows=Array(puzzle.size).fill(0),actualCols=Array(puzzle.size).fill(0);
+    cells.forEach((v,i)=>{if(v>=2){actualRows[Math.floor(i/puzzle.size)]++;actualCols[i%puzzle.size]++;}});
+    const cluesMatch=actualRows.every((v,i)=>v===puzzle.rowClues[i])&&actualCols.every((v,i)=>v===puzzle.colClues[i]);
+    const routeMatches=cells.every((v,i)=>v===puzzle.solution[i]||(puzzle.solution[i]===0&&(v===0||v===1)));
+    board.querySelectorAll(".cell").forEach((el,i)=>el.classList.add(cells[i]===puzzle.solution[i]||(puzzle.solution[i]===0&&cells[i]===1)?"correct":"incorrect"));
+    if(cluesMatch&&routeMatches){status.className="status success";status.textContent="All aboard! You solved it!";}
+    else if(!cluesMatch){status.className="status error";status.textContent="Some row or column totals don't match yet. Check the clues.";}
+    else{status.className="status error";status.textContent="The totals match, but check the route pieces and connections.";}
   }
-  function reset() {
-    cells = initial.slice();
-    history.length = 0;
-    clearFeedback();
-    status.className = "status";
-    status.textContent = "Board reset. The route is ready when you are.";
-    render();
+  function setDifficulty(level){
+    puzzle=puzzles[level]; cells=Array(puzzle.size*puzzle.size).fill(0);
+    locked=new Set(puzzle.locked); puzzle.locked.forEach(i=>cells[i]=puzzle.solution[i]);
+    initial=cells.slice(); history.length=0; clearFeedback();
+    status.className="status"; status.textContent=puzzle.description+" Let's start with what we know."; render();
   }
-  function check() {
-    const actualRows = Array(size).fill(0), actualCols = Array(size).fill(0);
-    cells.forEach((v,i) => { if (v>=2) { actualRows[Math.floor(i/size)]++; actualCols[i%size]++; } });
-    const cluesMatch = actualRows.every((v,i)=>v===rowClues[i]) && actualCols.every((v,i)=>v===colClues[i]);
-    const routeMatches = cells.every((v,i)=>v===solution[i] || (solution[i]===0 && (v===0 || v===1)));
-    const pieces = [...board.querySelectorAll(".cell")];
-    pieces.forEach((el,i)=>el.classList.add(cells[i]===solution[i] || (solution[i]===0 && cells[i]===1) ? "correct" : "incorrect"));
-    if (cluesMatch && routeMatches) {
-      status.className = "status success";
-      status.textContent = "All aboard! You solved it!";
-    } else if (!cluesMatch) {
-      status.className = "status error";
-      status.textContent = "Some row or column totals don't match yet. Check the clues.";
-    } else {
-      status.className = "status error";
-      status.textContent = "The totals match, but check the route pieces and connections.";
-    }
-  }
+  difficultySelect.addEventListener("change",()=>setDifficulty(difficultySelect.value));
   document.querySelector("#undo-button").addEventListener("click",undo);
   document.querySelector("#reset-button").addEventListener("click",reset);
   document.querySelector("#check-button").addEventListener("click",check);
-  render();
+  setDifficulty("easy");
 })();
