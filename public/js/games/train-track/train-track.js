@@ -176,14 +176,66 @@
     status.className="status"; status.textContent=""; render();
   }
   function check(){
-    const actualRows=Array(puzzle.size).fill(0),actualCols=Array(puzzle.size).fill(0);
-    cells.forEach((v,i)=>{if(v>=2){actualRows[Math.floor(i/puzzle.size)]++;actualCols[i%puzzle.size]++;}});
-    const cluesMatch=actualRows.every((v,i)=>v===puzzle.rowClues[i])&&actualCols.every((v,i)=>v===puzzle.colClues[i]);
-    const routeMatches=cells.every((v,i)=>v===puzzle.solution[i]||(puzzle.solution[i]===0&&(v===0||v===1)));
-    board.querySelectorAll(".cell").forEach((el,i)=>el.classList.add(cells[i]===puzzle.solution[i]||(puzzle.solution[i]===0&&cells[i]===1)?"correct":"incorrect"));
-    if(cluesMatch&&routeMatches){status.className="status success";status.textContent="All aboard! You solved it!";}
-    else if(!cluesMatch){status.className="status error";status.textContent="Some row or column totals don't match yet. Check the clues.";}
-    else{status.className="status error";status.textContent="The totals match, but check the route pieces and connections.";}
+    const size=puzzle.size;
+    const actualRows=Array(size).fill(0),actualCols=Array(size).fill(0);
+    const masks={2:5,3:3,4:6,5:12,6:9,7:10};
+    const trackCells=[];
+    cells.forEach((value,index)=>{
+      if(value>=2){
+        actualRows[Math.floor(index/size)]++;
+        actualCols[index%size]++;
+        trackCells.push(index);
+      }
+    });
+    const cluesMatch=actualRows.every((value,i)=>value===puzzle.rowClues[i])&&actualCols.every((value,i)=>value===puzzle.colClues[i]);
+    const directions=[{dr:-1,dc:0,bit:1},{dr:0,dc:1,bit:2},{dr:1,dc:0,bit:4},{dr:0,dc:-1,bit:8}];
+    let boundaryEnds=0,connectionsValid=trackCells.length>0;
+    const adjacency=new Map();
+    for(const index of trackCells){
+      const row=Math.floor(index/size),col=index%size,mask=masks[cells[index]],neighbors=[];
+      let degree=0;
+      for(const direction of directions){
+        if(!(mask&direction.bit))continue;
+        degree++;
+        const nr=row+direction.dr,nc=col+direction.dc;
+        if(nr<0||nr>=size||nc<0||nc>=size){
+          boundaryEnds++;
+          continue;
+        }
+        const next=nr*size+nc,nextMask=masks[cells[next]];
+        if(!nextMask||!(nextMask&(direction.bit===1?4:direction.bit===2?8:direction.bit===4?1:2))){
+          connectionsValid=false;
+        } else neighbors.push(next);
+      }
+      if(degree!==2)connectionsValid=false;
+      adjacency.set(index,neighbors);
+    }
+    let connected=false;
+    if(trackCells.length){
+      const seen=new Set([trackCells[0]]),queue=[trackCells[0]];
+      while(queue.length){
+        for(const next of (adjacency.get(queue.shift())||[])){
+          if(!seen.has(next)){seen.add(next);queue.push(next);}
+        }
+      }
+      connected=seen.size===trackCells.length;
+    }
+    const routeValid=connectionsValid&&connected&&boundaryEnds===2;
+    board.querySelectorAll(".cell").forEach((el,i)=>{
+      el.classList.remove("correct","incorrect");
+      if(cells[i]>=2)el.classList.add(routeValid?"correct":"incorrect");
+      else el.classList.add("correct");
+    });
+    if(cluesMatch&&routeValid){
+      status.className="status success";
+      status.textContent="All aboard! You solved it!";
+    } else if(!cluesMatch){
+      status.className="status error";
+      status.textContent="Some row or column totals don't match yet. Check the clues.";
+    } else {
+      status.className="status error";
+      status.textContent="The totals match, but check for gaps, branches, or extra track ends.";
+    }
   }
   function setDifficulty(level){
     selectedDifficulty=level;
