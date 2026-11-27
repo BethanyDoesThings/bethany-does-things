@@ -25,18 +25,24 @@
       align-items: center;
       justify-content: flex-start;
       gap: clamp(.6rem, 1vw, 1.25rem);
-      min-height: 196px;
-      padding: 8px clamp(1rem, 2.5vw, 2.75rem);
+      height: 92px;
+      min-height: 92px;
+      padding: 0 clamp(1rem, 2.5vw, 2.75rem);
+      overflow: visible;
       color: #fff;
       background: #08070b;
       border-bottom: 1px solid rgb(225 75 255 / 22%);
       box-shadow: 0 4px 22px rgb(0 0 0 / 28%);
     }
     .brand-link {
+      position: absolute;
+      z-index: 3;
+      top: 0;
+      left: clamp(1rem, 2.5vw, 2.75rem);
       display: inline-flex;
-      flex: 0 0 auto;
-      align-items: center;
+      align-items: flex-start;
       width: clamp(190px, 14vw, 240px);
+      height: 180px;
       min-width: 0;
       text-decoration: none;
     }
@@ -54,6 +60,7 @@
       justify-content: flex-start;
       gap: clamp(.35rem, .55vw, .7rem);
       min-width: 0;
+      margin-left: clamp(230px, 15.5vw, 260px);
       flex: 1 1 auto;
     }
     .nav-link {
@@ -62,7 +69,7 @@
       align-items: center;
       justify-content: center;
       gap: .4rem;
-      min-height: 180px;
+      min-height: 84px;
       flex: 0 1 auto;
       padding: 0 .12rem;
       color: #f8f5fb;
@@ -84,9 +91,6 @@
       content: "";
       background: #ed2ba9;
       box-shadow: 0 0 12px rgb(237 43 169 / 65%);
-    }
-    @media (min-width: 1451px) {
-      .primary-nav { transform: translateX(clamp(-160px, -9.7vw, -110px)); }
     }
     .nav-icon { font-size: 1.4em; line-height: 1; }
     .tiktok-link {
@@ -173,9 +177,10 @@
     .intro p { max-width: 42rem; margin: 0 auto 1rem; font-size: clamp(1rem, 2.5vw, 1.15rem); line-height: 1.75; }
 
     @media (max-width: 1450px) {
-      .site-header { min-height: 150px; gap: 1rem; padding-inline: 1.25rem; }
-      .brand-link { width: clamp(300px, 30vw, 430px); }
+      .site-header { height: auto; min-height: 150px; gap: 1rem; padding: 8px 1.25rem; }
+      .brand-link { position: static; width: clamp(300px, 30vw, 430px); height: auto; }
       .brand-logo { max-height: 136px; }
+      .primary-nav { margin-left: 0; }
       .menu-toggle { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; margin-left: auto; }
       .primary-nav {
         position: absolute;
