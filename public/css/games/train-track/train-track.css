@@ -91,3 +91,64 @@ button,select{font:inherit}
 @media(max-width:760px){.site-nav{display:block;text-align:center}.brand{justify-content:center}.brand img{height:62px}.site-nav nav{justify-content:center;margin-top:7px}.site-nav nav a{font-size:.72rem;padding:7px 9px}.room-scene{width:min(100% - 18px,600px);padding-top:14px}.title-plaque{width:100%;gap:7px;padding:12px 10px}.title-train{font-size:1.8rem}.game-layout{display:flex;flex-direction:column}.objective-card{order:2;width:100%}.game-panel{order:1;width:100%}.controls-card{order:3;width:100%;display:block}.how-to{border-left:0;border-top:2px dashed #bf7b67;margin-top:15px;padding:12px 0 0}.puzzle-board{--cell:min(10vw,48px);grid-template-columns:28px repeat(var(--size,5),var(--cell));grid-template-rows:26px repeat(var(--size,5),var(--cell))}.room-footer{min-height:170px}.sleeping-dogs{width:210px;right:-6px}.room-footer p{font-size:.75rem}}
 @media(max-width:420px){.game-panel{padding:14px 9px}.puzzle-board{--cell:min(9.2vw,36px);grid-template-columns:24px repeat(var(--size,5),var(--cell));grid-template-rows:24px repeat(var(--size,5),var(--cell))}.button{font-size:.85rem;padding:10px 12px}.piece-tray{gap:8px}.piece-tray>span{font-size:.65rem}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Wooden station sign treatment for the puzzle title */
+.title-plaque{
+  width:min(960px,94%);
+  min-height:132px;
+  margin:4px auto 26px;
+  gap:clamp(12px,2vw,28px);
+  padding:18px clamp(18px,3vw,42px) 20px;
+  border:6px solid #71331f;
+  border-radius:18px 18px 24px 24px;
+  background:
+    repeating-linear-gradient(4deg,transparent 0 17px,rgb(112 47 24 / 8%) 18px 19px,transparent 20px 34px),
+    linear-gradient(180deg,#ffd18b 0%,#e99a50 48%,#b95c2d 90%,#8b3d25 100%);
+  box-shadow:0 8px 0 #35132b,0 0 30px rgb(255 139 50 / 55%),inset 0 4px 8px #fff9,inset 0 -8px 12px rgb(87 35 22 / 28%);
+}
+.title-plaque:before,.title-plaque:after{
+  top:13px;width:12px;height:12px;
+  background:radial-gradient(circle at 35% 30%,#fff2c7 0 18%,#d99a56 22% 65%,#713c2d 70%);
+  box-shadow:0 1px 2px #51251d;
+}
+.title-train{
+  flex:0 0 auto;
+  font-size:clamp(2.5rem,4.5vw,4.2rem);
+  filter:drop-shadow(0 3px 1px #51203a);
+}
+.title-plaque h1{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(2.1rem,4.3vw,4rem);
+  font-weight:900;
+  letter-spacing:-.035em;
+  color:#fff8ff;
+  -webkit-text-stroke:1px #64217e;
+  text-shadow:0 3px 0 #64217e,0 5px 0 #3d174f,0 0 14px #b64cff;
+}
+.title-plaque .eyebrow{
+  margin:0 0 3px;
+  color:#6b2b63;
+  font-size:.76rem;
+  font-weight:900;
+  letter-spacing:.12em;
+}
+.title-subtitle{
+  position:relative;
+  margin:10px 0 0;
+  padding:6px clamp(24px,4vw,52px);
+  border:2px solid #a53b91;
+  border-radius:8px 8px 16px 16px;
+  background:linear-gradient(180deg,#fff8e9,#ffd9e9);
+  color:#5b1686;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(1.05rem,2vw,1.5rem);
+  font-weight:900;
+  box-shadow:0 4px 0 #8a3d78,0 0 12px #ffb9ff;
+}
+@media(max-width:760px){
+  .title-plaque{min-height:104px;gap:5px;padding:12px 8px 14px;margin-bottom:18px}
+  .title-train{font-size:1.8rem}
+  .title-plaque h1{font-size:clamp(1.55rem,6vw,2.2rem)}
+  .title-plaque .eyebrow{font-size:.58rem}
+  .title-subtitle{margin-top:7px;padding:5px 22px;font-size:1rem}
+}
