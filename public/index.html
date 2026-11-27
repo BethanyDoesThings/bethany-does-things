@@ -36,7 +36,7 @@
       display: inline-flex;
       flex: 0 0 auto;
       align-items: center;
-      width: clamp(320px, 25vw, 450px);
+      width: clamp(190px, 14vw, 240px);
       min-width: 0;
       text-decoration: none;
     }
@@ -52,19 +52,21 @@
       flex: 1 1 auto;
       align-items: center;
       justify-content: flex-start;
-      gap: clamp(.4rem, .7vw, .85rem);
+      gap: clamp(.35rem, .55vw, .7rem);
       min-width: 0;
+      flex: 1 1 auto;
     }
     .nav-link {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: .6rem;
+      gap: .4rem;
       min-height: 180px;
+      flex: 0 1 auto;
       padding: 0 .12rem;
       color: #f8f5fb;
-      font-size: clamp(1rem, 1.1vw, 1.2rem);
+      font-size: clamp(.88rem, .95vw, 1.05rem);
       font-weight: 800;
       text-decoration: none;
       white-space: nowrap;
@@ -91,19 +93,19 @@
       justify-content: center;
       gap: .65rem;
       min-height: 62px;
-      padding: .75rem 1.1rem;
+      padding: .65rem .9rem;
       border: 1px solid #ff83d8;
       border-radius: 999px;
       color: #fff;
       background: linear-gradient(135deg, #ff65c5, #e6008e);
       box-shadow: 0 3px 15px rgb(255 36 169 / 28%), inset 0 1px 0 rgb(255 255 255 / 35%);
-      font-size: 1rem;
+      font-size: .92rem;
       font-weight: 850;
       text-decoration: none;
       white-space: nowrap;
       transition: transform .18s ease, filter .18s ease;
     }
-    .tiktok-link { margin-left: auto; }\n    .tiktok-link:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .tiktok-link { margin-left: auto; flex-shrink: 0; }\n    .tiktok-link:hover { transform: translateY(-2px); filter: brightness(1.08); }
     .menu-toggle {
       display: none;
       width: 64px;
