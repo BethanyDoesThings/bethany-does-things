@@ -268,8 +268,8 @@
           <circle cx="-16" cy="10" r="2.3" fill="#d99cff"/><circle cx="12" cy="10" r="2.3" fill="#d99cff"/>
           <path d="M-5 -22 Q-11 -30 -4 -36 Q2 -42 -3 -48" fill="none" stroke="#d8c7e6" stroke-width="3.5" stroke-linecap="round" opacity=".85"/>
           <circle cx="-4" cy="-46" r="4.5" fill="#e9d9f5" opacity=".5"/>
+          <animateMotion dur="5s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
         </g>
-        <animateMotion dur="5s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
       </g>`;
     boardWrap.append(layer);
     layer.addEventListener("animationend",()=>{}, {once:true});
