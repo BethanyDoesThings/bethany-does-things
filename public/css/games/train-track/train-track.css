@@ -667,3 +667,20 @@ button,select{font:inherit}
   .game-layout .controls-card{order:2}
   .game-layout .objective-card{order:3}
 }
+
+
+/* Animated purple locomotive travels over the solved track. */
+.board-wrap{position:relative}
+.train-animation-layer{
+  position:absolute;
+  inset:0;
+  z-index:8;
+  width:100%;
+  height:100%;
+  overflow:visible;
+  pointer-events:none;
+}
+.purple-train{
+  transform-box:fill-box;
+  transform-origin:center;
+}
