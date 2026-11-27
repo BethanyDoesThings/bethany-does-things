@@ -268,7 +268,7 @@
     const coachOne=layer.querySelector("#purple-coach-one");
     const coachTwo=layer.querySelector("#purple-coach-two");
     const totalLength=motionPath.getTotalLength();
-    const duration=8500,spacing=57;
+    const duration=4250,spacing=57;
     let startedAt=null;
     const placeOnTrack=(element,distance)=>{
       const point=motionPath.getPointAtLength(Math.max(0,Math.min(totalLength,distance)));
