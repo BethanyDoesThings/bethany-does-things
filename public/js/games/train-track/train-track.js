@@ -5,7 +5,7 @@
   const status = document.querySelector("#game-status");
   const undoButton = document.querySelector("#undo-button");
   const difficultyOptions = [...document.querySelectorAll(".difficulty-option")];
-  let selectedDifficulty = "easy";
+  let selectedDifficulty = "normal";
   const newPuzzleButton = document.querySelector("#new-puzzle-button");
   const names = ["blank","no track","vertical straight","north-east corner","south-east corner","south-west corner","north-west corner","horizontal straight"];
   const svgShapes = {
@@ -19,7 +19,7 @@
   let puzzle, cells, initial, locked, history=[];
   const soundToggle=document.querySelector("#sound-toggle");
   let soundEnabled=localStorage.getItem("trainTrackSound")!=="off";
-  let audioContext=null,chugTimer=null,soundStopTimer=null;
+  let audioContext=null, activeSoundNodes=[];
   function updateSoundButton(){
     soundToggle.textContent=soundEnabled?"🔊 Sound: On":"🔇 Sound: Off";
     soundToggle.setAttribute("aria-pressed",String(soundEnabled));
@@ -31,55 +31,93 @@
     if(audioContext.state==="suspended")audioContext.resume();
     return audioContext;
   }
-  function playWhistle(){
-    if(!soundEnabled)return;
-    const ctx=getAudioContext();
-    if(!ctx)return;
-    const now=ctx.currentTime;
-    [0,0].forEach((offset,index)=>{
-      const oscillator=ctx.createOscillator(),gain=ctx.createGain();
-      oscillator.type="sawtooth";
-      oscillator.frequency.setValueAtTime(index?510:680,now);
-      oscillator.frequency.linearRampToValueAtTime(index?690:900,now+.32);
-      oscillator.frequency.linearRampToValueAtTime(index?470:620,now+1.05);
-      gain.gain.setValueAtTime(.0001,now);
-      gain.gain.linearRampToValueAtTime(index?.025:.045,now+.08);
-      gain.gain.setValueAtTime(index?.025:.045,now+.78);
-      gain.gain.exponentialRampToValueAtTime(.0001,now+1.12);
-      oscillator.connect(gain);gain.connect(ctx.destination);
-      oscillator.start(now+offset);oscillator.stop(now+offset+1.15);
+  function makeNoiseBuffer(ctx,duration){
+    const buffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*duration),ctx.sampleRate);
+    const data=buffer.getChannelData(0);
+    for(let i=0;i<data.length;i++)data[i]=Math.random()*2-1;
+    return buffer;
+  }
+  function rememberNode(node){
+    activeSoundNodes.push(node);
+    node.addEventListener("ended",()=>{activeSoundNodes=activeSoundNodes.filter(item=>item!==node);},{once:true});
+    return node;
+  }
+  function playWhistleAt(ctx,when,frequencies,duration,volume){
+    frequencies.forEach((frequency,index)=>{
+      const osc=ctx.createOscillator(),gain=ctx.createGain(),tone=ctx.createGain();
+      osc.type="sine";
+      osc.frequency.setValueAtTime(frequency,when);
+      osc.frequency.linearRampToValueAtTime(frequency*.982,when+duration);
+      tone.gain.value=index===0?1:.72;
+      gain.gain.setValueAtTime(.0001,when);
+      gain.gain.linearRampToValueAtTime(volume*(index===0?.55:.42),when+.09);
+      gain.gain.setValueAtTime(volume*(index===0?.55:.42),when+duration*.72);
+      gain.gain.exponentialRampToValueAtTime(.0001,when+duration);
+      osc.connect(tone);tone.connect(gain);gain.connect(ctx.destination);
+      rememberNode(osc);osc.start(when);osc.stop(when+duration+.02);
     });
   }
-  function playChug(){
+  function startTrainSounds(){
     if(!soundEnabled)return;
     const ctx=getAudioContext();
     if(!ctx)return;
-    const now=ctx.currentTime;
-    const oscillator=ctx.createOscillator(),gain=ctx.createGain(),filter=ctx.createBiquadFilter();
-    oscillator.type="triangle";
-    oscillator.frequency.setValueAtTime(92,now);
-    oscillator.frequency.exponentialRampToValueAtTime(48,now+.11);
-    filter.type="lowpass";filter.frequency.value=260;
-    gain.gain.setValueAtTime(.0001,now);
-    gain.gain.linearRampToValueAtTime(.065,now+.012);
-    gain.gain.exponentialRampToValueAtTime(.0001,now+.14);
-    oscillator.connect(filter);filter.connect(gain);gain.connect(ctx.destination);
-    oscillator.start(now);oscillator.stop(now+.15);
+    stopTrainSounds();
+    const start=ctx.currentTime+.035;
+    const duration=4.25;
+    const noise=makeNoiseBuffer(ctx,duration+.3);
+
+    // Warm rolling mechanical bed.
+    const rolling=ctx.createBufferSource(),rollingFilter=ctx.createBiquadFilter(),rollingGain=ctx.createGain();
+    rolling.buffer=noise;rolling.loop=true;
+    rollingFilter.type="lowpass";rollingFilter.frequency.value=310;
+    rollingGain.gain.value=.17;
+    rolling.connect(rollingFilter);rollingFilter.connect(rollingGain);rollingGain.connect(ctx.destination);
+    rememberNode(rolling);rolling.start(start);rolling.stop(start+duration);
+
+    // Airy steam wash, slowly swelling under the exhaust beats.
+    const steam=ctx.createBufferSource(),steamFilter=ctx.createBiquadFilter(),steamGain=ctx.createGain(),steamLfo=ctx.createOscillator(),steamDepth=ctx.createGain();
+    steam.buffer=noise;steam.loop=true;
+    steamFilter.type="bandpass";steamFilter.frequency.value=2700;steamFilter.Q.value=.55;
+    steamGain.gain.value=.018;steamLfo.frequency.value=.7;steamDepth.gain.value=.012;
+    steamLfo.connect(steamDepth);steamDepth.connect(steamGain.gain);
+    steam.connect(steamFilter);steamFilter.connect(steamGain);steamGain.connect(ctx.destination);
+    rememberNode(steam);rememberNode(steamLfo);steam.start(start);steamLfo.start(start);
+    steam.stop(start+duration);steamLfo.stop(start+duration);
+
+    // Chuffing steam exhaust with a soft low pressure pulse and hiss.
+    for(let t=.10,beat=0;t<duration;t+=1/4.1,beat++){
+      const at=start+t;
+      const puff=ctx.createOscillator(),puffGain=ctx.createGain(),puffFilter=ctx.createBiquadFilter();
+      puff.type="sine";puff.frequency.setValueAtTime(82,at);puff.frequency.exponentialRampToValueAtTime(58,at+.18);
+      puffFilter.type="lowpass";puffFilter.frequency.value=230;
+      puffGain.gain.setValueAtTime(.0001,at);puffGain.gain.linearRampToValueAtTime(.12,at+.018);puffGain.gain.exponentialRampToValueAtTime(.0001,at+.20);
+      puff.connect(puffFilter);puffFilter.connect(puffGain);puffGain.connect(ctx.destination);
+      rememberNode(puff);puff.start(at);puff.stop(at+.21);
+
+      const hiss=ctx.createBufferSource(),hissFilter=ctx.createBiquadFilter(),hissGain=ctx.createGain();
+      hiss.buffer=noise;hissFilter.type="bandpass";hissFilter.frequency.value=1850;hissFilter.Q.value=.7;
+      hissGain.gain.setValueAtTime(.0001,at);hissGain.gain.linearRampToValueAtTime(.055,at+.012);hissGain.gain.exponentialRampToValueAtTime(.0001,at+.16);
+      hiss.connect(hissFilter);hissFilter.connect(hissGain);hissGain.connect(ctx.destination);
+      rememberNode(hiss);hiss.start(at);hiss.stop(at+.17);
+    }
+
+    // Bright wheel joints, giving the rhythm its clickety-clack.
+    for(let t=.055;t<duration;t+=1/8.2){
+      const at=start+t;
+      const click=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();
+      click.buffer=noise;filter.type="highpass";filter.frequency.value=1150;
+      gain.gain.setValueAtTime(.0001,at);gain.gain.linearRampToValueAtTime(.065,at+.003);gain.gain.exponentialRampToValueAtTime(.0001,at+.045);
+      click.connect(filter);filter.connect(gain);gain.connect(ctx.destination);
+      rememberNode(click);click.start(at);click.stop(at+.05);
+    }
+
+    // Two-tone departure and arrival whistles frame the moving train.
+    playWhistleAt(ctx,start,[690,545],1.55,.13);
+    playWhistleAt(ctx,start+duration-1.42,[545,690],1.35,.12);
   }
   function stopTrainSounds(){
-    if(chugTimer){clearInterval(chugTimer);chugTimer=null;}
-    if(soundStopTimer){clearTimeout(soundStopTimer);soundStopTimer=null;}
-  }
-  function startTrainSounds(){
-    stopTrainSounds();
-    if(!soundEnabled)return;
-    getAudioContext();
-    playWhistle();
-    chugTimer=setInterval(playChug,230);
-    soundStopTimer=setTimeout(()=>{
-      stopTrainSounds();
-      playWhistle();
-    },4250);
+    activeSoundNodes.forEach(node=>{try{node.stop();}catch(error){}});
+    activeSoundNodes=[];
   }
   soundToggle.addEventListener("click",()=>{
     soundEnabled=!soundEnabled;
@@ -428,6 +466,7 @@
   }
   function setDifficulty(level){
     selectedDifficulty=level;
+    localStorage.setItem("trainTrackDifficulty",level);
     difficultyOptions.forEach(button=>{
       const active=button.dataset.difficulty===level;
       button.classList.toggle("is-active",active);
@@ -447,5 +486,7 @@
   document.querySelector("#reset-button").addEventListener("click",reset);
   document.querySelector("#check-button").addEventListener("click",check);
   window.addEventListener("resize",()=>{if(puzzle){const gridFootprint=Math.min(500,Math.max(180,boardWrap.clientWidth-44));board.style.setProperty("--cell",(gridFootprint/puzzle.size)+"px");}});
-  setDifficulty("easy");
+  const savedDifficulty=localStorage.getItem("trainTrackDifficulty");
+  const validDifficulty=["easy","normal","difficult"].includes(savedDifficulty);
+  setDifficulty(validDifficulty?savedDifficulty:"normal");
 })();
