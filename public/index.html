@@ -164,6 +164,72 @@
       filter: drop-shadow(0 8px 24px rgb(0 0 0 / 28%));
     }
 
+
+    .puzzle-map-section {
+      padding: clamp(2rem, 5vw, 4.5rem) clamp(.75rem, 3vw, 2.5rem);
+      color: #fff;
+      text-align: center;
+      background: linear-gradient(145deg, #17102e, #302052 55%, #17102e);
+    }
+    .puzzle-map-heading { margin: 0 auto 1.5rem; max-width: 60rem; }
+    .puzzle-map-heading h1 {
+      margin: 0 0 .55rem;
+      color: #fff;
+      font-size: clamp(2rem, 4.5vw, 3.25rem);
+      text-shadow: 0 3px 14px rgb(0 0 0 / 45%);
+    }
+    .puzzle-map-heading p {
+      margin: 0;
+      color: #f3ddff;
+      font-size: clamp(.98rem, 2vw, 1.15rem);
+      line-height: 1.6;
+    }
+    .puzzle-map {
+      position: relative;
+      width: min(100%, 1440px);
+      aspect-ratio: 3 / 2;
+      margin: 0 auto;
+      overflow: hidden;
+      isolation: isolate;
+      border: 3px solid #dca8ff;
+      border-radius: clamp(12px, 2vw, 26px);
+      background: #140d2b url("https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/backgrounds/puzzles-navigation-background.png") center / 100% 100% no-repeat;
+      box-shadow: 0 14px 42px rgb(0 0 0 / 45%), 0 0 24px rgb(205 91 255 / 22%);
+    }
+    .puzzle-hotspot {
+      position: absolute;
+      z-index: 2;
+      display: block;
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 18px;
+      background: rgb(255 255 255 / 0%);
+      cursor: pointer;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .puzzle-hotspot:hover, .puzzle-hotspot:focus-visible {
+      border-color: #fff;
+      outline: 3px solid #e83acb;
+      outline-offset: 2px;
+      background: rgb(255 255 255 / 10%);
+      box-shadow: 0 0 22px rgb(255 73 220 / 65%);
+    }
+    .puzzle-hotspot:focus-visible { z-index: 4; }
+    .puzzle-hotspot.track { left: 28%; top: 7%; width: 27%; height: 28%; }
+    .puzzle-hotspot.murdoku { left: 54%; top: 6%; width: 27%; height: 29%; }
+    .puzzle-hotspot.diamond { left: 2%; top: 28%; width: 33%; height: 30%; }
+    .puzzle-hotspot.murder-search { left: 72%; top: 24%; width: 27%; height: 31%; }
+    .puzzle-hotspot.jigsaw { left: 8%; top: 54%; width: 34%; height: 37%; }
+    .puzzle-hotspot.crime { left: 64%; top: 52%; width: 34%; height: 37%; }
+    .puzzle-map-status {
+      min-height: 1.6em;
+      margin: 1rem auto 0;
+      color: #f8e8ff;
+      font-size: .98rem;
+      font-weight: 650;
+    }
+    .puzzle-map-hint { margin: .35rem auto 0; color: #d7c4ec; font-size: .88rem; }
+
     .intro {
       padding: clamp(3rem, 8vw, 6rem) 1.5rem;
       text-align: center;
@@ -252,11 +318,21 @@
   </section>
 
   <main>
-    <section class="intro" aria-labelledby="intro-heading">
-      <div class="intro-content">
-        <h1 id="intro-heading">A little puzzle magic is on its way.</h1>
-        <p>We're building a new home for puzzles, challenges, creative projects and more.</p>
+    <section class="puzzle-map-section" id="puzzle-room" aria-labelledby="puzzle-map-title">
+      <div class="puzzle-map-heading">
+        <h1 id="puzzle-map-title">Choose Your Puzzle Adventure</h1>
+        <p>Explore the map, pick a puzzle stop, and see where the next adventure takes you.</p>
       </div>
+      <div class="puzzle-map" role="group" aria-label="Interactive puzzle map">
+        <a class="puzzle-hotspot track" href="/games/train-track/" aria-label="Open Track Puzzles"></a>
+        <button class="puzzle-hotspot murdoku" type="button" data-puzzle-name="Murdoku" aria-label="Murdoku — coming soon" title="Murdoku — coming soon"></button>
+        <button class="puzzle-hotspot diamond" type="button" data-puzzle-name="Diamond Art" aria-label="Diamond Art — coming soon" title="Diamond Art — coming soon"></button>
+        <button class="puzzle-hotspot murder-search" type="button" data-puzzle-name="Murder Search" aria-label="Murder Search — coming soon" title="Murder Search — coming soon"></button>
+        <button class="puzzle-hotspot jigsaw" type="button" data-puzzle-name="Jigsaw Puzzles" aria-label="Jigsaw Puzzles — coming soon" title="Jigsaw Puzzles — coming soon"></button>
+        <button class="puzzle-hotspot crime" type="button" data-puzzle-name="Crime / Mystery Puzzles" aria-label="Crime / Mystery Puzzles — coming soon" title="Crime / Mystery Puzzles — coming soon"></button>
+      </div>
+      <p class="puzzle-map-status" id="puzzle-map-status" aria-live="polite">Select a destination on the map to explore.</p>
+      <p class="puzzle-map-hint">Track Puzzles is ready to play. More destinations are opening soon.</p>
     </section>
   </main>
 
@@ -269,6 +345,13 @@
       menuButton.setAttribute("aria-expanded", String(isOpen));
       menuButton.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
       menuButton.querySelector("span").textContent = isOpen ? "×" : "☰";
+    });
+
+    document.querySelectorAll(".puzzle-hotspot[data-puzzle-name]").forEach((hotspot) => {
+      hotspot.addEventListener("click", () => {
+        const status = document.querySelector("#puzzle-map-status");
+        status.textContent = hotspot.dataset.puzzleName + " is coming soon. Check back for this puzzle adventure!";
+      });
     });
 
     navigation.addEventListener("click", (event) => {
