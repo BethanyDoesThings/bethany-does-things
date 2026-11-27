@@ -448,3 +448,14 @@ button,select{font:inherit}
 @media(max-width:420px){
   .game-panel{height:auto;min-height:0}
 }
+
+
+/* Let the illustrated train sign overlap the top edge of the puzzle panel. */
+.title-plaque{
+  position:relative;
+  z-index:6;
+  transform:translateY(54px);
+}
+@media(max-width:760px){
+  .title-plaque{transform:translateY(28px)}
+}
