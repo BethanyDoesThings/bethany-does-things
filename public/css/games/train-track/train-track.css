@@ -33,3 +33,8 @@
 .cell .rail{stroke-width:19}
 .cell .rail-glint{stroke-width:2.5}
 .cell .wood-tie{stroke-width:1.5}
+
+/* Final track scale: fill most of each square without hiding the grid */
+.cell .rail-shadow{stroke-width:28}
+.cell .rail{stroke-width:23}
+.cell .rail-glint{stroke-width:2.8}
