@@ -62,3 +62,9 @@
 .cell .rail{stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:round}
 .cell .rail-glint{stroke-width:.65;opacity:.72;stroke-linecap:butt;stroke-linejoin:round}
 .cell .wood-tie{stroke-width:1.1}
+
+/* Stronger rails with clear gauge; smooth curved corner joins */
+.cell .rail-shadow{stroke-width:7;opacity:.34;stroke-linecap:round;stroke-linejoin:round}
+.cell .rail{stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.cell .rail-glint{stroke-width:1.1;opacity:.78;stroke-linecap:round;stroke-linejoin:round}
+.cell .wood-tie{stroke-width:1.1}
