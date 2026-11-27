@@ -214,7 +214,13 @@
     });
     if(points.length<2)return;
     const radius=Math.min(14,Math.max(7,(board.querySelector(".cell")?.getBoundingClientRect().width||50)*.25));
-    let d="M "+points[0].x+" "+points[0].y;
+    const first=points[0],second=points[1],lastPoint=points[points.length-1],beforeLast=points[points.length-2];
+    const startLength=Math.hypot(second.x-first.x,second.y-first.y);
+    const endLength=Math.hypot(lastPoint.x-beforeLast.x,lastPoint.y-beforeLast.y);
+    const trainLength=165;
+    const startOutside={x:first.x-(second.x-first.x)/startLength*trainLength,y:first.y-(second.y-first.y)/startLength*trainLength};
+    const endOutside={x:lastPoint.x+(lastPoint.x-beforeLast.x)/endLength*trainLength,y:lastPoint.y+(lastPoint.y-beforeLast.y)/endLength*trainLength};
+    let d="M "+startOutside.x+" "+startOutside.y+" L "+points[0].x+" "+points[0].y;
     for(let i=1;i<points.length-1;i++){
       const a=points[i-1],b=points[i],next=points[i+1];
       const inLen=Math.hypot(b.x-a.x,b.y-a.y),outLen=Math.hypot(next.x-b.x,next.y-b.y);
@@ -223,7 +229,7 @@
       const after={x:b.x+(next.x-b.x)/outLen*r,y:b.y+(next.y-b.y)/outLen*r};
       d+=" L "+before.x+" "+before.y+" Q "+b.x+" "+b.y+" "+after.x+" "+after.y;
     }
-    const last=points[points.length-1];d+=" L "+last.x+" "+last.y;
+    d+=" L "+endOutside.x+" "+endOutside.y;
     const layer=document.createElementNS("http://www.w3.org/2000/svg","svg");
     layer.setAttribute("class","train-animation-layer");
     layer.setAttribute("viewBox","0 0 "+boardWrap.clientWidth+" "+boardWrap.clientHeight);
@@ -244,7 +250,6 @@
           <circle cx="-82" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
           <circle cx="-59" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
           <path d="M-52 -3 H-43" stroke="#e7b9ff" stroke-width="3" stroke-linecap="round"/>
-          <animateMotion dur="5s" begin="-1.05s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
         </g>
         <g>
           <rect x="-151" y="-11" width="39" height="17" rx="5" fill="#9b55d0" stroke="#43156e" stroke-width="2"/>
@@ -254,7 +259,6 @@
           <circle cx="-142" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
           <circle cx="-119" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
           <path d="M-112 -3 H-103" stroke="#e7b9ff" stroke-width="3" stroke-linecap="round"/>
-          <animateMotion dur="5s" begin="-2.1s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
         </g>
         <!-- Purple steam locomotive at the front of the train. -->
         <g>
@@ -268,8 +272,8 @@
           <circle cx="-16" cy="10" r="2.3" fill="#d99cff"/><circle cx="12" cy="10" r="2.3" fill="#d99cff"/>
           <path d="M-5 -22 Q-11 -30 -4 -36 Q2 -42 -3 -48" fill="none" stroke="#d8c7e6" stroke-width="3.5" stroke-linecap="round" opacity=".85"/>
           <circle cx="-4" cy="-46" r="4.5" fill="#e9d9f5" opacity=".5"/>
-          <animateMotion dur="5s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
         </g>
+        <animateMotion dur="7s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
       </g>`;
     boardWrap.append(layer);
     layer.addEventListener("animationend",()=>{}, {once:true});
