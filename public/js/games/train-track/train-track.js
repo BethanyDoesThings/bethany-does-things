@@ -175,6 +175,83 @@
     cells=initial.slice(); history.length=0; clearFeedback();
     status.className="status"; status.textContent=""; render();
   }
+  function orderedTrackRoute(){
+    const size=puzzle.size,masks={2:5,3:3,4:6,5:12,6:9,7:10};
+    const directions=[{dr:-1,dc:0,bit:1,opposite:4},{dr:0,dc:1,bit:2,opposite:8},{dr:1,dc:0,bit:4,opposite:1},{dr:0,dc:-1,bit:8,opposite:2}];
+    const tracks=[];
+    cells.forEach((value,index)=>{if(value>=2)tracks.push(index);});
+    const neighbors=new Map(),boundary=[];
+    for(const index of tracks){
+      const row=Math.floor(index/size),col=index%size,mask=masks[cells[index]],linked=[];
+      for(const d of directions){
+        if(!(mask&d.bit))continue;
+        const nr=row+d.dr,nc=col+d.dc;
+        if(nr<0||nr>=size||nc<0||nc>=size){boundary.push({index,bit:d.bit});continue;}
+        const next=nr*size+nc;
+        if(cells[next]>=2&&(masks[cells[next]]&d.opposite))linked.push(next);
+      }
+      neighbors.set(index,linked);
+    }
+    if(boundary.length!==2||!tracks.length)return null;
+    const start=boundary[0].index,route=[start],seen=new Set([start]);
+    let previous=-1,current=start;
+    while(true){
+      const next=(neighbors.get(current)||[]).find(index=>index!==previous&&!seen.has(index));
+      if(next===undefined)break;
+      route.push(next);seen.add(next);previous=current;current=next;
+    }
+    return seen.size===tracks.length?route:null;
+  }
+  function playTrain(){
+    const route=orderedTrackRoute();
+    if(!route)return;
+    boardWrap.querySelector(".train-animation-layer")?.remove();
+    const wrapRect=boardWrap.getBoundingClientRect();
+    const points=route.map(index=>{
+      const cell=board.querySelectorAll(".cell")[index];
+      const rect=cell.getBoundingClientRect();
+      return {x:rect.left-wrapRect.left+rect.width/2,y:rect.top-wrapRect.top+rect.height/2};
+    });
+    if(points.length<2)return;
+    const radius=Math.min(14,Math.max(7,(board.querySelector(".cell")?.getBoundingClientRect().width||50)*.25));
+    let d="M "+points[0].x+" "+points[0].y;
+    for(let i=1;i<points.length-1;i++){
+      const a=points[i-1],b=points[i],next=points[i+1];
+      const inLen=Math.hypot(b.x-a.x,b.y-a.y),outLen=Math.hypot(next.x-b.x,next.y-b.y);
+      const r=Math.min(radius,inLen/2,outLen/2);
+      const before={x:b.x-(b.x-a.x)/inLen*r,y:b.y-(b.y-a.y)/inLen*r};
+      const after={x:b.x+(next.x-b.x)/outLen*r,y:b.y+(next.y-b.y)/outLen*r};
+      d+=" L "+before.x+" "+before.y+" Q "+b.x+" "+b.y+" "+after.x+" "+after.y;
+    }
+    const last=points[points.length-1];d+=" L "+last.x+" "+last.y;
+    const layer=document.createElementNS("http://www.w3.org/2000/svg","svg");
+    layer.setAttribute("class","train-animation-layer");
+    layer.setAttribute("viewBox","0 0 "+boardWrap.clientWidth+" "+boardWrap.clientHeight);
+    layer.setAttribute("aria-hidden","true");
+    layer.innerHTML=`
+      <defs>
+        <linearGradient id="purple-engine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3c4ff"/><stop offset=".42" stop-color="#a94be0"/><stop offset="1" stop-color="#57208f"/></linearGradient>
+        <filter id="train-glow"><feGaussianBlur stdDeviation="2.2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <path id="train-motion-path" d="${d}" fill="none" stroke="none"/>
+      <g class="purple-train" filter="url(#train-glow)">
+        <g>
+          <rect x="-24" y="-12" width="39" height="19" rx="5" fill="url(#purple-engine)" stroke="#43156e" stroke-width="2"/>
+          <rect x="-15" y="-23" width="17" height="14" rx="4" fill="#c77af0" stroke="#43156e" stroke-width="2"/>
+          <rect x="-12" y="-29" width="10" height="7" rx="2" fill="#542080"/>
+          <rect x="10" y="-18" width="7" height="8" rx="2" fill="#f4d5ff" stroke="#542080" stroke-width="1.5"/>
+          <path d="M-25 2 H18 L22 7 H-27Z" fill="#f4b5ff" stroke="#43156e" stroke-width="1.5"/>
+          <circle cx="-13" cy="9" r="6" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <circle cx="11" cy="9" r="6" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <circle cx="-13" cy="9" r="2" fill="#d99cff"/><circle cx="11" cy="9" r="2" fill="#d99cff"/>
+          <path d="M-4 -20 Q-10 -28 -3 -33 Q3 -39 -2 -44" fill="none" stroke="#d8c7e6" stroke-width="3" stroke-linecap="round" opacity=".8"/>
+          <circle cx="-3" cy="-42" r="4" fill="#e9d9f5" opacity=".45"/>
+        </g>
+        <animateMotion dur="5s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
+      </g>`;
+    boardWrap.append(layer);
+    layer.addEventListener("animationend",()=>{}, {once:true});
+  }
   function check(){
     const size=puzzle.size;
     const actualRows=Array(size).fill(0),actualCols=Array(size).fill(0);
@@ -229,6 +306,7 @@
     if(cluesMatch&&routeValid){
       status.className="status success";
       status.textContent="All aboard! You solved it!";
+      playTrain();
     } else if(!cluesMatch){
       status.className="status error";
       status.textContent="Some row or column totals don't match yet. Check the clues.";
