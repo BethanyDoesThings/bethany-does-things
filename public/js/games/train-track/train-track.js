@@ -35,7 +35,7 @@
   function render() {
     board.innerHTML="";
     board.style.setProperty("--size",puzzle.size);
-    const gridFootprint=Math.min(400,Math.max(180,boardWrap.clientWidth-44));
+    const gridFootprint=Math.min(500,Math.max(180,boardWrap.clientWidth-44));
     board.style.setProperty("--cell",(gridFootprint/puzzle.size)+"px");
     board.append(makeClue(""));
     puzzle.colClues.forEach(n=>board.append(makeClue(n)));
@@ -103,6 +103,6 @@
   document.querySelector("#undo-button").addEventListener("click",undo);
   document.querySelector("#reset-button").addEventListener("click",reset);
   document.querySelector("#check-button").addEventListener("click",check);
-  window.addEventListener("resize",()=>{if(puzzle){const gridFootprint=Math.min(400,Math.max(180,boardWrap.clientWidth-44));board.style.setProperty("--cell",(gridFootprint/puzzle.size)+"px");}});
+  window.addEventListener("resize",()=>{if(puzzle){const gridFootprint=Math.min(500,Math.max(180,boardWrap.clientWidth-44));board.style.setProperty("--cell",(gridFootprint/puzzle.size)+"px");}});
   setDifficulty("easy");
 })();
