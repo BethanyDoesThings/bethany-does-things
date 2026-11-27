@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const board = document.querySelector("#puzzle-board");
+  const boardWrap = document.querySelector(".board-wrap");
   const status = document.querySelector("#game-status");
   const undoButton = document.querySelector("#undo-button");
   const difficultySelect = document.querySelector("#difficulty-select");
@@ -34,6 +35,8 @@
   function render() {
     board.innerHTML="";
     board.style.setProperty("--size",puzzle.size);
+    const gridFootprint=Math.min(400,Math.max(180,boardWrap.clientWidth-44));
+    board.style.setProperty("--cell",(gridFootprint/puzzle.size)+"px");
     board.append(makeClue(""));
     puzzle.colClues.forEach(n=>board.append(makeClue(n)));
     for(let row=0;row<puzzle.size;row++) {
@@ -100,5 +103,6 @@
   document.querySelector("#undo-button").addEventListener("click",undo);
   document.querySelector("#reset-button").addEventListener("click",reset);
   document.querySelector("#check-button").addEventListener("click",check);
+  window.addEventListener("resize",()=>{if(puzzle){const gridFootprint=Math.min(400,Math.max(180,boardWrap.clientWidth-44));board.style.setProperty("--cell",(gridFootprint/puzzle.size)+"px");}});
   setDifficulty("easy");
 })();
