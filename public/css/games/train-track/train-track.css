@@ -18,3 +18,12 @@
 .cell .portal-fantasy{fill:#654b9c;stroke:#bd9cff;stroke-width:3}
 .cell .portal-detail{fill:none;stroke:#e2c1a0;stroke-width:2;stroke-linecap:round;opacity:.9}
 .cell .tunnel-fantasy .portal-detail{stroke:#e6d4ff}
+
+/* Larger, more substantial track pieces and overhead tunnel roofs */
+.cell .rail-shadow{stroke-width:15}
+.cell .rail{stroke-width:11}
+.cell .rail-glint{stroke-width:2}
+.cell .wood-tie{stroke-width:1.5}
+.cell .tunnel-roof{stroke-width:2.5;filter:drop-shadow(0 2px 2px #21152e66)}
+.cell .tunnel-opening{fill:#17121f;stroke:#3c2d4e;stroke-width:2}
+.cell .tunnel-opening-glint{fill:none;stroke:#d9c4ff;stroke-width:1.5;opacity:.75}
