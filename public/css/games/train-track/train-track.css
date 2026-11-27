@@ -472,3 +472,24 @@ button,select{font:inherit}
   .title-plaque{width:100%}
   .title-plaque .title-plaque-image{height:clamp(115px,30vw,170px)}
 }
+
+
+/* Final banner sizing: wider than the puzzle panel with a deeper overlap. */
+@media(min-width:761px){
+  .title-plaque{
+    width:min(1120px,84vw);
+    transform:translateY(76px);
+  }
+  .title-plaque .title-plaque-image{
+    height:clamp(195px,23vw,300px);
+  }
+}
+@media(max-width:760px){
+  .title-plaque{
+    width:100%;
+    transform:translateY(34px);
+  }
+  .title-plaque .title-plaque-image{
+    height:clamp(125px,33vw,185px);
+  }
+}
