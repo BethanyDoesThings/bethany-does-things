@@ -151,7 +151,7 @@
     }
     undoButton.disabled=history.length===0;
   }
-  function clearFeedback(){board.querySelectorAll(".cell").forEach(c=>c.classList.remove("correct","incorrect"));}
+  function clearFeedback(){board.querySelectorAll(".cell").forEach(c=>c.classList.remove("correct","incorrect"));boardWrap.querySelector(".train-animation-layer")?.remove();}
   function cycle(index){
     history.push(cells.slice());
     const cycleOrder=[7,2,3,4,5,6];
