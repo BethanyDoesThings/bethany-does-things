@@ -684,3 +684,7 @@ button,select{font:inherit}
   transform-box:fill-box;
   transform-origin:center;
 }
+
+/* Optional sound control for the animated train */
+.sound-toggle{width:100%;margin-top:8px;font-weight:800}
+.sound-toggle[aria-pressed="false"]{opacity:.78}
