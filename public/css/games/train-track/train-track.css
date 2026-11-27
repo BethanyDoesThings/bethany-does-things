@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&display=swap');
 :root{font-family:Nunito,system-ui,sans-serif;color:#28113d;background:#1b0b2d;font-synthesis:none;text-rendering:optimizeLegibility}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#1b0b2d url("../../../assets/images/backgrounds/track-puzzle-background.png") center top/cover fixed no-repeat;color:#28113d}
+body{margin:0;min-height:100vh;background:#1b0b2d url("../../../assets/images/backgrounds/track-puzzle-background.png") center top/cover scroll no-repeat;color:#28113d}
 button,select{font:inherit}
 .site-header{position:sticky;z-index:20;top:0;display:flex;align-items:center;justify-content:flex-start;gap:clamp(.6rem,1vw,1.25rem);height:92px;min-height:92px;padding:0 clamp(1rem,2.5vw,2.75rem);overflow:visible;color:#fff;background:#08070b;border-bottom:1px solid rgb(225 75 255 / 22%);box-shadow:0 4px 22px rgb(0 0 0 / 28%)}
 .brand-link{position:absolute;z-index:3;top:0;left:clamp(1rem,2.5vw,2.75rem);display:inline-flex;align-items:flex-start;width:clamp(142.5px,10.5vw,180px);height:135px;min-width:0;text-decoration:none}
