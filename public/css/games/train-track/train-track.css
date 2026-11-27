@@ -277,3 +277,44 @@ button,select{font:inherit}
       linear-gradient(180deg,#fff9ed,#ffd0e8);
   }
 }
+
+
+/* Curved illustrated ribbon: SVG provides the flowing shape and folded tails */
+.title-plaque .title-subtitle{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:min(520px,88%);
+  min-width:0;
+  min-height:66px;
+  margin:9px auto 0;
+  padding:8px 22px;
+  border:0;
+  border-radius:0;
+  clip-path:none;
+  background:transparent;
+  box-shadow:none;
+  filter:none;
+  color:#5b1686;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(1.15rem,2.2vw,1.65rem);
+  font-weight:900;
+  line-height:1.1;
+  text-shadow:0 1px 0 #fff;
+}
+.title-plaque .ribbon-art{
+  position:absolute;
+  z-index:-1;
+  inset:-8px -20px;
+  width:calc(100% + 40px);
+  height:calc(100% + 16px);
+  overflow:visible;
+  pointer-events:none;
+}
+.title-plaque .ribbon-label{position:relative;z-index:1;white-space:nowrap}
+@media(max-width:760px){
+  .title-plaque .title-subtitle{width:84%;min-height:50px;margin-top:6px;padding:6px 12px;font-size:1rem}
+  .title-plaque .ribbon-art{inset:-5px -14px;width:calc(100% + 28px);height:calc(100% + 10px)}
+}
