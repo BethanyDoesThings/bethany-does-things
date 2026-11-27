@@ -50,3 +50,9 @@
 .cell .rail{stroke-width:4.5}
 .cell .rail-glint{stroke-width:1.1;opacity:.75}
 .cell .wood-tie{stroke-width:1.1}
+
+/* Final requested proportions: broader timber boards and rails reduced by 50% */
+.cell .rail-shadow{stroke-width:4;opacity:.38}
+.cell .rail{stroke-width:2.25}
+.cell .rail-glint{stroke-width:.7;opacity:.7}
+.cell .wood-tie{stroke-width:1.2}
