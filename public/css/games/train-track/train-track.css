@@ -376,7 +376,7 @@ button,select{font:inherit}
 /* Illustrated transparent Train Track Puzzle banner */
 .title-plaque{
   display:block;
-  width:min(100%,520px);
+  width:min(780px,60vw);
   min-height:0;
   margin:0 auto 22px;
   padding:0;
@@ -404,7 +404,7 @@ button,select{font:inherit}
 
 /* Keep the illustrated sign aligned with the centre puzzle panel */
 @media(min-width:761px) and (max-width:1120px){
-  .title-plaque{width:min(100%,470px)}
+  .title-plaque{width:min(720px,72vw)}
 }
 @media(max-width:760px){
   .title-plaque{width:100%}
