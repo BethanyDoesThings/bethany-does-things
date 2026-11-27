@@ -409,3 +409,39 @@ button,select{font:inherit}
 @media(max-width:760px){
   .title-plaque{width:100%}
 }
+
+
+/* Keep the puzzle window the same size at every difficulty.
+   The board is centred inside the fixed panel; only its grid dimensions change. */
+.game-panel{
+  height:720px;
+  min-height:720px;
+  display:flex;
+  flex-direction:column;
+}
+.board-wrap{
+  flex:1 1 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+  padding:10px 2px;
+}
+.puzzle-board{
+  --cell:clamp(28px,3.5vw,40px);
+  flex:0 0 auto;
+  margin:auto;
+}
+@media(max-width:1120px) and (min-width:761px){
+  .game-panel{height:690px;min-height:690px}
+  .puzzle-board{--cell:clamp(27px,3.25vw,36px)}
+}
+@media(max-width:760px){
+  .game-panel{height:680px;min-height:680px}
+  .board-wrap{overflow:auto}
+  .puzzle-board{--cell:clamp(25px,7vw,34px)}
+}
+@media(max-width:420px){
+  .game-panel{height:650px;min-height:650px}
+  .puzzle-board{--cell:clamp(23px,6.5vw,29px)}
+}
