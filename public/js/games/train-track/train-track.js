@@ -36,7 +36,7 @@
     const ctx=getAudioContext();
     if(!ctx)return;
     const now=ctx.currentTime;
-    [0,5].forEach((offset,index)=>{
+    [0,0].forEach((offset,index)=>{
       const oscillator=ctx.createOscillator(),gain=ctx.createGain();
       oscillator.type="sawtooth";
       oscillator.frequency.setValueAtTime(index?510:680,now);
