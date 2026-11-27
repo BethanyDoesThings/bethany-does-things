@@ -3,44 +3,99 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#21163d">
-  <meta name="description" content="Play the Bethany Does Things Train Track puzzle.">
-  <title>Train Track | Bethany Does Things</title>
+  <meta name="theme-color" content="#211039">
+  <meta name="description" content="Play the Bethany Does Things Train Track puzzle. Build a route through the puzzle room.">
+  <title>Train Track Puzzle | Bethany Does Things</title>
+  <link rel="preload" as="image" href="../../assets/images/backgrounds/track-puzzle-background.png">
   <link rel="stylesheet" href="../../css/games/train-track/train-track.css">
   <script src="../../js/games/train-track/track-art.js" defer></script>
   <script src="../../js/games/train-track/train-track.js" defer></script>
 </head>
 <body>
-  <main class="game-shell">
-    <header class="game-header">
-      <a class="back-link" href="../../">← Bethany Does Things</a>
-      <p class="eyebrow">THE PUZZLE ROOM</p>
-      <h1>Train Track</h1>
-      <p class="intro">Let's Start with What We Know</p>
-    </header>
-    <section class="game-panel" aria-labelledby="instructions-title">
-      <div class="panel-heading">
-        <div><p class="eyebrow">CHOOSE YOUR CHALLENGE</p><h2 id="instructions-title">Build the route</h2></div>
-        <span class="train-mark" aria-hidden="true">🚂</span>
-      </div>
-      <div class="difficulty-picker"><label for="difficulty-select">Difficulty</label><select id="difficulty-select"><option value="easy">Easy</option><option value="normal">Standard</option><option value="difficult">Hard</option></select></div>
-      <p class="instructions">Tap a square to cycle through the track pieces. Match the number of track squares in every row and column, then connect the two ends without gaps or branches.</p>
-      <div class="legend" aria-label="Track piece key">
-        <span><i class="legend-piece straight-v"></i> Straight</span>
-        <span><i class="legend-piece corner-ne"></i> Corner</span>
-        <span><i class="legend-x">X</i> No track</span>
-      </div>
-      <div class="board-wrap"><div id="puzzle-board" class="puzzle-board" role="group" aria-label="Train Track puzzle grid"></div></div>
-      <p id="game-status" class="status" role="status" aria-live="polite">A little route is waiting to be discovered.</p>
-      <div class="controls">
-        <button id="new-puzzle-button" class="button secondary" type="button">New Puzzle</button>
-        <button id="undo-button" class="button secondary" type="button" disabled>Undo</button>
-        <button id="reset-button" class="button secondary" type="button">Reset</button>
-        <button id="check-button" class="button primary" type="button">Check Puzzle</button>
-      </div>
-      <details class="how-to"><summary>How to play</summary><p>Each row number tells you how many squares contain track in that row. The numbers above the grid do the same for columns. Every track piece must connect to exactly two neighbours, except where the route enters or leaves the edge of the board. No crossings or branches.</p></details>
+  <header class="site-nav">
+    <a class="brand" href="../../" aria-label="Bethany Does Things home">
+      <img src="../../assets/images/branding/website-logo.png" alt="Bethany Does Things">
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="../../">⌂ <span>Welcome</span></a>
+      <a class="active" href="../../#puzzle-map" aria-current="page">✦ <span>Puzzle Map</span></a>
+      <a href="../../#challenge-board">🏆 <span>Challenge Board</span></a>
+      <a href="../../#meet-bethany">♟ <span>Meet Bethany</span></a>
+      <a href="../../#latest-things">▣ <span>Latest Things</span></a>
+      <a href="../../#get-in-touch">✉ <span>Get in Touch</span></a>
+    </nav>
+  </header>
+
+  <main class="room-scene">
+    <div class="title-plaque">
+      <span class="title-train" aria-hidden="true">🚂</span>
+      <div><p class="eyebrow">WELCOME TO THE PUZZLE ROOM</p><h1>Train Track Puzzle</h1><p class="title-subtitle">Build the Route</p></div>
+      <span class="title-train right" aria-hidden="true">🚂</span>
+    </div>
+
+    <section class="game-layout" aria-label="Train Track puzzle">
+      <aside class="objective-card">
+        <div class="chalk-heading"><span>✦</span><h2>The Objective</h2></div>
+        <ul>
+          <li>Build one or more continuous tracks.</li>
+          <li>Each track runs from one edge to another.</li>
+          <li>Tracks cannot intersect or branch.</li>
+          <li>Match the numbers along every row and column.</li>
+        </ul>
+        <div class="chalk-rail" aria-hidden="true">╱ ─ ─ ─ ─ ─ ─ ╲</div>
+        <div class="book-stack" aria-hidden="true">
+          <span>✦ Track Puzzles</span><span>✦ Murdoku</span><span>✦ Murder-Search</span>
+        </div>
+      </aside>
+
+      <section class="game-panel" aria-labelledby="instructions-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">CHOOSE YOUR CHALLENGE</p><h2 id="instructions-title">Build the route</h2></div>
+          <span class="train-mark" aria-hidden="true">🚂</span>
+        </div>
+        <div class="difficulty-picker"><label for="difficulty-select">Difficulty</label><select id="difficulty-select"><option value="easy">Easy</option><option value="normal">Standard</option><option value="difficult">Hard</option></select></div>
+        <p class="instructions">Match the number of track squares in every row and column, then connect the route without gaps or branches.</p>
+        <div class="legend" aria-label="Track piece key">
+          <span><i class="legend-piece straight-v"></i> Straight</span>
+          <span><i class="legend-piece corner-ne"></i> Corner</span>
+          <span><i class="legend-x">X</i> No track</span>
+        </div>
+        <div class="board-wrap"><div id="puzzle-board" class="puzzle-board" role="group" aria-label="Train Track puzzle grid"></div></div>
+        <p id="game-status" class="status" role="status" aria-live="polite">A little route is waiting to be discovered.</p>
+        <div class="piece-tray" aria-label="Available track pieces">
+          <strong>Track Pieces</strong>
+          <span><i class="piece-icon horizontal"></i>Horizontal</span>
+          <span><i class="piece-icon vertical"></i>Vertical</span>
+          <span><i class="piece-icon curve curve-a"></i>Corner</span>
+          <span><i class="piece-icon curve curve-b"></i>Corner</span>
+          <span><i class="piece-icon curve curve-c"></i>Corner</span>
+          <span><i class="piece-icon curve curve-d"></i>Corner</span>
+        </div>
+      </section>
+
+      <aside class="controls-card">
+        <div class="controls-heading"><span aria-hidden="true">⚙</span><h2>Puzzle Controls</h2></div>
+        <div class="controls">
+          <button id="check-button" class="button primary" type="button">✓ Check Puzzle</button>
+          <div class="control-pair">
+            <button id="undo-button" class="button secondary" type="button" disabled>↶ Undo</button>
+            <button id="reset-button" class="button secondary" type="button">⟳ Reset</button>
+          </div>
+          <button id="new-puzzle-button" class="button secondary new-puzzle" type="button">⤨ New Puzzle</button>
+        </div>
+        <div class="how-to">
+          <h3>How to Build</h3>
+          <p><span class="mouse-icon">●</span><span><b>Left-click</b> a square to cycle through track pieces.</span></p>
+          <p><span class="mouse-icon right-click">●</span><span><b>Right-click</b> to mark No Track (X).</span></p>
+          <p class="hint">Every track must connect cleanly. No gaps, loops or branches.</p>
+        </div>
+      </aside>
     </section>
-    <footer>Every puzzle starts with what we know. <span>✦</span></footer>
+
+    <footer class="room-footer">
+      <p>Every puzzle starts with what we know. <span>✦</span></p>
+      <img class="sleeping-dogs" src="../../assets/images/characters/cuddled-auggie-rucca.png" alt="Auggie and Rucca sleeping together on their purple bed" loading="lazy">
+    </footer>
   </main>
 </body>
 </html>
