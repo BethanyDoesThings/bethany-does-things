@@ -653,3 +653,9 @@ button,select{font:inherit}
     justify-content:stretch;
   }
 }
+
+
+/* Mobile users interact by touch, so hide desktop mouse instructions. */
+@media(max-width:760px){
+  .controls-card .how-to{display:none}
+}
