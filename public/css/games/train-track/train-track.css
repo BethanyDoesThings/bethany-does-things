@@ -1,70 +1,85 @@
-:root{font-family:Nunito,system-ui,sans-serif;color:#f8f3ff;background:#17112b;font-synthesis:none;text-rendering:optimizeLegibility}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 5%,#54347b 0,transparent 42%),radial-gradient(ellipse at 90% 80%,#164d60 0,transparent 38%),#17112b;padding:28px 16px 40px}
-.game-shell{width:min(100%,760px);margin:0 auto}.game-header{text-align:center;margin:0 auto 24px}.back-link{display:inline-block;color:#d9c6ff;text-decoration:none;font-weight:800;font-size:.9rem;margin-bottom:22px}.eyebrow{font-size:.72rem;letter-spacing:.18em;font-weight:900;color:#f2a8db;margin:0 0 7px}.game-header h1{font-size:clamp(2.5rem,8vw,4.2rem);line-height:1;margin:0;color:#fff;text-shadow:0 4px 28px #d88dff55}.intro{font-size:1.1rem;color:#c8b5ef;font-weight:800;margin:12px 0 0}
-.game-panel{background:#fff;color:#302747;border:1px solid #ffffff88;border-radius:26px;padding:clamp(18px,4vw,32px);box-shadow:0 24px 80px #08051477}.panel-heading{display:flex;justify-content:space-between;align-items:center}.panel-heading h2{font-size:1.55rem;margin:0}.train-mark{font-size:2.2rem;background:#f7e8ff;border-radius:18px;padding:10px}.difficulty-picker{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 8px;color:#655b76;font-weight:900}.difficulty-picker select{border:1px solid #dfd2e9;border-radius:12px;padding:10px 14px;background:#faf7fd;color:#4e3a66;font:800 .92rem system-ui;max-width:100%}.instructions{line-height:1.6;color:#655b76;margin:18px 0}.legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:.82rem;color:#655b76;margin:18px 0}.legend span{display:flex;align-items:center;gap:7px}.legend-piece{width:20px;height:20px;display:inline-block;position:relative}.legend-piece:before{content:"";position:absolute;background:#7545a8;border-radius:5px}.straight-v:before{width:5px;height:20px;left:7px}.corner-ne:before{width:13px;height:13px;left:2px;top:2px;border:5px solid #7545a8;border-left:0;border-bottom:0;background:transparent;border-radius:0 9px 0 0}.legend-x{font-weight:900;color:#b5aabc;font-style:normal}
-.board-wrap{overflow-x:auto;padding:8px 2px 12px}.puzzle-board{--cell:min(12vw,62px);display:grid;grid-template-columns:34px repeat(var(--size,5),var(--cell));grid-template-rows:30px repeat(var(--size,5),var(--cell));gap:0;justify-content:center;min-width:0}.clue{display:grid;place-items:center;font-weight:900;color:#8a769f;font-size:.95rem}.cell{border:1px solid #d8cce7;border-radius:0;background:#fcfaff;min-width:0;min-height:0;position:relative;padding:0;cursor:pointer;touch-action:manipulation;transition:background .12s,border-color .12s,transform .12s}.cell:hover{border-color:#a98bc8;background:#f3ecfb}.cell:focus-visible,.button:focus-visible{outline:3px solid #24a8b7;outline-offset:3px}.cell.locked{background:#eee5fa;border:1px solid #c49bdf;cursor:default}.cell.edge-top{border-top:3px solid #21152e}.cell.edge-right{border-right:3px solid #21152e}.cell.edge-bottom{border-bottom:3px solid #21152e}.cell.edge-left{border-left:3px solid #21152e}.cell svg{width:100%;height:100%;display:block}.cell .track{fill:none;stroke:#7950a8;stroke-width:8;stroke-linecap:round;stroke-linejoin:round}.cell .x-mark{font:900 24px Nunito,sans-serif;fill:#b8adbf}.cell.correct{background:#e9f5ed;border-color:#39a979}.cell.incorrect{background:#fff0f3;border-color:#df7894}.status{min-height:28px;text-align:center;font-weight:800;color:#65527b;margin:12px 0}.status.success{color:#16845c}.status.error{color:#b43e68}.controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.button{border:0;border-radius:999px;padding:12px 22px;font:800 .95rem Nunito,system-ui;cursor:pointer}.button:disabled{opacity:.4;cursor:not-allowed}.primary{background:linear-gradient(110deg,#9b58d5,#e36cb6);color:white;box-shadow:0 7px 18px #bd6bcb44}.secondary{background:#f0eaf6;color:#5d4775}.how-to{margin-top:22px;color:#655b76;font-size:.9rem}.how-to summary{cursor:pointer;font-weight:900;color:#76549a}.how-to p{line-height:1.6}footer{text-align:center;color:#b9a9d2;font-size:.82rem;margin:22px 0}footer span{color:#f2a8db}
-@media(max-width:420px){body{padding:18px 9px 30px}.game-panel{border-radius:20px;padding:17px 10px}.puzzle-board{--cell:min(8.5vw,38px);gap:0;grid-template-columns:27px repeat(var(--size,5),var(--cell));grid-template-rows:26px repeat(var(--size,5),var(--cell))}.cell{border-radius:0}.button{padding:11px 16px;font-size:.88rem}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
-
-/* Wooden sleepers and steel rails */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&display=swap');
+:root{font-family:Nunito,system-ui,sans-serif;color:#28113d;background:#1b0b2d;font-synthesis:none;text-rendering:optimizeLegibility}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:#1b0b2d url("../../assets/images/backgrounds/track-puzzle-background.png") center top/cover fixed no-repeat;color:#28113d}
+button,select{font:inherit}
+.site-nav{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px clamp(16px,3vw,44px);background:linear-gradient(100deg,#160821f2,#281039f2);border-bottom:2px solid #d64bff;box-shadow:0 5px 24px #08010d88}
+.brand{display:flex;align-items:center;flex:0 0 auto}
+.brand img{display:block;width:clamp(118px,13vw,190px);height:70px;object-fit:contain;filter:drop-shadow(0 0 12px #e33bff77)}
+.site-nav nav{display:flex;align-items:center;justify-content:flex-end;gap:clamp(5px,.8vw,14px);flex-wrap:wrap}
+.site-nav nav a{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid #a943c9;border-radius:999px;background:#321344d9;color:#fff;text-decoration:none;font-weight:900;font-size:clamp(.78rem,1vw,.96rem);box-shadow:inset 0 0 10px #b54be933;transition:background .16s,box-shadow .16s,transform .16s}
+.site-nav nav a:hover,.site-nav nav a.active{background:linear-gradient(110deg,#a800dc,#f20cbd);box-shadow:0 0 16px #fa31f5, inset 0 0 8px #fff8;transform:translateY(-1px)}
+.room-scene{width:min(100% - 32px,1540px);margin:0 auto;padding:24px 0 0;position:relative}
+.title-plaque{width:min(900px,92%);margin:0 auto 22px;display:flex;align-items:center;justify-content:center;gap:20px;text-align:center;padding:16px 28px 18px;background:linear-gradient(180deg,#f7bb70,#b75a26 80%,#79331e);border:5px solid #6b2a28;border-radius:20px;box-shadow:0 7px 0 #35132b,0 0 28px #ff8b32aa,inset 0 3px 9px #fff9;position:relative}
+.title-plaque:before,.title-plaque:after{content:"";position:absolute;top:9px;width:9px;height:9px;border-radius:50%;background:#ffe0a2;box-shadow:0 0 0 2px #783c2b}
+.title-plaque:before{left:12px}.title-plaque:after{right:12px}
+.title-train{font-size:clamp(2rem,4vw,3.5rem);filter:drop-shadow(0 3px 2px #52203c)}
+.title-train.right{transform:scaleX(-1)}
+.title-plaque .eyebrow{margin:0 0 2px;color:#64226e}
+.title-plaque h1{font-family:Georgia,serif;font-size:clamp(2rem,4.5vw,3.8rem);line-height:1;margin:0;color:#fff4ff;text-shadow:0 3px 0 #67228a,0 0 14px #9b22dc;letter-spacing:-.03em}
+.title-subtitle{display:inline-block;margin:8px 0 0;padding:5px 28px;background:#fff0d8;border:2px solid #a23b90;border-radius:40% 12% 40% 12%;font-family:Georgia,serif;font-weight:900;font-size:clamp(1rem,2vw,1.45rem);color:#5a1686;box-shadow:0 0 12px #ffb9ff}
+.game-layout{display:grid;grid-template-columns:minmax(205px,.78fr) minmax(520px,2fr) minmax(225px,.88fr);align-items:start;gap:18px}
+.objective-card,.controls-card{border:3px solid #d98a55;border-radius:18px;padding:20px 18px;background:linear-gradient(145deg,#fff0d7,#f6c7a2);box-shadow:0 8px 0 #4d1d42,0 0 24px #ff8cda55,inset 0 0 0 3px #fff9;position:relative}
+.objective-card{background:linear-gradient(145deg,#35203d,#21152c 72%);border-color:#9a684b;color:#fff4e9;transform:rotate(-.5deg)}
+.objective-card:before,.controls-card:before{content:"";position:absolute;inset:7px;border:1px dashed #e3a77b;border-radius:11px;pointer-events:none}
+.chalk-heading{display:flex;align-items:center;gap:9px;border-bottom:3px solid #ec4bdc;padding-bottom:8px;margin-bottom:14px}
+.chalk-heading span{color:#ff62f0;font-size:1.6rem}.chalk-heading h2{font-family:'Patrick Hand',cursive;font-size:2rem;margin:0;color:#fff}
+.objective-card ul{list-style:none;margin:0;padding:0;display:grid;gap:15px;font-family:'Patrick Hand',cursive;font-size:1.15rem;line-height:1.22}
+.objective-card li{position:relative;padding-left:30px}.objective-card li:before{content:"✓";position:absolute;left:0;top:-2px;width:21px;height:21px;border:2px solid #fff;border-radius:4px;color:#fff;font:900 1rem Nunito;display:grid;place-items:center}
+.chalk-rail{text-align:center;color:#f6c6ee;font-size:1.2rem;margin:20px 0 12px;letter-spacing:2px}
+.book-stack{display:grid;gap:5px;margin-top:22px;transform:rotate(-1deg)}
+.book-stack span{display:block;padding:9px 10px;border:2px solid #f5a7e9;border-radius:5px 12px 12px 5px;background:linear-gradient(90deg,#4e157a,#a02da8);color:#fff;font-weight:900;box-shadow:0 4px 0 #1a092b;font-size:.95rem}
+.book-stack span:nth-child(2){background:linear-gradient(90deg,#173b87,#2778c4)}.book-stack span:nth-child(3){background:linear-gradient(90deg,#7d155e,#ce398a)}
+.game-panel{background:linear-gradient(145deg,#fffaffef,#f7e8ffed);color:#302044;border:3px solid #eab5ff;border-radius:28px;padding:clamp(16px,2vw,28px);box-shadow:0 0 0 5px #8f32c955,0 0 32px #f04dff99,0 18px 45px #13051d88;min-width:0}
+.panel-heading{display:flex;justify-content:space-between;align-items:center}
+.panel-heading h2{font-size:1.55rem;margin:0;color:#43135f}.panel-heading .eyebrow{font-size:.7rem;letter-spacing:.16em;font-weight:900;color:#b444c6;margin:0 0 5px}
+.train-mark{font-size:2rem;background:#f5dcff;border:1px solid #e5a9f9;border-radius:18px;padding:8px}
+.difficulty-picker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:14px 0 6px;color:#4c2868;font-weight:900}
+.difficulty-picker select{border:2px solid #d6a0eb;border-radius:999px;padding:9px 15px;background:linear-gradient(#fff,#f0d9ff);color:#4e216d;font-weight:900;box-shadow:0 3px 0 #b47acb;cursor:pointer}
+.instructions{line-height:1.45;color:#654a77;margin:12px 0;font-size:.94rem}
+.legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:.82rem;color:#654a77;margin:12px 0}
+.legend span{display:flex;align-items:center;gap:7px}.legend-piece{width:20px;height:20px;display:inline-block;position:relative}.legend-piece:before{content:"";position:absolute;background:#7545a8;border-radius:5px}.straight-v:before{width:5px;height:20px;left:7px}.corner-ne:before{width:13px;height:13px;left:2px;top:2px;border:5px solid #7545a8;border-left:0;border-bottom:0;background:transparent;border-radius:0 9px 0 0}.legend-x{font-weight:900;color:#b5aabc;font-style:normal}
+.board-wrap{overflow-x:auto;padding:8px 2px 12px}
+.puzzle-board{--cell:min(5.6vw,58px);display:grid;grid-template-columns:34px repeat(var(--size,5),var(--cell));grid-template-rows:30px repeat(var(--size,5),var(--cell));gap:0;justify-content:center;min-width:0}
+.clue{display:grid;place-items:center;font-weight:900;color:#6c378e;font-size:1rem}
+.cell{border:1px solid #d5a5e8;border-radius:0;background:#fffaff;min-width:0;min-height:0;position:relative;padding:0;cursor:pointer;touch-action:manipulation;transition:background .12s,border-color .12s}
+.cell:hover{border-color:#a74bd2;background:#f6e5ff}.cell:focus-visible,.button:focus-visible{outline:3px solid #19a7b9;outline-offset:2px}
+.cell.locked{background:#f1ddfb;border:1px solid #c78be0;cursor:default}
+.cell.edge-top{border-top:3px solid #21152e}.cell.edge-right{border-right:3px solid #21152e}.cell.edge-bottom{border-bottom:3px solid #21152e}.cell.edge-left{border-left:3px solid #21152e}
+.cell svg{width:100%;height:100%;display:block}.cell .x-mark{font:900 24px Nunito,sans-serif;fill:#b8adbf}
+.cell.correct{background:#e9f5ed;border-color:#39a979}.cell.incorrect{background:#fff0f3;border-color:#df7894}
 .cell .wood-tie{fill:var(--tie-color,#a86b3f);stroke:#68432d;stroke-width:1.2;filter:drop-shadow(0 1px 1px #24162a55)}
-.cell .wood-grain{fill:none;stroke:#e6b17a;stroke-width:1;stroke-linecap:round;opacity:.8}
-.cell .rail-shadow{fill:none;stroke:#242b38;stroke-width:11;stroke-linecap:round;stroke-linejoin:round;opacity:.5}
-.cell .rail{fill:none;stroke:#414957;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
-.cell .rail-glint{fill:none;stroke:#aeb9c6;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
-.cell .tunnel path{stroke-linejoin:round}
-.cell .portal-brick{fill:#9c4d42;stroke:#66342f;stroke-width:3}
-.cell .portal-stone{fill:#8b8792;stroke:#514f5c;stroke-width:3}
-.cell .portal-fantasy{fill:#654b9c;stroke:#bd9cff;stroke-width:3}
-.cell .portal-detail{fill:none;stroke:#e2c1a0;stroke-width:2;stroke-linecap:round;opacity:.9}
-.cell .tunnel-fantasy .portal-detail{stroke:#e6d4ff}
-
-/* Larger, more substantial track pieces and overhead tunnel roofs */
-.cell .rail-shadow{stroke-width:19}
-.cell .rail{stroke-width:14}
-.cell .rail-glint{stroke-width:2}
-.cell .wood-tie{stroke-width:1.5}
-.cell .tunnel-roof{stroke-width:2.5;filter:drop-shadow(0 2px 2px #21152e66)}
-.cell .tunnel-opening{fill:#17121f;stroke:#3c2d4e;stroke-width:2}
-.cell .tunnel-opening-glint{fill:none;stroke:#d9c4ff;stroke-width:1.5;opacity:.75}
-
-/* Track-focused artwork: bold rails and visible crosswise sleepers */
-.cell .rail-shadow{stroke-width:24}
-.cell .rail{stroke-width:19}
-.cell .rail-glint{stroke-width:2.5}
-.cell .wood-tie{stroke-width:1.5}
-
-/* Final track scale: fill most of each square without hiding the grid */
-.cell .rail-shadow{stroke-width:28}
-.cell .rail{stroke-width:23}
-.cell .rail-glint{stroke-width:2.8}
-
-/* Refined proportions: broader sleepers, slimmer steel rails */
-.cell .rail-shadow{stroke-width:16}
-.cell .rail{stroke-width:11}
-.cell .rail-glint{stroke-width:1.6}
-.cell .wood-tie{stroke-width:1.2}
-
-/* Dual-rail proportions: wider track bed, narrower steel rails */
-.cell .rail-shadow{stroke-width:8;opacity:.42}
-.cell .rail{stroke-width:4.5}
-.cell .rail-glint{stroke-width:1.1;opacity:.75}
-.cell .wood-tie{stroke-width:1.1}
-
-/* Final requested proportions: broader timber boards and rails reduced by 50% */
-.cell .rail-shadow{stroke-width:4;opacity:.38}
-.cell .rail{stroke-width:2.25}
-.cell .rail-glint{stroke-width:.7;opacity:.7}
-.cell .wood-tie{stroke-width:1.2}
-
-/* Clean corner joins and slim, separated rail lines */
-.cell .rail-shadow{stroke-width:3.5;opacity:.32;stroke-linecap:butt;stroke-linejoin:round}
-.cell .rail{stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:round}
-.cell .rail-glint{stroke-width:.65;opacity:.72;stroke-linecap:butt;stroke-linejoin:round}
-.cell .wood-tie{stroke-width:1.1}
-
-/* Stronger rails with clear gauge; smooth curved corner joins */
-.cell .rail-shadow{stroke-width:7;opacity:.34;stroke-linecap:round;stroke-linejoin:round}
-.cell .rail{stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
-.cell .rail-glint{stroke-width:1.1;opacity:.78;stroke-linecap:round;stroke-linejoin:round}
-.cell .wood-tie{stroke-width:1.1}
+.cell .wood-grain{fill:none;stroke:#f0c18b;stroke-width:1;stroke-linecap:round;opacity:.8}
+.cell .rail-shadow{fill:none;stroke:#242b38;stroke-width:7;stroke-linecap:round;stroke-linejoin:round;opacity:.35}
+.cell .rail{fill:none;stroke:#414957;stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round}
+.cell .rail-glint{fill:none;stroke:#c5d1df;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+.status{min-height:25px;text-align:center;font-weight:900;color:#65427d;margin:8px 0 12px}.status.success{color:#16845c}.status.error{color:#b43e68}
+.piece-tray{display:flex;align-items:center;justify-content:center;gap:clamp(10px,1.4vw,22px);flex-wrap:wrap;padding:13px 10px;margin-top:8px;border:2px solid #dc7bf2;border-radius:18px;background:linear-gradient(120deg,#f7d9ff,#fff1fb);box-shadow:0 0 15px #df66f088}
+.piece-tray strong{font-size:.9rem;color:#4d176a}.piece-tray>span{display:flex;flex-direction:column;align-items:center;gap:5px;color:#4d2864;font-size:.72rem;font-weight:900}
+.piece-icon{display:block;width:38px;height:26px;position:relative}
+.piece-icon.horizontal:before,.piece-icon.horizontal:after{content:"";position:absolute;left:2px;right:2px;height:4px;border-radius:3px;background:#485363;box-shadow:0 0 0 1px #222}.piece-icon.horizontal:before{top:7px}.piece-icon.horizontal:after{top:17px}
+.piece-icon.vertical:before,.piece-icon.vertical:after{content:"";position:absolute;top:1px;bottom:1px;width:4px;border-radius:3px;background:#485363;box-shadow:0 0 0 1px #222}.piece-icon.vertical:before{left:11px}.piece-icon.vertical:after{right:11px}
+.piece-icon.curve{border:4px solid #485363;border-left:0;border-bottom:0;border-radius:0 22px 0 0;width:27px;height:23px;transform:rotate(90deg)}
+.controls-card{background:linear-gradient(145deg,#fff1db,#f7c49f);border-color:#b86c45;color:#421b53}
+.controls-heading{display:flex;align-items:center;gap:10px;padding-bottom:9px;border-bottom:3px solid #a94ec0;margin-bottom:14px}.controls-heading span{font-size:1.8rem;color:#8d36bb}.controls-heading h2{font-family:Georgia,serif;font-size:1.4rem;margin:0;color:#51206c}
+.controls{display:grid;gap:9px}
+.button{border:2px solid #b66bce;border-radius:999px;padding:11px 16px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 #8243a2,inset 0 2px 4px #fff9;transition:transform .12s,filter .12s}
+.button:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.06)}.button:active:not(:disabled){transform:translateY(1px);box-shadow:0 2px 0 #8243a2}
+.button:disabled{opacity:.4;cursor:not-allowed}
+.primary{background:linear-gradient(180deg,#20e28b,#008e59);border-color:#6dffd0;color:#fff;font-size:1.1rem;text-shadow:0 1px 2px #005f45;box-shadow:0 4px 0 #006343,0 0 13px #16d99b88,inset 0 2px 5px #fff9}
+.secondary{background:linear-gradient(180deg,#fff,#edcaff);color:#4c176d}
+.control-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}.new-puzzle{width:100%}
+.how-to{border-top:2px dashed #bf7b67;margin-top:17px;padding-top:13px;color:#512b60}
+.how-to h3{font-family:Georgia,serif;font-size:1.25rem;margin:0 0 10px;color:#51206c}
+.how-to p{display:flex;gap:10px;align-items:flex-start;line-height:1.3;font-size:.87rem;margin:10px 0}
+.mouse-icon{flex:0 0 28px;width:28px;height:36px;border:2px solid #7c359e;border-radius:15px;background:linear-gradient(90deg,#e8a9ff 48%,#fff 49%);display:grid;place-items:center;color:#8d30b9;font-size:.55rem}
+.mouse-icon.right-click{background:linear-gradient(90deg,#fff 48%,#e8a9ff 49%)}
+.how-to .hint{display:block;padding:9px 10px;background:#fff3df;border-radius:9px;color:#693a65;font-weight:800}
+.room-footer{min-height:210px;position:relative;display:flex;align-items:flex-end;justify-content:flex-start;padding:20px 30px;overflow:visible}
+.room-footer p{margin:0 0 10px;padding:9px 15px;border-radius:999px;background:#241039d9;color:#f5dcff;font-weight:900;box-shadow:0 0 14px #dc4dff77;position:relative;z-index:2}
+.room-footer p span{color:#ff76dd}
+.sleeping-dogs{position:absolute;right:0;bottom:0;width:clamp(190px,23vw,340px);height:auto;object-fit:contain;filter:drop-shadow(0 8px 16px #12051b99);z-index:1}
+@media(max-width:1120px){.game-layout{grid-template-columns:minmax(190px,.7fr) minmax(470px,1.7fr)}.controls-card{grid-column:2;display:grid;grid-template-columns:1fr 1.2fr;gap:18px}.controls-heading{grid-column:1/-1;margin-bottom:0}.how-to{border-top:0;border-left:2px dashed #bf7b67;margin:0;padding:0 0 0 16px}.site-nav{align-items:flex-start}.site-nav nav{gap:5px}.site-nav nav a{padding:8px 10px}}
+@media(max-width:760px){.site-nav{display:block;text-align:center}.brand{justify-content:center}.brand img{height:62px}.site-nav nav{justify-content:center;margin-top:7px}.site-nav nav a{font-size:.72rem;padding:7px 9px}.room-scene{width:min(100% - 18px,600px);padding-top:14px}.title-plaque{width:100%;gap:7px;padding:12px 10px}.title-train{font-size:1.8rem}.game-layout{display:flex;flex-direction:column}.objective-card{order:2;width:100%}.game-panel{order:1;width:100%}.controls-card{order:3;width:100%;display:block}.how-to{border-left:0;border-top:2px dashed #bf7b67;margin-top:15px;padding:12px 0 0}.puzzle-board{--cell:min(10vw,48px);grid-template-columns:28px repeat(var(--size,5),var(--cell));grid-template-rows:26px repeat(var(--size,5),var(--cell))}.room-footer{min-height:170px}.sleeping-dogs{width:210px;right:-6px}.room-footer p{font-size:.75rem}}
+@media(max-width:420px){.game-panel{padding:14px 9px}.puzzle-board{--cell:min(9.2vw,36px);grid-template-columns:24px repeat(var(--size,5),var(--cell));grid-template-rows:24px repeat(var(--size,5),var(--cell))}.button{font-size:.85rem;padding:10px 12px}.piece-tray{gap:8px}.piece-tray>span{font-size:.65rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
