@@ -4,7 +4,8 @@
   const boardWrap = document.querySelector(".board-wrap");
   const status = document.querySelector("#game-status");
   const undoButton = document.querySelector("#undo-button");
-  const difficultySelect = document.querySelector("#difficulty-select");
+  const difficultyOptions = [...document.querySelectorAll(".difficulty-option")];
+  let selectedDifficulty = "easy";
   const newPuzzleButton = document.querySelector("#new-puzzle-button");
   const names = ["blank","no track","vertical straight","north-east corner","south-east corner","south-west corner","north-west corner","horizontal straight"];
   const svgShapes = {
@@ -89,6 +90,12 @@
     else{status.className="status error";status.textContent="The totals match, but check the route pieces and connections.";}
   }
   function setDifficulty(level){
+    selectedDifficulty=level;
+    difficultyOptions.forEach(button=>{
+      const active=button.dataset.difficulty===level;
+      button.classList.toggle("is-active",active);
+      button.setAttribute("aria-pressed",String(active));
+    });
     if(level==="easy") puzzle=makeEasyPuzzle();
     else if(level==="normal") puzzle=makeSingleRoutePuzzle(8);
     else puzzle=makeSingleRoutePuzzle(10);
@@ -98,8 +105,8 @@
     initial=cells.slice(); history.length=0; clearFeedback();
     status.className="status"; status.textContent=""; render();
   }
-  difficultySelect.addEventListener("change",()=>setDifficulty(difficultySelect.value));
-  newPuzzleButton.addEventListener("click",()=>setDifficulty(difficultySelect.value));
+  difficultyOptions.forEach(button=>button.addEventListener("click",()=>setDifficulty(button.dataset.difficulty)));
+  newPuzzleButton.addEventListener("click",()=>setDifficulty(selectedDifficulty));
   document.querySelector("#undo-button").addEventListener("click",undo);
   document.querySelector("#reset-button").addEventListener("click",reset);
   document.querySelector("#check-button").addEventListener("click",check);
