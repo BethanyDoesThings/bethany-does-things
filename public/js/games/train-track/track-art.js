@@ -12,7 +12,7 @@
   };
   function configure(){ routeColor=palette[Math.floor(Math.random()*palette.length)]; }
   function sleeper(x,y,angle){
-    return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-17)+"' y='"+(y-7)+"' width='34' height='14' rx='2' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-11)+" "+y+" h22' transform='rotate("+angle+" "+x+" "+y+")'/>";
+    return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-20)+"' y='"+(y-8)+"' width='40' height='16' rx='2' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-13)+" "+y+" h26' transform='rotate("+angle+" "+x+" "+y+")'/>";
   }
   function render(value,index){
     if(value===1)return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
