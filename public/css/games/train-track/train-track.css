@@ -225,3 +225,55 @@ button,select{font:inherit}
   .title-subtitle{gap:9px;margin-top:8px;padding:5px 16px;font-size:1rem}
   .title-subtitle:before,.title-subtitle:after{flex-basis:28px;height:13px;background-size:auto,100% 2px,100% 2px}
 }
+
+/* Proper pointed railway ribbon beneath the station title */
+.title-plaque .title-subtitle{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(12px,2vw,24px);
+  width:max-content;
+  max-width:calc(100% - 28px);
+  min-width:min(420px,85%);
+  margin:13px auto 0;
+  padding:9px clamp(28px,4vw,58px);
+  border:3px solid #a83c91;
+  border-radius:0;
+  clip-path:polygon(0 0,8% 12%,8% 0,92% 0,92% 12%,100% 0,96% 50%,100% 100%,92% 88%,92% 100%,8% 100%,8% 88%,0 100%,4% 50%);
+  background:
+    linear-gradient(180deg,transparent 0 100%),
+    repeating-linear-gradient(90deg,transparent 0 8px,#8b4a35 8px 11px,transparent 11px 16px) left 27px / 46px 16px no-repeat,
+    repeating-linear-gradient(90deg,transparent 0 8px,#8b4a35 8px 11px,transparent 11px 16px) right 27px / 46px 16px no-repeat,
+    linear-gradient(#55505a,#55505a) left 30px / 46px 3px no-repeat,
+    linear-gradient(#55505a,#55505a) left 40px / 46px 3px no-repeat,
+    linear-gradient(#55505a,#55505a) right 30px / 46px 3px no-repeat,
+    linear-gradient(#55505a,#55505a) right 40px / 46px 3px no-repeat,
+    linear-gradient(180deg,#fff9ed 0%,#ffe7ed 52%,#ffd0e8 100%);
+  color:#5b1686;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(1.15rem,2.2vw,1.65rem);
+  font-weight:900;
+  line-height:1.15;
+  text-shadow:0 1px 0 #fff;
+  box-shadow:none;
+  filter:drop-shadow(0 5px 0 #873a78) drop-shadow(0 0 10px #ffb9ff);
+}
+@media(max-width:760px){
+  .title-plaque .title-subtitle{
+    min-width:0;
+    max-width:calc(100% - 12px);
+    gap:8px;
+    margin-top:8px;
+    padding:7px 34px;
+    font-size:1rem;
+    background:
+      repeating-linear-gradient(90deg,transparent 0 7px,#8b4a35 7px 10px,transparent 10px 14px) left 18px / 30px 12px no-repeat,
+      repeating-linear-gradient(90deg,transparent 0 7px,#8b4a35 7px 10px,transparent 10px 14px) right 18px / 30px 12px no-repeat,
+      linear-gradient(#55505a,#55505a) left 20px / 30px 2px no-repeat,
+      linear-gradient(#55505a,#55505a) left 27px / 30px 2px no-repeat,
+      linear-gradient(#55505a,#55505a) right 20px / 30px 2px no-repeat,
+      linear-gradient(#55505a,#55505a) right 27px / 30px 2px no-repeat,
+      linear-gradient(180deg,#fff9ed,#ffd0e8);
+  }
+}
