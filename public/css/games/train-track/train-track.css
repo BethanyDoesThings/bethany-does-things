@@ -20,8 +20,8 @@
 .cell .tunnel-fantasy .portal-detail{stroke:#e6d4ff}
 
 /* Larger, more substantial track pieces and overhead tunnel roofs */
-.cell .rail-shadow{stroke-width:15}
-.cell .rail{stroke-width:11}
+.cell .rail-shadow{stroke-width:19}
+.cell .rail{stroke-width:14}
 .cell .rail-glint{stroke-width:2}
 .cell .wood-tie{stroke-width:1.5}
 .cell .tunnel-roof{stroke-width:2.5;filter:drop-shadow(0 2px 2px #21152e66)}
