@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Patrick+Hand&display=swap');
 :root{font-family:Nunito,system-ui,sans-serif;color:#28113d;background:#1b0b2d;font-synthesis:none;text-rendering:optimizeLegibility}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:#1b0b2d url("../../assets/images/backgrounds/track-puzzle-background.png") center top/cover fixed no-repeat;color:#28113d}
+body{margin:0;min-height:100vh;background:#1b0b2d url("../../../assets/images/backgrounds/track-puzzle-background.png") center top/cover fixed no-repeat;color:#28113d}
 button,select{font:inherit}
 .site-nav{position:relative;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px clamp(16px,3vw,44px);background:linear-gradient(100deg,#160821f2,#281039f2);border-bottom:2px solid #d64bff;box-shadow:0 5px 24px #08010d88}
 .brand{display:flex;align-items:center;flex:0 0 auto}
