@@ -152,3 +152,76 @@ button,select{font:inherit}
   .title-plaque .eyebrow{font-size:.58rem}
   .title-subtitle{margin-top:7px;padding:5px 22px;font-size:1rem}
 }
+
+/* Stronger railway-sign styling: locomotive, timber sign and track ribbon */
+.title-plaque{
+  width:min(1000px,96%);
+  min-height:154px;
+  margin:8px auto 28px;
+  padding:18px 34px 22px;
+  gap:24px;
+  border:7px solid #71351f;
+  border-radius:22px 22px 30px 30px;
+  background:
+    radial-gradient(ellipse at 50% 0%,rgb(255 232 179 / 70%),transparent 58%),
+    repeating-linear-gradient(2deg,transparent 0 13px,rgb(100 42 20 / 10%) 14px 16px,transparent 17px 29px),
+    linear-gradient(180deg,#ffd18a 0%,#e99a50 43%,#c56b35 76%,#914222 100%);
+  box-shadow:0 10px 0 #35132b,0 0 0 3px #f4b86e,0 0 34px rgb(255 139 50 / 68%),inset 0 5px 9px #fff9,inset 0 -10px 15px rgb(87 35 22 / 35%);
+}
+.title-plaque:before,.title-plaque:after{
+  top:14px;width:14px;height:14px;
+  background:radial-gradient(circle at 35% 30%,#fff5cf 0 18%,#d79a55 23% 62%,#633222 72%);
+  box-shadow:0 1px 2px #51251d,0 0 0 2px rgb(89 43 27 / 45%);
+}
+.title-train{
+  font-size:clamp(3.6rem,6.5vw,5.5rem);
+  line-height:1;
+  filter:drop-shadow(0 4px 2px #52203c) drop-shadow(0 0 8px #ffbd55);
+}
+.title-plaque h1{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(2.4rem,4.7vw,4.25rem);
+  line-height:1.03;
+  font-weight:900;
+  letter-spacing:-.04em;
+  color:#fff9ff;
+  -webkit-text-stroke:1.4px #592078;
+  text-shadow:0 3px 0 #64217e,0 6px 0 #3d174f,0 0 15px #b64cff;
+}
+.title-subtitle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(12px,2vw,26px);
+  width:max-content;
+  max-width:100%;
+  margin:12px auto 0;
+  padding:7px clamp(22px,3vw,42px);
+  border:3px solid #a53b91;
+  border-radius:8px 8px 18px 18px;
+  background:linear-gradient(180deg,#fff8e9,#ffd9e9);
+  color:#5b1686;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(1.15rem,2.2vw,1.55rem);
+  font-weight:900;
+  box-shadow:0 5px 0 #8a3d78,0 0 14px #ffb9ff;
+}
+.title-subtitle:before,.title-subtitle:after{
+  content:"";
+  display:block;
+  flex:0 0 48px;
+  height:17px;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 8px,#8b4a35 8px 11px,transparent 11px 16px),
+    linear-gradient(#55505a,#55505a) center 3px/100% 3px no-repeat,
+    linear-gradient(#55505a,#55505a) center 12px/100% 3px no-repeat;
+  filter:drop-shadow(0 1px 0 #fff);
+}
+@media(max-width:760px){
+  .title-plaque{width:100%;min-height:112px;gap:5px;padding:12px 10px 15px;margin:4px auto 20px;border-width:5px}
+  .title-train{font-size:2.4rem}
+  .title-plaque h1{font-size:clamp(1.55rem,6vw,2.35rem)}
+  .title-plaque .eyebrow{font-size:.58rem}
+  .title-subtitle{gap:9px;margin-top:8px;padding:5px 16px;font-size:1rem}
+  .title-subtitle:before,.title-subtitle:after{flex-basis:28px;height:13px;background-size:auto,100% 2px,100% 2px}
+}
