@@ -21,7 +21,7 @@
     });
   }
   function sleeper(x,y,angle){
-    return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-10)+"' y='"+(y-4.5)+"' width='20' height='9' rx='2' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-6)+" "+y+" h12' transform='rotate("+angle+" "+x+" "+y+")'/>";
+    return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-12)+"' y='"+(y-5)+"' width='24' height='10' rx='2' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-8)+" "+y+" h16' transform='rotate("+angle+" "+x+" "+y+")'/>";
   }
   function tunnel(side){
     const transform=side==="top"?"rotate(0 30 30)":side==="bottom"?"rotate(180 30 30)":side==="left"?"rotate(-90 30 30)":"rotate(90 30 30)";
