@@ -19,7 +19,7 @@
     const piece=paths[value];
     if(!piece)return "<svg viewBox='0 0 60 60' aria-hidden='true'></svg>";
     const ties=piece.ties.map(t=>sleeper(t[0],t[1],t[2])).join("");
-    return "<svg viewBox='0 0 60 60' aria-hidden='true'><g class='rail-art'>"+ties+"<path class='rail-shadow' d='"+piece.d+"' transform='translate(0 3)'/><path class='rail' d='"+piece.d+"'/><path class='rail-glint' d='"+piece.d+"'/></g>"</svg>";
+    return "<svg viewBox='0 0 60 60' aria-hidden='true'><g class='rail-art'>"+ties+"<path class='rail-shadow' d='"+piece.d+"' transform='translate(0 3)'/><path class='rail' d='"+piece.d+"'/><path class='rail-glint' d='"+piece.d+"'/></g></svg>";
   }
   window.TrainTrackArt={configure,render};
 })();
