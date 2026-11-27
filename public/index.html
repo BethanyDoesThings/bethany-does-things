@@ -23,8 +23,8 @@
       top: 0;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: clamp(1rem, 2vw, 2rem);
+      justify-content: flex-start;
+      gap: clamp(.6rem, 1vw, 1.25rem);
       min-height: 196px;
       padding: 8px clamp(1rem, 2.5vw, 2.75rem);
       color: #fff;
@@ -36,7 +36,7 @@
       display: inline-flex;
       flex: 0 0 auto;
       align-items: center;
-      width: clamp(360px, 30vw, 570px);
+      width: clamp(320px, 25vw, 450px);
       min-width: 0;
       text-decoration: none;
     }
@@ -51,8 +51,8 @@
       display: flex;
       flex: 1 1 auto;
       align-items: center;
-      justify-content: center;
-      gap: clamp(.7rem, 1.15vw, 1.5rem);
+      justify-content: flex-start;
+      gap: clamp(.4rem, .7vw, .85rem);
       min-width: 0;
     }
     .nav-link {
@@ -64,7 +64,7 @@
       min-height: 180px;
       padding: 0 .12rem;
       color: #f8f5fb;
-      font-size: clamp(1.05rem, 1.25vw, 1.35rem);
+      font-size: clamp(1rem, 1.1vw, 1.2rem);
       font-weight: 800;
       text-decoration: none;
       white-space: nowrap;
@@ -83,7 +83,7 @@
       background: #ed2ba9;
       box-shadow: 0 0 12px rgb(237 43 169 / 65%);
     }
-    .nav-icon { font-size: 1.55em; line-height: 1; }
+    .nav-icon { font-size: 1.4em; line-height: 1; }
     .tiktok-link {
       display: inline-flex;
       flex: 0 0 auto;
@@ -91,19 +91,19 @@
       justify-content: center;
       gap: .65rem;
       min-height: 62px;
-      padding: .9rem 1.55rem;
+      padding: .75rem 1.1rem;
       border: 1px solid #ff83d8;
       border-radius: 999px;
       color: #fff;
       background: linear-gradient(135deg, #ff65c5, #e6008e);
       box-shadow: 0 3px 15px rgb(255 36 169 / 28%), inset 0 1px 0 rgb(255 255 255 / 35%);
-      font-size: 1.15rem;
+      font-size: 1rem;
       font-weight: 850;
       text-decoration: none;
       white-space: nowrap;
       transition: transform .18s ease, filter .18s ease;
     }
-    .tiktok-link:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .tiktok-link { margin-left: auto; }\n    .tiktok-link:hover { transform: translateY(-2px); filter: brightness(1.08); }
     .menu-toggle {
       display: none;
       width: 64px;
