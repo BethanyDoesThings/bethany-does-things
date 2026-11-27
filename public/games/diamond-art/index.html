@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090513">
+<meta name="description" content="Create colourful pixel art with Bethany's Diamond Art Puzzle.">
+<title>Diamond Art Puzzle | Bethany Does Things</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Nunito,system-ui,sans-serif}body{color:#fff;background:#090513 url("https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/main/assets/images/backgrounds/diamond-art-background.png") center top/cover fixed no-repeat;overflow-x:hidden}
+.site-header{height:74px;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:20px;padding:0 22px;background:#08070cf2;border-bottom:1px solid #d849ff44;box-shadow:0 4px 22px #0008}
+.brand-link{width:104px;height:72px;display:flex;align-items:center;flex-shrink:0}.brand-logo{width:100%;max-height:70px;object-fit:contain}
+.primary-nav{display:flex;align-items:center;justify-content:space-evenly;flex:1;gap:8px}.nav-link{height:72px;display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-size:15px;font-weight:900;white-space:nowrap;position:relative}.nav-link:hover,.nav-link[aria-current=page]{color:#ff5acb}.nav-link[aria-current=page]:after{content:"";position:absolute;bottom:0;left:-8px;right:-8px;height:5px;background:#ed2ba9;border-radius:8px 8px 0 0;box-shadow:0 0 12px #ed2ba9}.nav-icon{font-size:20px}
+.tiktok-link{display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:99px;color:#fff;text-decoration:none;background:linear-gradient(135deg,#ff65c5,#e6008e);border:1px solid #ff9bdd;box-shadow:0 3px 14px #ff24a955;font-size:14px;font-weight:900;white-space:nowrap}
+.menu-toggle{display:none;background:#24102d;border:1px solid #a94cc2;border-radius:12px;color:white;font-size:25px;width:46px;height:46px}
+.scene{width:min(1160px,96vw);margin:0 auto;padding:0 0 28px;position:relative}
+.banner{height:136px;display:flex;justify-content:center;align-items:flex-end;position:relative;z-index:3;margin:0 auto -10px;pointer-events:none}.banner img{width:min(790px,84vw);height:136px;object-fit:contain;filter:drop-shadow(0 8px 12px #17001e)}
+.game-shell{border:4px solid #ff40ed;border-radius:40px;padding:22px 26px 26px;background:linear-gradient(135deg,#17062dcc,#30004ecc 55%,#16052ddc);box-shadow:0 0 0 2px #ffb3ff,0 0 18px #ff2df2,0 0 42px #df2dff99,inset 0 0 26px #b400ff33;position:relative}
+.game-layout{display:grid;grid-template-columns: minmax(210px,.82fr) minmax(400px,1.55fr) minmax(230px,.9fr);gap:18px;align-items:start}
+.info-card,.settings-card,.key-card{border:2px solid #ee52ff;border-radius:22px;background:linear-gradient(150deg,#210b39ed,#10051ff2);box-shadow:0 0 0 2px #a62bdc66,0 0 17px #f43dff77,inset 0 0 16px #bb42ff22;overflow:hidden}
+.card-heading{padding:12px 15px;background:linear-gradient(90deg,#42106b,#7b20b7);border-bottom:1px solid #ed72ff77;display:flex;align-items:center;gap:9px}.card-heading h2{font-size:19px;line-height:1.1;margin:0;font-weight:1000}.heading-icon{font-size:21px;color:#ffb7ff}
+.objective-list{list-style:none;padding:18px 18px 8px;margin:0;display:grid;gap:17px}.objective-list li{display:flex;gap:11px;align-items:flex-start;font-size:14px;font-weight:850;line-height:1.35}.tick{flex:0 0 18px;width:18px;height:18px;border:2px solid #fff;border-radius:4px;display:grid;place-items:center;font-size:13px;margin-top:1px}
+.ornament{margin:10px 20px 18px;border-top:1px solid #f6a7ff;position:relative;text-align:center;height:22px}.ornament span{position:relative;top:-16px;background:#210b39;padding:0 9px;color:#ffcbff;font-size:23px}
+.board-card{border:3px solid #f0a3ff;border-radius:24px;padding:10px;background:linear-gradient(145deg,#fff,#e7c9ff);box-shadow:0 0 0 3px #a72adf,0 0 25px #ed42ff;min-width:0}
+.board-frame{width:100%;aspect-ratio:1;background:#2b1552;border:2px solid #47206d;border-radius:7px;padding:2px;display:grid;grid-template-columns:repeat(var(--grid,50),1fr);grid-template-rows:repeat(var(--grid,50),1fr);gap:1px;overflow:hidden}
+.tile{min-width:0;min-height:0;border:0;border-radius:1px;padding:0;background:#8955b6;cursor:pointer;position:relative;box-shadow:inset 0 0 0 1px #d8b9ff55}.tile:after{content:"";position:absolute;width:2px;height:2px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:#2d164b;opacity:.75}.tile.given{background:#f4e9ff}.tile.given:after{background:#27143f;width:3px;height:3px}.tile.filled:after{display:none}.tile:focus-visible{outline:2px solid #fff;outline-offset:-2px;z-index:2}
+.right-column{display:grid;gap:14px}.key-card .key-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px 10px;padding:12px 14px 14px}.colour-item{height:32px;display:flex;align-items:center;gap:9px;padding:3px 7px;background:#f8f0ff;border-radius:11px;color:#28133d;font-weight:1000}.colour-number{width:31px;height:25px;border-radius:8px;background:#fff;display:grid;place-items:center;font-size:14px;box-shadow:0 2px 3px #5c337c44}.swatch{width:27px;height:27px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px #16051d99,inset 0 1px 3px #fff9;cursor:pointer}.swatch[aria-pressed=true]{outline:3px solid #ff68ef;outline-offset:2px}
+.settings-card .settings-content{padding:10px 14px 13px;background:linear-gradient(180deg,#fff8ff,#ead5ff);color:#21102f}.small-label{font-size:13px;font-weight:1000;margin:0 0 5px}.difficulty-row{display:flex;gap:5px;margin-bottom:10px}.difficulty{flex:1;border:1px solid #bf8bdc;border-radius:99px;padding:5px 6px;color:#321447;background:linear-gradient(#fff,#e8cafa);font-size:12px;font-weight:1000;cursor:pointer;box-shadow:0 2px 0 #b98bd2}.difficulty.active{color:white;border-color:#f9a0ff;background:linear-gradient(#f02cc8,#b6009e);box-shadow:0 2px 0 #7b0874}.stat-line{font-size:13px;font-weight:900;margin:6px 0}.action{width:100%;min-height:37px;border-radius:99px;margin-top:7px;border:2px solid #b980e2;background:linear-gradient(#fff,#e5c6ff);color:#321047;font-weight:1000;font-size:14px;box-shadow:0 3px 0 #a36bc5,inset 0 1px 3px white;cursor:pointer}.action.start{background:linear-gradient(#20e879,#00ae4f);border-color:#8cffae;color:#fff;text-shadow:0 1px 2px #00612d;box-shadow:0 3px 0 #087a39,0 0 10px #00e55a77}.action:hover{filter:brightness(1.07);transform:translateY(-1px)}.action:disabled{opacity:.5;cursor:not-allowed}
+.status{min-height:20px;margin:10px 0 0;text-align:center;color:#ffe7ff;font-size:13px;font-weight:900}.status.success{color:#9bffcf}
+@media(max-width:1050px){.site-header{gap:12px}.brand-link{width:82px}.nav-link{font-size:12px}.game-layout{grid-template-columns:190px minmax(300px,1fr) 210px;gap:12px}.game-shell{padding:18px}.banner{height:115px}.banner img{height:120px}}
+@media(max-width:760px){.site-header{height:68px;padding:0 12px}.brand-link{width:78px}.menu-toggle{display:block;margin-left:auto}.primary-nav{display:none;position:absolute;top:68px;left:0;right:0;background:#08070b;padding:10px 18px;flex-direction:column;align-items:stretch}.primary-nav.open{display:flex}.nav-link{height:46px;font-size:15px}.tiktok-link{font-size:11px;padding:9px 11px}.scene{width:96vw}.banner{height:100px}.banner img{height:110px}.game-shell{padding:12px;border-radius:25px}.game-layout{grid-template-columns:1fr;gap:12px}.board-card{order:1}.right-column{order:2;grid-template-columns:1fr 1fr;align-items:start}.info-card{order:3}.objective-list{gap:10px}.objective-list li{font-size:13px}.key-card .key-grid{gap:5px;padding:9px}.colour-item{gap:5px}.swatch{width:23px;height:23px}.settings-card .settings-content{padding:9px}.difficulty-row{flex-wrap:wrap}.difficulty{font-size:10px}.game-shell{background:#180629eF}}
+@media(max-width:480px){.right-column{grid-template-columns:1fr}.board-card{padding:6px}.banner{height:88px}.banner img{height:98px}.game-shell{padding:9px}.tiktok-link{font-size:0;gap:0}.tiktok-link span{font-size:18px}.nav-link[aria-current=page]:after{display:none}}
+@media(min-width:761px) and (max-height:850px){.banner{height:112px}.banner img{height:118px}.game-shell{padding:16px 22px}.tile:after{width:1.5px;height:1.5px}}
+@media(max-width:760px){body{background-attachment:scroll;background-position:center top;background-size:auto 100vh}.mobile-note{display:block}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="site-header">
+<a class="brand-link" href="../../#home" aria-label="Bethany Does Things home"><img class="brand-logo" src="../../assets/images/branding/website-logo.png" alt="Bethany Does Things"></a>
+<button class="menu-toggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+<nav class="primary-nav" aria-label="Main navigation">
+<a class="nav-link" href="../../#home"><span class="nav-icon">⌂</span>Home</a>
+<a class="nav-link" href="../../#puzzle-room" aria-current="page"><span class="nav-icon">🧩</span>Puzzle Map</a>
+<a class="nav-link" href="../../#challenge-board"><span class="nav-icon">🏆</span>Challenge Board</a>
+<a class="nav-link" href="../../#meet-bethany"><span class="nav-icon">♙</span>Meet Bethany</a>
+<a class="nav-link" href="../../#latest-things"><span class="nav-icon">🎬</span>Latest Things</a>
+<a class="nav-link" href="../../#get-in-touch"><span class="nav-icon">✉</span>Get in Touch</a>
+</nav>
+<a class="tiktok-link" href="https://www.tiktok.com/@bethany.does.thing" target="_blank" rel="noopener noreferrer"><span>♫</span> Watch on TikTok</a>
+</header>
+<main class="scene">
+<div class="banner"><img src="https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/main/assets/images/backgrounds/diamond-art-banner.png" alt="Diamond Art Puzzle" fetchpriority="high"></div>
+<section class="game-shell" aria-label="Diamond Art Puzzle">
+<div class="game-layout">
+<aside class="info-card">
+<div class="card-heading"><span class="heading-icon">◈</span><h2>The Objective</h2></div>
+<ul class="objective-list">
+<li><span class="tick">✓</span><span>Fill the grid with the correct coloured diamonds.</span></li>
+<li><span class="tick">✓</span><span>Follow the colour key and number guide.</span></li>
+<li><span class="tick">✓</span><span>Reveal the hidden pixel art image!</span></li>
+</ul>
+<div class="ornament"><span>✦ ◈ ✦</span></div>
+</aside>
+<section class="board-card" aria-label="Diamond art grid">
+<div id="diamond-grid" class="board-frame" style="--grid:50" role="grid" aria-label="50 by 50 diamond art grid"></div>
+<p id="game-status" class="status" aria-live="polite">Choose a colour, then start your puzzle.</p>
+</section>
+<div class="right-column">
+<aside class="key-card">
+<div class="card-heading"><span class="heading-icon">◈</span><h2>Colour Key</h2></div>
+<div class="key-grid" id="colour-key">
+<div class="colour-item"><span class="colour-number">1</span><button class="swatch" data-colour="1" aria-label="Colour 1" aria-pressed="true" style="background:#fff0e8"></button></div>
+<div class="colour-item"><span class="colour-number">4</span><button class="swatch" data-colour="4" aria-label="Colour 4" aria-pressed="false" style="background:#1267ef"></button></div>
+<div class="colour-item"><span class="colour-number">2</span><button class="swatch" data-colour="2" aria-label="Colour 2" aria-pressed="false" style="background:#f21a9b"></button></div>
+<div class="colour-item"><span class="colour-number">5</span><button class="swatch" data-colour="5" aria-label="Colour 5" aria-pressed="false" style="background:#08c9ec"></button></div>
+<div class="colour-item"><span class="colour-number">3</span><button class="swatch" data-colour="3" aria-label="Colour 3" aria-pressed="false" style="background:#8c19d7"></button></div>
+<div class="colour-item"><span class="colour-number">6</span><button class="swatch" data-colour="6" aria-label="Colour 6" aria-pressed="false" style="background:#082b91"></button></div>
+</div>
+</aside>
+<aside class="settings-card">
+<div class="card-heading"><span class="heading-icon">⚙</span><h2>Puzzle Settings</h2></div>
+<div class="settings-content">
+<p class="small-label">Difficulty:</p>
+<div class="difficulty-row" role="group" aria-label="Choose difficulty">
+<button class="difficulty" data-level="easy">Easy</button><button class="difficulty active" data-level="standard">Standard</button><button class="difficulty" data-level="hard">Hard</button>
+</div>
+<p class="stat-line">Grid Size: <span id="grid-size">50 × 50</span></p>
+<p class="stat-line">Colours: <span>6</span></p>
+<button id="start-button" class="action start">▶ Start Puzzle</button>
+<button id="new-button" class="action">⤨ New Puzzle</button>
+<button id="preview-button" class="action">▧ Preview Image</button>
+</div>
+</aside>
+</div>
+</div>
+</section>
+</main>
+<script>
+(() => {
+const grid=document.querySelector("#diamond-grid"), status=document.querySelector("#game-status");
+const palette={1:"#fff0e8",2:"#f21a9b",3:"#8c19d7",4:"#1267ef",5:"#08c9ec",6:"#082b91"};
+const sizes={easy:30,standard:50,hard:70};
+let level="standard",size=50,selected=1,started=false,preview=false,solution=[],cells=[];
+function makeArt(){
+ const art=[];
+ for(let y=0;y<size;y++){for(let x=0;x<size;x++){
+  const nx=(x-size/2)/(size*.46),ny=(y-size/2)/(size*.46),d=Math.sqrt(nx*nx+ny*ny);
+  let c=6;
+  if(d<.88)c=3;
+  if(d<.72)c=2;
+  if(d<.55)c=4;
+  if(d<.34)c=1;
+  if(Math.abs(nx)<.11&&ny<-.05&&ny>-.55)c=5;
+  if(Math.abs(ny+.15)<.045&&Math.abs(nx)<.42)c=5;
+  if(Math.abs(nx)<.045&&ny>.12&&ny<.62)c=5;
+  if((Math.abs(nx-.23)<.045||Math.abs(nx+.23)<.045)&&Math.abs(ny-.16)<.045)c=1;
+  art.push(c);
+ }}
+ return art;
+}
+function render(){
+ grid.innerHTML="";grid.style.setProperty("--grid",size);grid.setAttribute("aria-label",size+" by "+size+" diamond art grid");
+ const frag=document.createDocumentFragment();
+ for(let i=0;i<size*size;i++){
+  const b=document.createElement("button");b.type="button";b.className="tile";b.setAttribute("role","gridcell");b.dataset.index=i;
+  if(started&&cells[i]){b.style.background=palette[cells[i]];b.classList.add("filled");b.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+", colour "+cells[i]);}
+  else if(preview){b.style.background=palette[solution[i]];b.classList.add("filled");}
+  else if(solution[i]===1||solution[i]===2){b.classList.add("given");}
+  else if(solution[i]===3&&i%3===0){b.classList.add("given");}
+  b.addEventListener("click",()=>paint(i));frag.appendChild(b);
+ }
+ grid.appendChild(frag);
+}
+function paint(i){
+ if(!started){status.textContent="Press Start Puzzle to begin placing diamonds.";return;}
+ if(preview)return;
+ cells[i]=cells[i]===selected?0:selected;
+ const tile=grid.children[i];tile.classList.toggle("filled",!!cells[i]);tile.style.background=cells[i]?palette[cells[i]]:"";tile.setAttribute("aria-label","Colour "+(cells[i]||"blank"));
+ const done=cells.every((v,n)=>v===solution[n]);
+ if(done){status.textContent="✨ Beautiful work! You completed the diamond art!";status.classList.add("success");}
+ else{status.textContent=cells.filter(Boolean).length+" / "+cells.length+" diamonds placed";status.classList.remove("success");}
+}
+function newPuzzle(){
+ solution=makeArt();cells=Array(size*size).fill(0);started=false;preview=false;
+ status.textContent="Choose a colour, then start your puzzle.";status.classList.remove("success");
+ document.querySelector("#start-button").textContent="▶ Start Puzzle";render();
+}
+document.querySelectorAll(".swatch").forEach(b=>b.addEventListener("click",()=>{selected=Number(b.dataset.colour);document.querySelectorAll(".swatch").forEach(s=>s.setAttribute("aria-pressed",String(s===b)));}));
+document.querySelectorAll(".difficulty").forEach(b=>b.addEventListener("click",()=>{level=b.dataset.level;document.querySelectorAll(".difficulty").forEach(x=>x.classList.toggle("active",x===b));size=sizes[level];document.querySelector("#grid-size").textContent=size+" × "+size;newPuzzle();}));
+document.querySelector("#start-button").addEventListener("click",()=>{started=true;preview=false;cells=Array(size*size).fill(0);status.textContent="Puzzle started — select a colour and fill the grid.";document.querySelector("#start-button").textContent="↻ Restart Puzzle";render();});
+document.querySelector("#new-button").addEventListener("click",newPuzzle);
+document.querySelector("#preview-button").addEventListener("click",()=>{preview=!preview;status.textContent=preview?"Previewing the completed image. Press Preview Image again to return.":"Back to your puzzle.";render();});
+const menu=document.querySelector(".menu-toggle"),nav=document.querySelector(".primary-nav");
+menu.addEventListener("click",()=>{const open=nav.classList.toggle("open");menu.setAttribute("aria-expanded",String(open));menu.textContent=open?"×":"☰";});
+nav.addEventListener("click",e=>{if(e.target.closest("a")){nav.classList.remove("open");menu.setAttribute("aria-expanded","false");menu.textContent="☰";}});
+newPuzzle();
+})();
+</script>
+</body>
+</html>
