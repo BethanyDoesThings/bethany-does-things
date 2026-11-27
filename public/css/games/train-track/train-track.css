@@ -44,3 +44,9 @@
 .cell .rail{stroke-width:11}
 .cell .rail-glint{stroke-width:1.6}
 .cell .wood-tie{stroke-width:1.2}
+
+/* Dual-rail proportions: wider track bed, narrower steel rails */
+.cell .rail-shadow{stroke-width:8;opacity:.42}
+.cell .rail{stroke-width:4.5}
+.cell .rail-glint{stroke-width:1.1;opacity:.75}
+.cell .wood-tie{stroke-width:1.1}
