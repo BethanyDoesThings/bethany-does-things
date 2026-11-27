@@ -371,3 +371,32 @@ button,select{font:inherit}
   .title-plaque .title-train{font-size:clamp(1.5rem,7vw,2.3rem)}
   .title-plaque h1{font-size:clamp(1.45rem,6vw,2.25rem);-webkit-text-stroke:1px #592078}
 }
+
+
+/* Illustrated transparent Train Track Puzzle banner */
+.title-plaque{
+  display:block;
+  width:min(100%,1100px);
+  min-height:0;
+  margin:0 auto 22px;
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  isolation:auto;
+}
+.title-plaque:before,.title-plaque:after{display:none}
+.title-plaque .title-plaque-image{
+  display:block;
+  width:100%;
+  height:clamp(150px,17vw,225px);
+  margin:0 auto;
+  object-fit:fill;
+  object-position:center;
+  filter:drop-shadow(0 8px 10px rgb(20 4 32 / 42%));
+}
+@media(max-width:760px){
+  .title-plaque{width:100%;margin:0 auto 16px}
+  .title-plaque .title-plaque-image{height:clamp(105px,28vw,155px)}
+}
