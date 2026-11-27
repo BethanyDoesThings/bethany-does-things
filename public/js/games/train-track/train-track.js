@@ -17,17 +17,113 @@
     7:"<path class='track' d='M5 30 H55'/>"
   };
   let puzzle, cells, initial, locked, history=[];
-  function makeEasyPuzzle() {
-    return {size:5, solution:[0,0,2,0,0, 0,0,2,0,0, 0,0,3,4,0, 0,0,0,2,0, 0,0,0,2,0], rowClues:[1,1,2,1,1], colClues:[0,0,3,3,0], locked:[2,23], description:"5×5 beginner puzzle with one continuous route."};
+  const DIRS = [
+    {dr:-1,dc:0,bit:1,name:"N"},
+    {dr:0,dc:1,bit:2,name:"E"},
+    {dr:1,dc:0,bit:4,name:"S"},
+    {dr:0,dc:-1,bit:8,name:"W"}
+  ];
+  const PIECE_BY_MASK = {5:2,3:3,6:4,12:5,9:6,10:7};
+  function shuffled(items) {
+    const result=items.slice();
+    for(let i=result.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [result[i],result[j]]=[result[j],result[i]];
+    }
+    return result;
   }
-  function makeSingleRoutePuzzle(size) {
-    const routeRow=Math.floor(Math.random()*size);
-    const solution=Array(size*size).fill(0),rowClues=Array(size).fill(0),colClues=Array(size).fill(0);
-    const locked=[routeRow*size,routeRow*size+size-1];
-    rowClues[routeRow]=size;
-    colClues.fill(1);
-    for(let col=0;col<size;col++)solution[routeRow*size+col]=7;
-    return {size,solution,rowClues,colClues,locked,description:size+"×"+size+" puzzle with one continuous route."};
+  function edgeCells(size) {
+    const edges=[];
+    for(let c=1;c<size-1;c++){
+      edges.push({r:0,c,side:"top",inward:{r:1,c},outward:0});
+      edges.push({r:size-1,c,side:"bottom",inward:{r:size-2,c},outward:2});
+    }
+    for(let r=1;r<size-1;r++){
+      edges.push({r,c:0,side:"left",inward:{r,c:1},outward:3});
+      edges.push({r,c:size-1,side:"right",inward:{r,c:size-2},outward:1});
+    }
+    return edges;
+  }
+  function countTurns(path) {
+    let turns=0,last=null;
+    for(let i=1;i<path.length;i++){
+      const direction=[path[i].r-path[i-1].r,path[i].c-path[i-1].c].join(",");
+      if(last!==null&&direction!==last)turns++;
+      last=direction;
+    }
+    return turns;
+  }
+  function findInteriorPath(size,start,target,minLength,maxLength,minTurns) {
+    const visited=new Set([start.r+","+start.c]);
+    const path=[start];
+    let result=null,steps=0;
+    function walk(cell) {
+      if(result||steps++>18000)return;
+      const key=cell.r+","+cell.c;
+      if(cell.r===target.r&&cell.c===target.c) {
+        if(path.length>=minLength&&path.length<=maxLength&&countTurns(path)>=minTurns)result=path.slice();
+        return;
+      }
+      if(path.length>=maxLength)return;
+      const options=shuffled(DIRS.map(d=>({r:cell.r+d.dr,c:cell.c+d.dc})).filter(n=>
+        n.r>0&&n.r<size-1&&n.c>0&&n.c<size-1&&!visited.has(n.r+","+n.c)
+      ));
+      for(const next of options) {
+        const nextKey=next.r+","+next.c;
+        visited.add(nextKey);path.push(next);walk(next);path.pop();visited.delete(nextKey);
+        if(result)return;
+      }
+    }
+    walk(start);
+    return result;
+  }
+  function directionIndex(from,to) {
+    const dr=to.r-from.r,dc=to.c-from.c;
+    return DIRS.findIndex(d=>d.dr===dr&&d.dc===dc);
+  }
+  function makePuzzle(size,level) {
+    const settings={
+      easy:{minInterior:3,maxInterior:8,minTurns:1},
+      normal:{minInterior:8,maxInterior:24,minTurns:3},
+      difficult:{minInterior:14,maxInterior:48,minTurns:5}
+    }[level];
+    const edges=shuffled(edgeCells(size));
+    let route=null,startEdge=null,endEdge=null;
+    for(let attempt=0;attempt<160&&!route;attempt++){
+      const start=edges[attempt%edges.length];
+      const candidates=shuffled(edges.filter(e=>e.side!==start.side&&!(e.r===start.r&&e.c===start.c)));
+      for(const end of candidates.slice(0,Math.min(10,candidates.length))) {
+        const interior=findInteriorPath(size,start.inward,end.inward,settings.minInterior,Math.min(settings.maxInterior,(size-2)*(size-2)),settings.minTurns);
+        if(interior){route=[{r:start.r,c:start.c},...interior,{r:end.r,c:end.c}];startEdge=start;endEdge=end;break;}
+      }
+    }
+    if(!route) {
+      // Guaranteed valid fallback: a straight route across the centre row.
+      const row=Math.floor(size/2);
+      route=Array.from({length:size},(_,c)=>({r:row,c}));
+      startEdge={r:row,c:0,outward:3};endEdge={r:row,c:size-1,outward:1};
+    }
+    const solution=Array(size*size).fill(0);
+    route.forEach((cell,i)=>{
+      const connections=[];
+      if(i===0)connections.push(startEdge.outward);
+      else connections.push(directionIndex(cell,route[i-1]));
+      if(i===route.length-1)connections.push(endEdge.outward);
+      else connections.push(directionIndex(cell,route[i+1]));
+      const mask=connections.reduce((sum,d)=>sum+(1<<d),0);
+      solution[cell.r*size+cell.c]=PIECE_BY_MASK[mask]||0;
+    });
+    const rowClues=Array(size).fill(0),colClues=Array(size).fill(0);
+    solution.forEach((value,index)=>{
+      if(value>=2){rowClues[Math.floor(index/size)]++;colClues[index%size]++;}
+    });
+    return {
+      size,solution,rowClues,colClues,
+      locked:[route[0].r*size+route[0].c,route[route.length-1].r*size+route[route.length-1].c],
+      description:size+"×"+size+" single-route puzzle",
+      routeLength:route.length,
+      turnCount:countTurns(route)
+    };
   }
   function cellSvg(value,index) { return window.TrainTrackArt ? window.TrainTrackArt.render(value,index) : ""; }
   function makeClue(value) {
@@ -96,9 +192,8 @@
       button.classList.toggle("is-active",active);
       button.setAttribute("aria-pressed",String(active));
     });
-    if(level==="easy") puzzle=makeEasyPuzzle();
-    else if(level==="normal") puzzle=makeSingleRoutePuzzle(8);
-    else puzzle=makeSingleRoutePuzzle(10);
+    const size=level==="easy"?5:(level==="normal"?8:10);
+    puzzle=makePuzzle(size,level);
     if(window.TrainTrackArt) window.TrainTrackArt.configure(puzzle.solution,puzzle.size,puzzle.locked);
     cells=Array(puzzle.size*puzzle.size).fill(0);
     locked=new Set(puzzle.locked); puzzle.locked.forEach(i=>cells[i]=puzzle.solution[i]);
