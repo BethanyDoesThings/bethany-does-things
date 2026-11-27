@@ -459,3 +459,16 @@ button,select{font:inherit}
 @media(max-width:760px){
   .title-plaque{transform:translateY(28px)}
 }
+
+
+/* Slightly enlarge the illustrated banner so it frames the puzzle panel. */
+@media(min-width:761px){
+  .title-plaque{width:min(900px,68vw)}
+  .title-plaque .title-plaque-image{
+    height:clamp(170px,19vw,250px);
+  }
+}
+@media(max-width:760px){
+  .title-plaque{width:100%}
+  .title-plaque .title-plaque-image{height:clamp(115px,30vw,170px)}
+}
