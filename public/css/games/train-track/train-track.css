@@ -318,3 +318,56 @@ button,select{font:inherit}
   .title-plaque .title-subtitle{width:84%;min-height:50px;margin-top:6px;padding:6px 12px;font-size:1rem}
   .title-plaque .ribbon-art{inset:-5px -14px;width:calc(100% + 28px);height:calc(100% + 10px)}
 }
+
+
+/* Curved wooden railway sign: drawn in SVG so it scales cleanly */
+.title-plaque{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(10px,2vw,26px);
+  width:min(1040px,96%);
+  min-height:170px;
+  margin:4px auto 28px;
+  padding:30px clamp(24px,5vw,76px);
+  border:0;
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+}
+.title-plaque:before,.title-plaque:after{display:none}
+.title-plaque .plaque-art{
+  position:absolute;
+  z-index:-1;
+  inset:0;
+  width:100%;
+  height:100%;
+  overflow:visible;
+  filter:drop-shadow(0 9px 0 #35132b) drop-shadow(0 0 17px rgb(255 139 50 / 48%));
+  pointer-events:none;
+}
+.title-plaque .title-train{
+  flex:0 0 auto;
+  font-size:clamp(2.7rem,5vw,4.8rem);
+  filter:drop-shadow(0 3px 2px #51203c) drop-shadow(0 0 8px #ffc15e);
+}
+.title-plaque h1{
+  position:relative;
+  margin:0;
+  color:#fff8ff;
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(2.25rem,4.5vw,4.15rem);
+  line-height:1.05;
+  font-weight:900;
+  letter-spacing:-.035em;
+  text-align:center;
+  -webkit-text-stroke:1.4px #592078;
+  text-shadow:0 3px 0 #64217e,0 6px 0 #3d174f,0 0 15px #b64cff;
+}
+@media(max-width:760px){
+  .title-plaque{width:100%;min-height:112px;gap:7px;margin:0 auto 20px;padding:20px 28px}
+  .title-plaque .title-train{font-size:clamp(1.5rem,7vw,2.3rem)}
+  .title-plaque h1{font-size:clamp(1.45rem,6vw,2.25rem);-webkit-text-stroke:1px #592078}
+}
