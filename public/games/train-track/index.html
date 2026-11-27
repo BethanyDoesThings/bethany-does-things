@@ -12,18 +12,24 @@
   <script src="../../js/games/train-track/train-track.js" defer></script>
 </head>
 <body>
-  <header class="site-nav">
-    <a class="brand" href="../../" aria-label="Bethany Does Things home">
-      <img src="../../assets/images/branding/website-logo.png" alt="Bethany Does Things">
+  <header class="site-header">
+    <a class="brand-link" href="../../#home" aria-label="Bethany Does Things home">
+      <img class="brand-logo" src="../../assets/images/branding/website-logo.png" alt="Bethany Does Things">
     </a>
-    <nav aria-label="Main navigation">
-      <a href="../../">⌂ <span>Welcome</span></a>
-      <a class="active" href="../../#puzzle-map" aria-current="page">✦ <span>Puzzle Map</span></a>
-      <a href="../../#challenge-board">🏆 <span>Challenge Board</span></a>
-      <a href="../../#meet-bethany">♟ <span>Meet Bethany</span></a>
-      <a href="../../#latest-things">▣ <span>Latest Things</span></a>
-      <a href="../../#get-in-touch">✉ <span>Get in Touch</span></a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+      <span aria-hidden="true">☰</span>
+    </button>
+    <nav class="primary-nav" id="primary-navigation" aria-label="Main navigation">
+      <a class="nav-link" href="../../#home"><span class="nav-icon" aria-hidden="true">⌂</span>Home</a>
+      <a class="nav-link" href="../../#puzzle-room" aria-current="page"><span class="nav-icon" aria-hidden="true">🧩</span>Puzzle Map</a>
+      <a class="nav-link" href="../../#challenge-board"><span class="nav-icon" aria-hidden="true">🏆</span>Challenge Board</a>
+      <a class="nav-link" href="../../#meet-bethany"><span class="nav-icon" aria-hidden="true">👤</span>Meet Bethany</a>
+      <a class="nav-link" href="../../#latest-things"><span class="nav-icon" aria-hidden="true">🎬</span>Latest Things</a>
+      <a class="nav-link" href="../../#get-in-touch"><span class="nav-icon" aria-hidden="true">✉</span>Get in Touch</a>
     </nav>
+    <a class="tiktok-link" href="https://www.tiktok.com/@bethany.does.thing" target="_blank" rel="noopener noreferrer">
+      <span aria-hidden="true">♪</span> Watch on TikTok <span aria-hidden="true">↗</span>
+    </a>
   </header>
 
   <main class="room-scene">
@@ -97,5 +103,23 @@
       <img class="sleeping-dogs" src="../../assets/images/characters/cuddled-auggie-rucca.png" alt="Auggie and Rucca sleeping together on their purple bed" loading="lazy">
     </footer>
   </main>
+  <script>
+    const menuButton = document.querySelector(".menu-toggle");
+    const navigation = document.querySelector("#primary-navigation");
+    menuButton.addEventListener("click", () => {
+      const isOpen = navigation.classList.toggle("is-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+      menuButton.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+      menuButton.querySelector("span").textContent = isOpen ? "×" : "☰";
+    });
+    navigation.addEventListener("click", (event) => {
+      if (event.target.closest("a")) {
+        navigation.classList.remove("is-open");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Open navigation menu");
+        menuButton.querySelector("span").textContent = "☰";
+      }
+    });
+  </script>
 </body>
 </html>
