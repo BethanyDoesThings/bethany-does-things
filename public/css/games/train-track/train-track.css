@@ -56,3 +56,9 @@
 .cell .rail{stroke-width:2.25}
 .cell .rail-glint{stroke-width:.7;opacity:.7}
 .cell .wood-tie{stroke-width:1.2}
+
+/* Clean corner joins and slim, separated rail lines */
+.cell .rail-shadow{stroke-width:3.5;opacity:.32;stroke-linecap:butt;stroke-linejoin:round}
+.cell .rail{stroke-width:2.25;stroke-linecap:butt;stroke-linejoin:round}
+.cell .rail-glint{stroke-width:.65;opacity:.72;stroke-linecap:butt;stroke-linejoin:round}
+.cell .wood-tie{stroke-width:1.1}
