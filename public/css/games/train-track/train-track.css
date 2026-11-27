@@ -38,3 +38,9 @@
 .cell .rail-shadow{stroke-width:28}
 .cell .rail{stroke-width:23}
 .cell .rail-glint{stroke-width:2.8}
+
+/* Refined proportions: broader sleepers, slimmer steel rails */
+.cell .rail-shadow{stroke-width:16}
+.cell .rail{stroke-width:11}
+.cell .rail-glint{stroke-width:1.6}
+.cell .wood-tie{stroke-width:1.2}
