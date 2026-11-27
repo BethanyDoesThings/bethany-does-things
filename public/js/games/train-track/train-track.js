@@ -235,17 +235,39 @@
       </defs>
       <path id="train-motion-path" d="${d}" fill="none" stroke="none"/>
       <g class="purple-train" filter="url(#train-glow)">
+        <!-- Two passenger coaches follow the locomotive along the same route. -->
         <g>
-          <rect x="-24" y="-12" width="39" height="19" rx="5" fill="url(#purple-engine)" stroke="#43156e" stroke-width="2"/>
-          <rect x="-15" y="-23" width="17" height="14" rx="4" fill="#c77af0" stroke="#43156e" stroke-width="2"/>
-          <rect x="-12" y="-29" width="10" height="7" rx="2" fill="#542080"/>
-          <rect x="10" y="-18" width="7" height="8" rx="2" fill="#f4d5ff" stroke="#542080" stroke-width="1.5"/>
-          <path d="M-25 2 H18 L22 7 H-27Z" fill="#f4b5ff" stroke="#43156e" stroke-width="1.5"/>
-          <circle cx="-13" cy="9" r="6" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
-          <circle cx="11" cy="9" r="6" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
-          <circle cx="-13" cy="9" r="2" fill="#d99cff"/><circle cx="11" cy="9" r="2" fill="#d99cff"/>
-          <path d="M-4 -20 Q-10 -28 -3 -33 Q3 -39 -2 -44" fill="none" stroke="#d8c7e6" stroke-width="3" stroke-linecap="round" opacity=".8"/>
-          <circle cx="-3" cy="-42" r="4" fill="#e9d9f5" opacity=".45"/>
+          <rect x="-91" y="-11" width="39" height="17" rx="5" fill="#7b35b5" stroke="#43156e" stroke-width="2"/>
+          <rect x="-84" y="-8" width="10" height="9" rx="2" fill="#f6d8ff" stroke="#43156e" stroke-width="1.3"/>
+          <rect x="-69" y="-8" width="10" height="9" rx="2" fill="#f6d8ff" stroke="#43156e" stroke-width="1.3"/>
+          <path d="M-95 4 H-49 L-47 9 H-97Z" fill="#dba5f4" stroke="#43156e" stroke-width="1.5"/>
+          <circle cx="-82" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <circle cx="-59" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <path d="M-52 -3 H-43" stroke="#e7b9ff" stroke-width="3" stroke-linecap="round"/>
+          <animateMotion dur="5s" begin="-1.05s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
+        </g>
+        <g>
+          <rect x="-151" y="-11" width="39" height="17" rx="5" fill="#9b55d0" stroke="#43156e" stroke-width="2"/>
+          <rect x="-144" y="-8" width="10" height="9" rx="2" fill="#f6d8ff" stroke="#43156e" stroke-width="1.3"/>
+          <rect x="-129" y="-8" width="10" height="9" rx="2" fill="#f6d8ff" stroke="#43156e" stroke-width="1.3"/>
+          <path d="M-155 4 H-109 L-107 9 H-157Z" fill="#e3b5fa" stroke="#43156e" stroke-width="1.5"/>
+          <circle cx="-142" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <circle cx="-119" cy="9" r="5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <path d="M-112 -3 H-103" stroke="#e7b9ff" stroke-width="3" stroke-linecap="round"/>
+          <animateMotion dur="5s" begin="-2.1s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
+        </g>
+        <!-- Purple steam locomotive at the front of the train. -->
+        <g>
+          <rect x="-27" y="-13" width="43" height="20" rx="5" fill="url(#purple-engine)" stroke="#43156e" stroke-width="2"/>
+          <rect x="-17" y="-25" width="19" height="15" rx="4" fill="#c77af0" stroke="#43156e" stroke-width="2"/>
+          <rect x="-14" y="-32" width="12" height="8" rx="2" fill="#542080"/>
+          <rect x="10" y="-19" width="8" height="9" rx="2" fill="#f4d5ff" stroke="#542080" stroke-width="1.5"/>
+          <path d="M-29 2 H19 L23 8 H-31Z" fill="#f4b5ff" stroke="#43156e" stroke-width="1.5"/>
+          <circle cx="-16" cy="10" r="6.5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <circle cx="12" cy="10" r="6.5" fill="#352044" stroke="#f1c7ff" stroke-width="2"/>
+          <circle cx="-16" cy="10" r="2.3" fill="#d99cff"/><circle cx="12" cy="10" r="2.3" fill="#d99cff"/>
+          <path d="M-5 -22 Q-11 -30 -4 -36 Q2 -42 -3 -48" fill="none" stroke="#d8c7e6" stroke-width="3.5" stroke-linecap="round" opacity=".85"/>
+          <circle cx="-4" cy="-46" r="4.5" fill="#e9d9f5" opacity=".5"/>
         </g>
         <animateMotion dur="5s" fill="freeze" rotate="auto"><mpath href="#train-motion-path"/></animateMotion>
       </g>`;
