@@ -594,3 +594,62 @@ button,select{font:inherit}
     font-size:.86rem;
   }
 }
+
+
+/* Embossed tray behind the complete difficulty selector */
+.game-panel .difficulty-picker{
+  position:relative;
+  z-index:1;
+  align-self:stretch;
+  box-sizing:border-box;
+  width:100%;
+  min-height:76px;
+  margin:0 0 18px;
+  padding:11px 18px;
+  gap:16px;
+  flex-wrap:nowrap;
+  border:2px solid #d7b0ed;
+  border-radius:999px;
+  background:
+    linear-gradient(180deg,
+      rgb(255 255 255 / 92%) 0%,
+      rgb(250 239 255 / 96%) 35%,
+      rgb(226 202 245 / 98%) 100%);
+  box-shadow:
+    0 5px 0 #a77ac4,
+    0 8px 14px rgb(68 25 91 / 18%),
+    inset 0 3px 5px rgb(255 255 255 / 98%),
+    inset 0 -4px 7px rgb(128 73 159 / 20%);
+}
+.game-panel .difficulty-picker:before{
+  content:"";
+  position:absolute;
+  inset:4px 7px auto;
+  height:36%;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgb(255 255 255 / 62%),rgb(255 255 255 / 0%));
+  pointer-events:none;
+  z-index:-1;
+}
+.game-panel .difficulty-picker .difficulty-label{
+  flex:0 0 auto;
+  padding-left:5px;
+}
+.game-panel .difficulty-picker .difficulty-options{
+  flex:1 1 auto;
+  justify-content:flex-end;
+  min-width:0;
+}
+@media(max-width:760px){
+  .game-panel .difficulty-picker{
+    min-height:0;
+    padding:9px 12px;
+    gap:8px;
+    border-radius:28px;
+    flex-wrap:wrap;
+  }
+  .game-panel .difficulty-picker .difficulty-options{
+    flex:1 1 100%;
+    justify-content:stretch;
+  }
+}
