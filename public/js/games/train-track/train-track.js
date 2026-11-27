@@ -390,7 +390,7 @@
     const animateTrain=timestamp=>{
       if(startedAt===null)startedAt=timestamp;
       const progress=Math.min(1,(timestamp-startedAt)/duration);
-      const headDistance=progress*(totalLength+spacing*2);
+      const headDistance=progress*(totalLength+spacing*2+48);
       placeOnTrack(engine,headDistance);
       placeOnTrack(coachOne,headDistance-spacing);
       placeOnTrack(coachTwo,headDistance-spacing*2);
