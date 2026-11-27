@@ -6,10 +6,10 @@
   const cornerTies=[[7.8,31,-75],[21.2,38.8,-45],[29,52.2,-15]];
   const paths={
     2:{rails:["M20 0 V60","M40 0 V60"],ties:[[30,8,0],[30,30,0],[30,52,0]]},
-    3:{rails:cornerRails,ties:cornerTies,rotation:0},
-    4:{rails:cornerRails,ties:cornerTies,rotation:90},
-    5:{rails:cornerRails,ties:cornerTies,rotation:180},
-    6:{rails:cornerRails,ties:cornerTies,rotation:270},
+    3:{rails:cornerRails,ties:cornerTies,rotation:180},
+    4:{rails:cornerRails,ties:cornerTies,rotation:270},
+    5:{rails:cornerRails,ties:cornerTies,rotation:0},
+    6:{rails:cornerRails,ties:cornerTies,rotation:90},
     7:{rails:["M2 20 H58","M2 40 H58"],ties:[[8,30,90],[30,30,90],[52,30,90]]}
   };
   function configure(){ routeColor=palette[Math.floor(Math.random()*palette.length)]; }
