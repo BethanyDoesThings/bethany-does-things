@@ -166,7 +166,7 @@
 
 
     .puzzle-map-section {
-      padding: clamp(2rem, 5vw, 4.5rem) clamp(.75rem, 3vw, 2.5rem);
+      padding: clamp(2rem, 5vw, 4.5rem) 0 0;
       color: #fff;
       text-align: center;
       background: linear-gradient(145deg, #17102e, #302052 55%, #17102e);
@@ -186,13 +186,13 @@
     }
     .puzzle-map {
       position: relative;
-      width: min(100%, 1440px);
+      width: 100%;
       aspect-ratio: 3 / 2;
-      margin: 0 auto;
+      margin: 0;
       overflow: hidden;
       isolation: isolate;
-      border: 3px solid #dca8ff;
-      border-radius: clamp(12px, 2vw, 26px);
+      border: 0;
+      border-radius: 0;
       background: #140d2b url("https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/backgrounds/puzzles-navigation-background.png") center / 100% 100% no-repeat;
       box-shadow: 0 14px 42px rgb(0 0 0 / 45%), 0 0 24px rgb(205 91 255 / 22%);
     }
@@ -208,13 +208,11 @@
       transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
     }
     .puzzle-hotspot:hover, .puzzle-hotspot:focus-visible {
-      border-color: #fff;
-      outline: 3px solid #e83acb;
-      outline-offset: 2px;
-      background: rgb(255 255 255 / 10%);
-      box-shadow: 0 0 22px rgb(255 73 220 / 65%);
+      border-color: transparent;
+      outline: none;
+      background: transparent;
+      box-shadow: none;
     }
-    .puzzle-hotspot:focus-visible { z-index: 4; }
     .puzzle-hotspot.track { left: 28%; top: 7%; width: 27%; height: 28%; }
     .puzzle-hotspot.murdoku { left: 54%; top: 6%; width: 27%; height: 29%; }
     .puzzle-hotspot.diamond { left: 2%; top: 28%; width: 33%; height: 30%; }
@@ -331,8 +329,6 @@
         <button class="puzzle-hotspot jigsaw" type="button" data-puzzle-name="Jigsaw Puzzles" aria-label="Jigsaw Puzzles — coming soon" title="Jigsaw Puzzles — coming soon"></button>
         <button class="puzzle-hotspot crime" type="button" data-puzzle-name="Crime / Mystery Puzzles" aria-label="Crime / Mystery Puzzles — coming soon" title="Crime / Mystery Puzzles — coming soon"></button>
       </div>
-      <p class="puzzle-map-status" id="puzzle-map-status" aria-live="polite">Select a destination on the map to explore.</p>
-      <p class="puzzle-map-hint">Track Puzzles is ready to play. More destinations are opening soon.</p>
     </section>
   </main>
 
@@ -349,8 +345,7 @@
 
     document.querySelectorAll(".puzzle-hotspot[data-puzzle-name]").forEach((hotspot) => {
       hotspot.addEventListener("click", () => {
-        const status = document.querySelector("#puzzle-map-status");
-        status.textContent = hotspot.dataset.puzzleName + " is coming soon. Check back for this puzzle adventure!";
+        // Reserved for future puzzle destinations; the map artwork remains visually unobstructed.
       });
     });
 
