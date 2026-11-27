@@ -411,12 +411,11 @@ button,select{font:inherit}
 }
 
 
-/* Keep the puzzle window and the grid footprint consistent at every difficulty.
-   Cell dimensions scale with grid size so the 5x5, 8x8 and 10x10 boards
-   occupy the same area instead of appearing to grow or shrink. */
+/* Fixed, shared grid-paper footprint for every difficulty.
+   A taller panel gives the 10x10 board room without an inner scrollbar. */
 .game-panel{
-  height:720px;
-  min-height:720px;
+  height:860px;
+  min-height:860px;
   display:flex;
   flex-direction:column;
 }
@@ -425,20 +424,27 @@ button,select{font:inherit}
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:auto;
-  padding:10px 2px;
+  overflow:visible;
+  padding:12px 2px 16px;
 }
 .puzzle-board{
   flex:0 0 auto;
   margin:auto;
 }
 @media(max-width:1120px) and (min-width:761px){
-  .game-panel{height:690px;min-height:690px}
+  .game-panel{height:840px;min-height:840px}
 }
 @media(max-width:760px){
-  .game-panel{height:680px;min-height:680px}
-  .board-wrap{overflow:auto}
+  .game-panel{
+    height:auto;
+    min-height:0;
+  }
+  .board-wrap{
+    overflow-x:auto;
+    overflow-y:visible;
+    justify-content:center;
+  }
 }
 @media(max-width:420px){
-  .game-panel{height:650px;min-height:650px}
+  .game-panel{height:auto;min-height:0}
 }
