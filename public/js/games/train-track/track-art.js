@@ -4,12 +4,12 @@
   const tunnelStyles=["brick","stone","fantasy"];
   let routeColor=palette[0],tunnelStyle="brick",ends={};
   const paths={
-    2:{d:"M30 2 V58",ties:[[30,10,0],[30,30,0],[30,50,0]]},
-    3:{d:"M30 2 V30 Q30 30 58 30",ties:[[30,10,0],[30,25,0],[38,30,0],[52,30,0]]},
-    4:{d:"M58 30 H30 V58",ties:[[50,30,0],[35,30,0],[30,38,90],[30,52,90]]},
-    5:{d:"M30 58 V30 Q30 30 2 30",ties:[[30,50,0],[30,35,0],[22,30,0],[8,30,0]]},
-    6:{d:"M2 30 H30 V2",ties:[[8,30,0],[22,30,0],[30,22,90],[30,8,90]]},
-    7:{d:"M2 30 H58",ties:[[10,30,0],[30,30,0],[50,30,0]]}
+    2:{d:"M30 2 V58",ties:[[30,9,0],[30,30,0],[30,51,0]]},
+    3:{d:"M30 2 V30 Q30 30 58 30",ties:[[30,9,0],[30,25,0],[39,30,0],[53,30,0]]},
+    4:{d:"M58 30 H30 V58",ties:[[51,30,0],[35,30,0],[30,39,90],[30,53,90]]},
+    5:{d:"M30 58 V30 Q30 30 2 30",ties:[[30,51,0],[30,35,0],[21,30,0],[7,30,0]]},
+    6:{d:"M2 30 H30 V2",ties:[[7,30,0],[21,30,0],[30,21,90],[30,7,90]]},
+    7:{d:"M2 30 H58",ties:[[9,30,0],[30,30,0],[51,30,0]]}
   };
   function configure(solution,size,locked){
     routeColor=palette[Math.floor(Math.random()*palette.length)];
@@ -20,14 +20,17 @@
       if(row===0)ends[index]="top"; else if(row===size-1)ends[index]="bottom"; else if(col===0)ends[index]="left"; else if(col===size-1)ends[index]="right";
     });
   }
-  function sleeper(x,y,angle){return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-5.5)+"' y='"+(y-3)+"' width='11' height='6' rx='1.5' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-3)+" "+y+" h6' transform='rotate("+angle+" "+x+" "+y+")'/>";}
+  function sleeper(x,y,angle){
+    return "<rect class='wood-tie' fill='"+routeColor+"' x='"+(x-10)+"' y='"+(y-4.5)+"' width='20' height='9' rx='2' transform='rotate("+angle+" "+x+" "+y+")'/><path class='wood-grain' d='M"+(x-6)+" "+y+" h12' transform='rotate("+angle+" "+x+" "+y+")'/>";
+  }
   function tunnel(side){
     const transform=side==="top"?"rotate(0 30 30)":side==="bottom"?"rotate(180 30 30)":side==="left"?"rotate(-90 30 30)":"rotate(90 30 30)";
-    let arch="";
-    if(tunnelStyle==="brick")arch="<path class='portal-brick' d='M12 60 V34 A18 18 0 0 1 48 34 V60 Z'/><path class='portal-detail' d='M12 44 H48 M15 34 H45 M20 23 L23 19 M40 23 L37 19 M20 52 H40'/>";
-    else if(tunnelStyle==="stone")arch="<path class='portal-stone' d='M11 60 V34 A19 19 0 0 1 49 34 V60 Z'/><path class='portal-detail' d='M12 43 H48 M17 28 L24 30 M37 30 L44 28 M18 52 H42'/>";
-    else arch="<path class='portal-fantasy' d='M11 60 V34 A19 19 0 0 1 49 34 V60 Z'/><path class='portal-detail' d='M30 8 V16 M26 12 H34 M15 25 L19 29 M45 25 L41 29'/>";
-    return "<g class='tunnel tunnel-"+tunnelStyle+"' transform='"+transform+"'>"+arch+"</g>";
+    let roof="";
+    if(tunnelStyle==="brick") roof="<path class='tunnel-roof portal-brick' d='M7 28 L11 8 Q30 -1 49 8 L53 28 L45 37 H15 Z'/><path class='portal-detail' d='M11 12 L18 17 M49 12 L42 17 M14 24 H46 M18 31 H42'/>";
+    else if(tunnelStyle==="stone") roof="<path class='tunnel-roof portal-stone' d='M6 28 L10 7 Q30 -3 50 7 L54 28 L45 37 H15 Z'/><path class='portal-detail' d='M11 12 L18 17 M49 12 L42 17 M13 24 H47 M18 31 H42'/>";
+    else roof="<path class='tunnel-roof portal-fantasy' d='M7 28 L11 8 Q30 -2 49 8 L53 28 L45 37 H15 Z'/><path class='portal-detail' d='M30 5 V16 M25 10 H35 M13 22 L19 27 M47 22 L41 27'/>";
+    const opening="<path class='tunnel-opening' d='M15 8 Q30 -5 45 8 L42 17 Q30 9 18 17 Z'/><path class='tunnel-opening-glint' d='M18 9 Q30 0 42 9'/>";
+    return "<g class='tunnel tunnel-"+tunnelStyle+"' transform='"+transform+"'>"+opening+roof+"</g>";
   }
   function render(value,index){
     if(value===1)return "<svg viewBox='0 0 60 60' aria-hidden='true'><text class='x-mark' x='30' y='39' text-anchor='middle'>×</text></svg>";
