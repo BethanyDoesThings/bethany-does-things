@@ -56,7 +56,6 @@
 </header>
 <main class="scene">
 <div class="banner"><img src="https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/main/assets/images/backgrounds/diamond-art-banner.webp" alt="Diamond Art Puzzle" fetchpriority="high"></div>
-<section class="collection-card" aria-label="Choose your artwork"><h2 class="collection-title">Choose Your Artwork</h2><p class="collection-help">Select a character to turn their portrait into a colour-by-number diamond art puzzle.</p><div id="artwork-gallery" class="artwork-gallery" aria-live="polite"></div><p id="gallery-message" class="gallery-message">Loading artwork collection…</p></section>
 <section class="game-shell" aria-label="Diamond Art Puzzle">
 <div class="game-layout">
 <aside class="info-card">
@@ -64,13 +63,13 @@
 <ul class="objective-list">
 <li><span class="tick">✓</span><span>Fill the grid with the correct coloured diamonds.</span></li>
 <li><span class="tick">✓</span><span>Follow the colour key and number guide.</span></li>
-<li><span class="tick">✓</span><span>Reveal the hidden pixel art image!</span></li>
+<li><span class="tick">✓</span><span>Complete every diamond to reveal the hidden picture.</span></li>
 </ul>
 <div class="ornament"><span>✦ ◈ ✦</span></div>
 </aside>
 <section class="board-card" aria-label="Diamond art grid">
 <div id="diamond-grid" class="board-frame" style="--grid:50" role="grid" aria-label="50 by 50 diamond art grid"></div>
-<p id="game-status" class="status" aria-live="polite">Choose a colour, then start your puzzle.</p>
+<p id="game-status" class="status" aria-live="polite">Your mystery picture is ready. Choose a colour to begin.</p>
 </section>
 <div class="right-column">
 <aside class="key-card">
@@ -95,7 +94,7 @@
 <p class="stat-line">Colours: <span id="colour-count">10</span></p>
 <button id="start-button" class="action start">▶ Start Puzzle</button>
 <button id="new-button" class="action">⤨ New Puzzle</button>
-<button id="preview-button" class="action">▧ Preview Image</button>
+
 </div>
 </aside>
 </div>
@@ -107,15 +106,13 @@
 (() => {
 "use strict";
 const grid=document.querySelector("#diamond-grid"),status=document.querySelector("#game-status");
-const gallery=document.querySelector("#artwork-gallery"),galleryMessage=document.querySelector("#gallery-message");
 const key=document.querySelector("#colour-key"),sizes={easy:30,standard:50,hard:70};
-let catalog=null,puzzles=[],activePuzzle=null,level="standard",size=50,palette={},selected=1,started=false,preview=false,solution=[],cells=[];
+let catalog=null,puzzles=[],activePuzzle=null,level="standard",size=50,palette={},selected=1,started=true,solution=[],cells=[],revealed=false;
 const engine=window.DiamondArtEngine;
 function setStatus(message,success=false){status.textContent=message;status.classList.toggle("success",success);}
 function updateDifficulty(){
  const preset=catalog?.difficultyPresets?.[level]||{gridSize:sizes[level]};
- size=preset.gridSize||sizes[level];
- palette=engine.getPaletteForDifficulty(level);
+ size=preset.gridSize||sizes[level];palette=engine.getPaletteForDifficulty(level);
  document.querySelector("#grid-size").textContent=size+" × "+size;
  document.querySelector("#colour-count").textContent=Object.keys(palette).length;
  document.querySelectorAll(".difficulty").forEach(b=>b.classList.toggle("active",b.dataset.level===level));
@@ -133,83 +130,69 @@ function renderKey(){
  }
  if(!palette[selected])selected=Number(Object.keys(palette)[0]||1);
 }
-function renderGallery(){
- gallery.innerHTML="";
- for(const puzzle of puzzles){
-  const button=document.createElement("button");button.type="button";button.className="artwork-choice";
-  button.setAttribute("aria-pressed",String(activePuzzle?.id===puzzle.id));
-  const img=document.createElement("img");img.src=puzzle.thumbnail||puzzle.image;img.alt="";img.loading="lazy";
-  const title=document.createElement("span");title.textContent=puzzle.title;
-  button.append(img,title);button.addEventListener("click",()=>selectPuzzle(puzzle.id));gallery.append(button);
- }
- galleryMessage.textContent=puzzles.length+" character puzzles available.";
-}
-async function selectPuzzle(id){
- const puzzle=puzzles.find(p=>p.id===id);if(!puzzle)return;
- activePuzzle=puzzle;renderGallery();started=false;preview=false;cells=[];
- updateDifficulty();setStatus("Preparing "+puzzle.title+"…");
- document.querySelector("#start-button").disabled=true;
- try{
-  const converted=await engine.convertImageToGrid(puzzle.image,size,palette);
-  if(activePuzzle?.id!==id)return;
-  solution=converted.solution;cells=Array(size*size).fill(0);
-  setStatus(puzzle.title+" is ready. Press Start Puzzle when you're ready.");
-  document.querySelector("#start-button").disabled=false;
-  document.querySelector("#start-button").textContent="▶ Start Puzzle";
-  render();
- }catch(error){
-  solution=[];render();setStatus("Artwork could not be loaded. Please try another character.");
-  galleryMessage.textContent=error.message;
-  document.querySelector("#start-button").disabled=true;
- }
-}
 function render(){
  grid.innerHTML="";grid.style.setProperty("--grid",size);grid.setAttribute("aria-label",size+" by "+size+" diamond art grid");
+ if(revealed){
+  const image=document.createElement("img");image.src=activePuzzle.image;image.alt="Completed mystery artwork";
+  image.style.cssText="width:100%;height:100%;object-fit:cover;display:block;border-radius:4px";
+  grid.style.display="block";grid.append(image);return;
+ }
+ grid.style.display="grid";
  const frag=document.createDocumentFragment();
  for(let i=0;i<size*size;i++){
-  const b=document.createElement("button");b.type="button";b.className="tile";b.setAttribute("role","gridcell");b.dataset.index=i;
+  const b=document.createElement("button");b.type="button";b.className="tile";b.setAttribute("role","gridcell");
   const target=solution[i]||1;
-  if(started&&cells[i]){b.style.background=palette[cells[i]];b.classList.add("filled");b.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+", colour "+cells[i]);}
-  else if(preview){b.style.background=palette[target];b.classList.add("filled");}
-  else{
-   const number=document.createElement("span");number.className="tile-number";number.textContent=target;b.append(number);
-   b.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+", target colour "+target);
-  }
+  if(cells[i]){b.style.background=palette[cells[i]];b.classList.add("filled");}
+  else{const number=document.createElement("span");number.className="tile-number";number.textContent=target;b.append(number);}
+  b.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+(cells[i]?", colour "+cells[i]:", target colour "+target));
   b.addEventListener("click",()=>paint(i));frag.append(b);
  }
  grid.append(frag);
 }
 function paint(i){
- if(!started){setStatus("Press Start Puzzle to begin placing diamonds.");return;}
- if(preview)return;
+ if(revealed)return;
  cells[i]=cells[i]===selected?0:selected;
  const tile=grid.children[i];tile.classList.toggle("filled",!!cells[i]);tile.style.background=cells[i]?palette[cells[i]]:"";
  tile.innerHTML="";
  if(!cells[i]){const number=document.createElement("span");number.className="tile-number";number.textContent=solution[i];tile.append(number);}
- tile.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+", "+(cells[i]?"colour "+cells[i]:"blank"));
- const done=cells.every((v,n)=>v===solution[n]);
- if(done)setStatus("Beautiful work! You completed "+activePuzzle.title+"!",true);
- else setStatus(cells.filter(Boolean).length+" / "+cells.length+" diamonds placed");
+ tile.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+(cells[i]?", colour "+cells[i]:", blank"));
+ const placed=cells.filter(Boolean).length;
+ const correct=cells.reduce((count,value,n)=>count+(value===solution[n]?1:0),0);
+ if(placed===cells.length&&correct===cells.length){
+  revealed=true;render();setStatus("Mystery solved! You revealed "+activePuzzle.title+"!",true);
+ }else setStatus(correct+" / "+cells.length+" diamonds correct · "+placed+" placed");
 }
-function newPuzzle(){
- if(!activePuzzle)return;
- cells=Array(size*size).fill(0);started=false;preview=false;
- setStatus(activePuzzle.title+" is ready. Press Start Puzzle when you're ready.");
- document.querySelector("#start-button").textContent="▶ Start Puzzle";render();
+async function loadPuzzle(puzzle){
+ activePuzzle=puzzle;started=true;revealed=false;solution=[];cells=[];
+ setStatus("Preparing your mystery picture…");
+ document.querySelector("#start-button").disabled=true;
+ try{
+  const converted=await engine.convertImageToGrid(puzzle.image,size,palette);
+  if(activePuzzle?.id!==puzzle.id)return;
+  solution=converted.solution;cells=Array(size*size).fill(0);
+  document.querySelector("#start-button").disabled=false;
+  document.querySelector("#start-button").textContent="↻ Restart Puzzle";
+  render();setStatus("Your mystery picture is ready. Choose a colour and fill the grid.");
+ }catch(error){
+  render();setStatus("The puzzle artwork could not be loaded. Please refresh the page.");
+  console.error(error);
+ }
 }
+function choosePuzzle(excludeCurrent=true){
+ const choices=puzzles.filter(p=>!excludeCurrent||p.id!==activePuzzle?.id);
+ const pool=choices.length?choices:puzzles;
+ return pool[Math.floor(Math.random()*pool.length)];
+}
+function newPuzzle(){if(puzzles.length)loadPuzzle(choosePuzzle());}
 document.querySelectorAll(".difficulty").forEach(b=>b.addEventListener("click",async()=>{
- level=b.dataset.level;updateDifficulty();await selectPuzzle(activePuzzle?.id);
+ level=b.dataset.level;updateDifficulty();if(activePuzzle)await loadPuzzle(activePuzzle);
 }));
 document.querySelector("#start-button").addEventListener("click",()=>{
- if(!solution.length)return;started=true;preview=false;cells=Array(size*size).fill(0);
- setStatus("Puzzle started — select a colour and fill the grid.");
- document.querySelector("#start-button").textContent="↻ Restart Puzzle";render();
+ if(!solution.length)return;
+ revealed=false;cells=Array(size*size).fill(0);render();
+ setStatus("Puzzle restarted. Choose a colour and fill the grid.");
 });
 document.querySelector("#new-button").addEventListener("click",newPuzzle);
-document.querySelector("#preview-button").addEventListener("click",()=>{
- if(!solution.length)return;preview=!preview;
- setStatus(preview?"Previewing the completed image. Press Preview Image again to return.":"Back to your puzzle.");render();
-});
 const menu=document.querySelector(".menu-toggle"),nav=document.querySelector(".primary-nav");
 menu.addEventListener("click",()=>{const open=nav.classList.toggle("open");menu.setAttribute("aria-expanded",String(open));menu.textContent=open?"×":"☰";});
 nav.addEventListener("click",e=>{if(e.target.closest("a")){nav.classList.remove("open");menu.setAttribute("aria-expanded","false");menu.textContent="☰";}});
@@ -217,9 +200,9 @@ async function init(){
  try{
   catalog=await engine.loadCatalog();
   puzzles=(catalog.puzzles||[]).filter(p=>p.published&&p.category==="characters");
-  if(!puzzles.length){galleryMessage.textContent="The character collection is being prepared.";return;}
-  level="standard";updateDifficulty();renderGallery();await selectPuzzle(puzzles[0].id);
- }catch(error){galleryMessage.textContent="The artwork collection could not be loaded.";setStatus(error.message);}
+  if(!puzzles.length){setStatus("Mystery puzzles are being prepared.");return;}
+  updateDifficulty();await loadPuzzle(choosePuzzle(false));
+ }catch(error){setStatus("The mystery puzzle could not be loaded.");console.error(error);}
 }
 init();
 })();
