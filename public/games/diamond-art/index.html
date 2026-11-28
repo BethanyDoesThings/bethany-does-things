@@ -252,6 +252,33 @@ body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scro
 }
 .save-art-button.ready:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .save-art-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+/* Completion celebration: fireworks and gold stars burst from both grid edges */
+.board-card{position:relative}
+.celebration-overlay{
+ position:absolute;z-index:12;left:0;top:0;width:100%;aspect-ratio:1;
+ pointer-events:none;overflow:visible;
+}
+.celebration-particle{
+ position:absolute;top:50%;left:var(--origin);font-size:var(--size,22px);
+ line-height:1;opacity:0;filter:drop-shadow(0 0 5px #ffd84a);
+ animation:diamond-firework 1.65s cubic-bezier(.12,.72,.2,1) var(--delay,0s) forwards;
+}
+.celebration-particle.spark{
+ width:var(--size,8px);height:var(--size,8px);border-radius:50%;
+ background:radial-gradient(circle,#fffbd0 0 18%,#ffe45c 38%,#ff9d16 72%,transparent 100%);
+ box-shadow:0 0 8px #ffd34d,0 0 15px #ff9d16;
+}
+.celebration-particle.star{color:#ffe45b;text-shadow:0 0 5px #fff4a3,0 0 13px #ffb300}
+@keyframes diamond-firework{
+ 0%{opacity:0;transform:translate(0,-50%) scale(.25) rotate(0deg)}
+ 12%{opacity:1}
+ 75%{opacity:1}
+ 100%{opacity:0;transform:translate(var(--dx),calc(-50% + var(--dy))) scale(1.15) rotate(var(--spin,180deg))}
+}
+@media(prefers-reduced-motion:reduce){
+ .celebration-particle{animation-duration:.4s}
+}
 </style>
 </head>
 <body>
@@ -282,7 +309,7 @@ body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scro
 <div class="ornament"><span>✦ ◈ ✦</span></div>
 </aside>
 <section class="board-card" aria-label="Diamond art grid">
-<div id="diamond-grid" class="board-frame" style="--grid:50" role="grid" aria-label="50 by 50 diamond art grid"></div>
+<div id="diamond-grid" class="board-frame" style="--grid:50" role="grid" aria-label="50 by 50 diamond art grid"></div>\n<div id="celebration-overlay" class="celebration-overlay" aria-hidden="true"></div>
 <p id="game-status" class="status" aria-live="polite">Your mystery picture is ready. Choose a colour to begin.</p>
 <div class="save-art-card" aria-label="Save completed diamond art">
  <h2 class="save-art-title">Save Your Diamond Art</h2>
@@ -410,6 +437,63 @@ function downloadDiamondArt(){
  }, "image/png");
 }
 document.querySelector("#save-art-button").addEventListener("click",downloadDiamondArt);
+function launchCelebration(){
+ const overlay=document.querySelector("#celebration-overlay");
+ overlay.innerHTML="";
+ const symbols=["★","✦","✧","⭐"];
+ for(const side of ["left","right"]){
+  for(let i=0;i<34;i++){
+   const particle=document.createElement("span");
+   const isStar=i%3===0;
+   particle.className="celebration-particle"+(isStar?" star":" spark");
+   if(isStar)particle.textContent=symbols[i%symbols.length];
+   const distance=110+Math.random()*210;
+   const direction=side==="left"?-1:1;
+   particle.style.setProperty("--origin",side==="left"?"0%":"100%");
+   particle.style.setProperty("--dx",(direction*distance)+"px");
+   particle.style.setProperty("--dy",((Math.random()-.5)*460)+"px");
+   particle.style.setProperty("--spin",((Math.random()>.5?1:-1)*(120+Math.random()*540))+"deg");
+   particle.style.setProperty("--size",(isStar?14+Math.random()*18:4+Math.random()*7)+"px");
+   particle.style.setProperty("--delay",(Math.random()*.22)+"s");
+   overlay.append(particle);
+  }
+ }
+ setTimeout(()=>{overlay.innerHTML="";},2300);
+}
+function playCompletionCheer(){
+ const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+ if(!AudioContextClass)return;
+ try{
+  const audio=new AudioContextClass();
+  const master=audio.createGain();master.gain.value=.42;master.connect(audio.destination);
+  // A short layered crowd-like cheer made locally in the browser.
+  const length=Math.floor(audio.sampleRate*1.35);
+  const buffer=audio.createBuffer(1,length,audio.sampleRate);
+  const data=buffer.getChannelData(0);
+  for(let i=0;i<length;i++){
+   const t=i/audio.sampleRate;
+   const envelope=Math.min(1,t*9)*Math.max(0,1-t/1.35);
+   data[i]=(Math.random()*2-1)*envelope*(.65+.35*Math.sin(t*17));
+  }
+  const noise=audio.createBufferSource();noise.buffer=buffer;
+  const band=audio.createBiquadFilter();band.type="bandpass";band.frequency.value=850;band.Q.value=.65;
+  const noiseGain=audio.createGain();noiseGain.gain.setValueAtTime(.001,audio.currentTime);
+  noiseGain.gain.linearRampToValueAtTime(.34,audio.currentTime+.16);
+  noiseGain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+1.3);
+  noise.connect(band);band.connect(noiseGain);noiseGain.connect(master);noise.start();
+  // Bright three-note victory fanfare over the cheer.
+  [523.25,659.25,783.99,1046.5].forEach((frequency,index)=>{
+   const osc=audio.createOscillator(),gain=audio.createGain();
+   osc.type="triangle";osc.frequency.value=frequency;
+   const start=audio.currentTime+.05+index*.13;
+   gain.gain.setValueAtTime(.001,start);
+   gain.gain.linearRampToValueAtTime(.16,start+.035);
+   gain.gain.exponentialRampToValueAtTime(.001,start+.42);
+   osc.connect(gain);gain.connect(master);osc.start(start);osc.stop(start+.45);
+  });
+  setTimeout(()=>audio.close().catch(()=>{}),1900);
+ }catch(error){console.warn("Completion sound unavailable:",error);}
+}
 function paint(i){
  if(revealed)return;
  cells[i]=cells[i]===selected?0:selected;
@@ -420,7 +504,7 @@ function paint(i){
  const placed=cells.filter(Boolean).length;
  const correct=cells.reduce((count,value,n)=>count+(value===solution[n]?1:0),0);
  if(placed===cells.length&&correct===cells.length){
-  revealed=true;render();setSaveReady(true);setStatus("Mystery solved! You revealed "+activePuzzle.title+"!",true);
+  revealed=true;render();setSaveReady(true);setStatus("Mystery solved! You revealed "+activePuzzle.title+"!",true);launchCelebration();playCompletionCheer();
  }else setStatus(correct+" / "+cells.length+" diamonds correct · "+placed+" placed");
 }
 async function loadPuzzle(puzzle){
