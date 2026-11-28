@@ -6,45 +6,77 @@
 *{box-sizing:border-box}body{margin:0;padding:28px;background:radial-gradient(ellipse at top,#45216b,#10091e 65%);color:var(--ink);font:15px/1.5 Arial,sans-serif}
 main{max-width:1500px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px}
 h1{font-size:clamp(24px,4vw,38px);margin:0;color:#ffd8ff}h2{font-size:19px;margin:0 0 12px}.sub{color:#d8c5e8;margin:6px 0 0}
-.controls,.source,.preview{background:#1b102d;border:1px solid #704391;border-radius:16px;padding:16px;box-shadow:0 8px 28px #08030f88}
-.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
-label{font-weight:bold}select,button{font:inherit;border-radius:9px;padding:10px 14px;border:1px solid #b783d8}
-select{background:#f8efff;color:#251332;min-width:190px}button{background:linear-gradient(135deg,#f65bd1,#8e35c5);color:white;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.55;cursor:wait}.source{display:flex;gap:18px;align-items:center;margin-bottom:18px}.source img{width:128px;height:128px;object-fit:contain;background:#fff;border-radius:12px}
-#status{color:#f4c7ff;font-weight:bold}.previews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.upload-panel,.preview{background:#1b102d;border:1px solid #704391;border-radius:16px;padding:16px;box-shadow:0 8px 28px #08030f88}
+.upload-panel{margin-bottom:18px}.upload-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.upload-heading h2{margin:0}.upload-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.upload-button,button{font:inherit;border-radius:9px;padding:10px 14px;border:1px solid #b783d8;background:linear-gradient(135deg,#f65bd1,#8e35c5);color:white;font-weight:bold;cursor:pointer}
+.upload-button{display:inline-block}.upload-button:hover,button:hover{filter:brightness(1.08)}
+button:disabled{opacity:.55;cursor:wait}
+.dropzone{display:grid;place-items:center;min-height:105px;padding:18px;border:2px dashed #9867b7;border-radius:13px;background:#241536;color:#e5d3f1;text-align:center;cursor:pointer}
+.dropzone.dragover{border-color:#ff78dc;background:#39204d}.dropzone strong{color:#ffd5f3}.dropzone small{display:block;color:#c8b4d9;margin-top:4px}
+.selected-area{display:none;align-items:center;gap:18px;margin-top:15px;padding:14px;border:1px solid #704391;border-radius:13px;background:#160d24}
+.selected-area.visible{display:flex}.selected-area img{width:170px;height:170px;object-fit:contain;background:#fff;border-radius:10px;flex:0 0 auto}
+.selected-details{flex:1;min-width:0}.selected-details h3{margin:0 0 5px;overflow-wrap:anywhere}.selected-details p{margin:0;color:#d8c5e8;font-size:13px}
+.generate-button{min-width:190px;align-self:center}.helper{color:#cdb9df;font-size:13px;margin:10px 0 0}
+#status{color:#f4c7ff;font-weight:bold;margin-top:9px}.previews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .preview{min-width:0}.preview header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}.preview header strong{font-size:20px}.preview header span{color:#d8b9eb;font-size:13px}
 canvas{display:block;width:100%;height:auto;aspect-ratio:1;background:#fff;border-radius:8px;image-rendering:pixelated}
 .palette{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.chip{width:25px;height:25px;border-radius:7px;border:1px solid #ffffff80;position:relative}.chip span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:bold;color:#111;text-shadow:0 0 2px white}
 .note{color:#cdb9df;font-size:13px;margin-top:10px}
-@media(max-width:900px){.previews{grid-template-columns:1fr}.preview canvas{max-width:600px;margin:auto}.source{align-items:flex-start}}
+@media(max-width:900px){.previews{grid-template-columns:1fr}.preview canvas{max-width:600px;margin:auto}}
+@media(max-width:600px){body{padding:16px}.selected-area{align-items:flex-start;flex-wrap:wrap}.selected-area img{width:112px;height:112px}.generate-button{width:100%}.upload-heading{align-items:flex-start;flex-direction:column}}
 </style></head><body><main>
-<div class="top"><div><h1>Diamond Art Image Preparation Lab</h1><p class="sub">Experimenting with automatic detail reduction and image-specific gemstone palettes.</p></div><a href="/games/diamond-art/" style="color:#ffd8ff">← Return to Diamond Art</a></div>
-<div class="controls"><label for="artwork">Test artwork</label><select id="artwork">
-<option value="auggie">Auggie</option><option value="bethany">Bethany</option><option value="evan">Evan</option><option value="rucca">Rucca</option>
-</select><button id="generate">Generate all three versions</button></div>
-<div class="source"><img id="source-image" src="/artwork/characters/cartoon-auggie.png" alt="Selected original artwork"><div><h2 id="source-title">Auggie — original artwork</h2><div id="status">Choose an image and generate its previews.</div><p class="note">The original file is not changed. Each preview receives its own automatically generated palette.</p></div></div>
+<div class="top"><div><h1>Diamond Art Image Preparation Lab</h1><p class="sub">Upload an image, then generate three gemstone-puzzle versions with image-specific colour palettes.</p></div><a href="/admin/" style="color:#ffd8ff">← Admin Control Center</a></div>
+<section class="upload-panel" aria-labelledby="upload-title">
+ <div class="upload-heading"><h2 id="upload-title">1. Upload your artwork</h2><div class="upload-controls"><label class="upload-button" for="artwork-file">Choose image</label><input id="artwork-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></div></div>
+ <label class="dropzone" id="dropzone" for="artwork-file"><span><strong>Choose an image or drag it here</strong><small>PNG, JPG, WEBP or GIF · Maximum 15 MB</small></span></label>
+ <div class="selected-area" id="selected-area">
+  <img id="source-image" alt="Temporary artwork preview">
+  <div class="selected-details"><h3 id="source-title">No image selected</h3><p id="source-info">Your selected image will appear here.</p><div id="status" role="status" aria-live="polite">Upload an image to begin.</div></div>
+  <button class="generate-button" id="generate" disabled>Generate all 3 versions →</button>
+ </div>
+ <p class="helper">Your image is held temporarily in this browser tab only. It is not uploaded to the website or saved to a library at this stage.</p>
+</section>
+<div class="section-head"><h2>2. Generated previews</h2><p class="sub">Each version creates its own palette from your uploaded image.</p></div>
 <div class="previews">
-<section class="preview"><header><strong>Easy</strong><span>30 × 30 · 6 colours</span></header><canvas id="easy" width="360" height="360"></canvas><div class="palette" id="easy-palette"></div><p class="note" id="easy-note">Ready to generate</p></section>
-<section class="preview"><header><strong>Standard</strong><span>50 × 50 · 10 colours</span></header><canvas id="standard" width="500" height="500"></canvas><div class="palette" id="standard-palette"></div><p class="note" id="standard-note">Ready to generate</p></section>
-<section class="preview"><header><strong>Hard</strong><span>70 × 70 · 14 colours</span></header><canvas id="hard" width="560" height="560"></canvas><div class="palette" id="hard-palette"></div><p class="note" id="hard-note">Ready to generate</p></section>
+<section class="preview"><header><strong>Easy</strong><span>30 × 30 · 6 colours</span></header><canvas id="easy" width="360" height="360"></canvas><div class="palette" id="easy-palette"></div><p class="note" id="easy-note">Waiting for an image</p></section>
+<section class="preview"><header><strong>Standard</strong><span>50 × 50 · 10 colours</span></header><canvas id="standard" width="500" height="500"></canvas><div class="palette" id="standard-palette"></div><p class="note" id="standard-note">Waiting for an image</p></section>
+<section class="preview"><header><strong>Hard</strong><span>70 × 70 · 14 colours</span></header><canvas id="hard" width="560" height="560"></canvas><div class="palette" id="hard-palette"></div><p class="note" id="hard-note">Waiting for an image</p></section>
 </div></main>
 <script src="/js/games/diamond-art/diamond-art-engine.js?v=2"></script>
 <script>
-const artwork={
- auggie:{title:"Auggie",url:"/artwork/characters/cartoon-auggie.png"},
- bethany:{title:"Bethany",url:"/artwork/characters/cartoon-bethany.png"},
- evan:{title:"Evan",url:"/artwork/characters/cartoon-evan.png"},
- rucca:{title:"Rucca",url:"/artwork/characters/cartoon-rucca.png"}
-};
-const levels=["easy","standard","hard"],select=document.querySelector("#artwork"),button=document.querySelector("#generate");
+const levels=["easy","standard","hard"];
+const fileInput=document.querySelector("#artwork-file"),dropzone=document.querySelector("#dropzone"),selectedArea=document.querySelector("#selected-area"),sourceImage=document.querySelector("#source-image"),sourceTitle=document.querySelector("#source-title"),sourceInfo=document.querySelector("#source-info"),status=document.querySelector("#status"),button=document.querySelector("#generate");
+let selectedUrl=null,selectedFile=null;
+function clearPreviews(message="Waiting for an image"){
+ for(const level of levels){
+  const canvas=document.querySelector("#"+level),ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+  document.querySelector("#"+level+"-palette").innerHTML="";
+  document.querySelector("#"+level+"-note").textContent=message;
+ }
+}
+function selectFile(file){
+ if(!file)return;
+ if(!file.type.startsWith("image/")){status.textContent="Please choose an image file.";return;}
+ if(file.size>15*1024*1024){status.textContent="That image is larger than 15 MB. Please choose a smaller file.";return;}
+ if(selectedUrl)URL.revokeObjectURL(selectedUrl);
+ selectedFile=file;selectedUrl=URL.createObjectURL(file);
+ sourceImage.src=selectedUrl;sourceTitle.textContent=file.name;
+ sourceInfo.textContent=(file.size/1024/1024).toFixed(2)+" MB · "+(file.type||"Image file")+" · Temporary preview";
+ selectedArea.classList.add("visible");button.disabled=false;
+ status.textContent="Image ready. Select Generate to create all three versions.";
+ clearPreviews();
+}
 function drawPreview(canvas,result){
  const ctx=canvas.getContext("2d"),n=result.gridSize,cell=canvas.width/n;
  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
  for(let i=0;i<result.solution.length;i++){
   const x=(i%n)*cell,y=Math.floor(i/n)*cell,colour=result.palette[result.solution[i]];
   const inset=Math.max(1,cell*.12),x0=x+inset,y0=y+inset,w=cell-inset*2,h=cell-inset*2;
-  ctx.fillStyle=colour;ctx.beginPath();
-  const cut=w*.24;ctx.moveTo(x0+cut,y0);ctx.lineTo(x0+w-cut,y0);ctx.lineTo(x0+w,y0+cut);ctx.lineTo(x0+w,y0+h-cut);ctx.lineTo(x0+w-cut,y0+h);ctx.lineTo(x0+cut,y0+h);ctx.lineTo(x0,y0+h-cut);ctx.lineTo(x0,y0+cut);ctx.closePath();ctx.fill();
+  ctx.fillStyle=colour;ctx.beginPath();const cut=w*.24;
+  ctx.moveTo(x0+cut,y0);ctx.lineTo(x0+w-cut,y0);ctx.lineTo(x0+w,y0+cut);ctx.lineTo(x0+w,y0+h-cut);ctx.lineTo(x0+w-cut,y0+h);ctx.lineTo(x0+cut,y0+h);ctx.lineTo(x0,y0+h-cut);ctx.lineTo(x0,y0+cut);ctx.closePath();ctx.fill();
   const shine=ctx.createLinearGradient(x0,y0,x0+w,y0+h);shine.addColorStop(0,"rgba(255,255,255,.78)");shine.addColorStop(.35,"rgba(255,255,255,.08)");shine.addColorStop(1,"rgba(0,0,0,.24)");ctx.fillStyle=shine;ctx.fill();
   ctx.strokeStyle="rgba(55,25,75,.25)";ctx.lineWidth=Math.max(.45,cell*.035);ctx.stroke();
  }
@@ -54,20 +86,24 @@ function renderPalette(id,palette){
  Object.entries(palette).forEach(([number,hex])=>{const chip=document.createElement("div");chip.className="chip";chip.style.background=hex;chip.title=number+" · "+hex;const n=document.createElement("span");n.textContent=number;chip.append(n);el.append(chip);});
 }
 async function generate(){
- const item=artwork[select.value];button.disabled=true;document.querySelector("#status").textContent="Preparing all three versions…";
- document.querySelector("#source-title").textContent=item.title+" — original artwork";
- document.querySelector("#source-image").src=item.url;
+ if(!selectedUrl)return;
+ button.disabled=true;status.textContent="Preparing all three versions…";
  try{
   for(const level of levels){
    document.querySelector("#"+level+"-note").textContent="Processing…";
-   const result=await DiamondArtEngine.prepareImage(item.url,level);
+   const result=await DiamondArtEngine.prepareImage(selectedUrl,level);
    drawPreview(document.querySelector("#"+level),result);renderPalette(level,result.palette);
    document.querySelector("#"+level+"-note").textContent=Object.keys(result.palette).length+" image-specific colours · "+result.gridSize+" × "+result.gridSize+" cells";
   }
-  document.querySelector("#status").textContent="All three versions generated. Compare how well each one preserves the character.";
- }catch(error){document.querySelector("#status").textContent="Could not prepare this image: "+error.message;console.error(error);}
+  status.textContent="All three versions generated. Compare the detail and colour palettes.";
+ }catch(error){status.textContent="Could not prepare this image: "+error.message;console.error(error);}
  finally{button.disabled=false;}
 }
-select.addEventListener("change",()=>{const item=artwork[select.value];document.querySelector("#source-image").src=item.url;document.querySelector("#source-title").textContent=item.title+" — original artwork";});
-button.addEventListener("click",generate);generate();
+fileInput.addEventListener("change",()=>selectFile(fileInput.files[0]));
+button.addEventListener("click",generate);
+for(const eventName of ["dragenter","dragover"]){dropzone.addEventListener(eventName,event=>{event.preventDefault();dropzone.classList.add("dragover");});}
+for(const eventName of ["dragleave","drop"]){dropzone.addEventListener(eventName,event=>{event.preventDefault();dropzone.classList.remove("dragover");});}
+dropzone.addEventListener("drop",event=>selectFile(event.dataTransfer.files[0]));
+window.addEventListener("beforeunload",()=>{if(selectedUrl)URL.revokeObjectURL(selectedUrl);});
+clearPreviews();
 </script></body></html>
