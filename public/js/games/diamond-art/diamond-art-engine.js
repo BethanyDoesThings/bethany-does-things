@@ -171,6 +171,8 @@
     palettes:PALETTES,
     getPaletteForDifficulty,
     convertImageToGrid,
+    buildAdaptivePalette,
+    prepareImage,
     loadCatalog
   };
 })();
