@@ -38,6 +38,30 @@
 
 .collection-card{margin:0 auto 18px;padding:16px 18px;border:2px solid #ee52ff;border-radius:22px;background:linear-gradient(135deg,#210b39ed,#10051ff2);box-shadow:0 0 0 2px #a62bdc66,0 0 17px #f43dff55}.collection-title{margin:0 0 4px;font-size:20px}.collection-help{margin:0 0 12px;color:#f5d9ff;font-size:13px;font-weight:800}.artwork-gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.artwork-choice{display:flex;align-items:center;gap:10px;min-width:0;padding:8px;border:2px solid #8c4cb4;border-radius:14px;background:#1a0b2b;color:#fff;text-align:left;font:inherit;font-weight:900;cursor:pointer}.artwork-choice[aria-pressed=true]{border-color:#ff73e8;box-shadow:0 0 0 2px #ff73e866,0 0 14px #ff40ed88;background:#39104d}.artwork-choice img{width:64px;height:64px;object-fit:cover;border-radius:10px;background:#fff}.artwork-choice span{overflow:hidden;text-overflow:ellipsis}.gallery-message{color:#ffe7ff;font-weight:900;font-size:13px;margin:8px 0 0}.tile-number{font-size:clamp(3px,.65vw,8px);font-weight:1000;line-height:1;color:#30184a;pointer-events:none}.tile.filled .tile-number{display:none}.key-card .key-grid{max-height:310px;overflow:auto}
 @media(max-width:760px){.artwork-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.artwork-choice img{width:54px;height:54px}}
+
+/* Diamond Art layout refinement */
+.scene{width:min(1480px,96vw)}
+.game-shell{border:1px solid #9a70b5;box-shadow:none;border-radius:28px;padding:20px 22px 24px}
+.game-layout{grid-template-columns:minmax(190px,.72fr) minmax(560px,2.25fr) minmax(215px,.82fr);gap:18px;align-items:start}
+.info-card,.settings-card,.key-card{border:1px solid #80519c;box-shadow:none;border-radius:16px}
+.board-card{border:1px solid #c7a5d8;box-shadow:none;border-radius:16px;padding:8px;background:#ead9f4}
+.board-frame{border:1px solid #59416c;border-radius:4px;gap:1px;padding:1px}
+.tile-number{font-size:clamp(5px,.75vw,11px);font-weight:1000;line-height:1;color:#241137;pointer-events:none}
+@media(max-width:1250px) and (min-width:761px){
+ .scene{width:97vw}
+ .game-shell{padding:16px}
+ .game-layout{grid-template-columns:minmax(165px,.7fr) minmax(430px,2fr) minmax(195px,.8fr);gap:12px}
+ .tile-number{font-size:clamp(5px,.8vw,9px)}
+}
+@media(max-width:760px){
+ .scene{width:96vw}
+ .game-layout{grid-template-columns:1fr;gap:12px}
+ .board-card{order:1}
+ .right-column{order:2;grid-template-columns:1fr 1fr;align-items:start}
+ .info-card{order:3}
+ .tile-number{font-size:clamp(5px,1.6vw,9px)}
+}
+
 </style>
 </head>
 <body>
