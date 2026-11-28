@@ -375,3 +375,21 @@ init();
 </script>
 </body>
 </html>
+
+/* Experimental circular diamond-art cells */
+.tile{
+ border-radius:50%;
+ box-shadow:inset 0 0 0 1px #d8b9ff88;
+}
+.tile.filled{
+ border-radius:50%;
+ box-shadow:inset 0 0 0 1px #d8b9ff88;
+}
+.tile.filled::before{
+ inset:6%;
+ border-radius:50%;
+ clip-path:circle(50% at 50% 50%);
+}
+.tile.filled::after{
+ border-radius:50%;
+}
