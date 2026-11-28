@@ -228,6 +228,29 @@ body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scro
  transform:scale(1.5);
  transform-origin:center bottom;
 }
+
+/* Completed artwork download panel */
+.save-art-card{
+ margin-top:14px;padding:14px 16px;text-align:center;
+ border:2px solid #b98bd2;border-radius:16px;
+ background:linear-gradient(145deg,#241039,#160923);
+ box-shadow:inset 0 0 14px #b34bff22;
+}
+.save-art-title{margin:0 0 4px;color:#fff;font-size:17px;font-weight:1000}
+.save-art-help{margin:0 0 10px;color:#d9c4e8;font-size:12px;font-weight:800}
+.save-art-button{
+ width:100%;min-height:42px;border:2px solid #876c91;border-radius:99px;
+ color:#eee4f2;background:linear-gradient(#65566b,#403347);
+ font:900 14px Nunito,system-ui,sans-serif;opacity:.55;cursor:not-allowed;
+ box-shadow:0 3px 0 #29202e;
+}
+.save-art-button.ready{
+ color:#fff;opacity:1;cursor:pointer;border-color:#a8ffd0;
+ background:linear-gradient(#25e887,#009c4b);
+ box-shadow:0 3px 0 #08743a,0 0 14px #00e55a88;
+}
+.save-art-button.ready:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.save-art-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -260,6 +283,11 @@ body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scro
 <section class="board-card" aria-label="Diamond art grid">
 <div id="diamond-grid" class="board-frame" style="--grid:50" role="grid" aria-label="50 by 50 diamond art grid"></div>
 <p id="game-status" class="status" aria-live="polite">Your mystery picture is ready. Choose a colour to begin.</p>
+<div class="save-art-card" aria-label="Save completed diamond art">
+ <h2 class="save-art-title">Save Your Diamond Art</h2>
+ <p class="save-art-help" id="save-art-help">Complete the puzzle to unlock your download.</p>
+ <button id="save-art-button" class="save-art-button" type="button" disabled>⬇ Save Your Diamond Art</button>
+</div>
 </section>
 <div class="right-column">
 <aside class="key-card">
@@ -339,6 +367,48 @@ function render(){
  }
  grid.append(frag);
 }
+function setSaveReady(ready){
+ const button=document.querySelector("#save-art-button");
+ const help=document.querySelector("#save-art-help");
+ button.disabled=!ready;
+ button.classList.toggle("ready",ready);
+ help.textContent=ready?"Your masterpiece is complete! Download your diamond artwork.":"Complete the puzzle to unlock your download.";
+}
+function downloadDiamondArt(){
+ if(!revealed||!solution.length)return;
+ const canvas=document.createElement("canvas");
+ const outputSize=1600,cell=outputSize/size;
+ canvas.width=outputSize;canvas.height=outputSize;
+ const ctx=canvas.getContext("2d");
+ if(!ctx){setStatus("Your browser could not prepare the download.");return;}
+ // Draw a clean circular gem mosaic, without the page or puzzle controls.
+ for(let i=0;i<solution.length;i++){
+  const row=Math.floor(i/size),col=i%size;
+  const x=(col+.5)*cell,y=(row+.5)*cell,radius=cell*.43;
+  const colour=palette[solution[i]]||"#ffffff";
+  ctx.save();
+  ctx.shadowColor="rgba(25,8,45,.35)";ctx.shadowBlur=cell*.07;ctx.shadowOffsetY=cell*.035;
+  ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fillStyle=colour;ctx.fill();
+  ctx.shadowColor="transparent";ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  const shine=ctx.createLinearGradient(x-radius,y-radius,x+radius,y+radius);
+  shine.addColorStop(0,"rgba(255,255,255,.48)");
+  shine.addColorStop(.42,"rgba(255,255,255,.08)");
+  shine.addColorStop(1,"rgba(0,0,0,.2)");
+  ctx.fillStyle=shine;ctx.fill();
+  ctx.beginPath();ctx.arc(x-radius*.28,y-radius*.32,radius*.23,0,Math.PI*2);
+  ctx.fillStyle="rgba(255,255,255,.68)";ctx.fill();
+  ctx.restore();
+ }
+ canvas.toBlob(blob=>{
+  if(!blob){setStatus("The artwork download could not be created.");return;}
+  const url=URL.createObjectURL(blob),link=document.createElement("a");
+  const safeTitle=(activePuzzle?.title||"diamond-art").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"diamond-art";
+  link.href=url;link.download=safeTitle+"-diamond-art.png";
+  document.body.append(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+ }, "image/png");
+}
+document.querySelector("#save-art-button").addEventListener("click",downloadDiamondArt);
 function paint(i){
  if(revealed)return;
  cells[i]=cells[i]===selected?0:selected;
@@ -349,11 +419,11 @@ function paint(i){
  const placed=cells.filter(Boolean).length;
  const correct=cells.reduce((count,value,n)=>count+(value===solution[n]?1:0),0);
  if(placed===cells.length&&correct===cells.length){
-  revealed=true;render();setStatus("Mystery solved! You revealed "+activePuzzle.title+"!",true);
+  revealed=true;render();setSaveReady(true);setStatus("Mystery solved! You revealed "+activePuzzle.title+"!",true);
  }else setStatus(correct+" / "+cells.length+" diamonds correct · "+placed+" placed");
 }
 async function loadPuzzle(puzzle){
- activePuzzle=puzzle;started=true;revealed=false;solution=[];cells=[];
+ activePuzzle=puzzle;started=true;revealed=false;setSaveReady(false);solution=[];cells=[];
  setStatus("Preparing your mystery picture…");
  document.querySelector("#start-button").disabled=true;
  try{
@@ -379,7 +449,7 @@ document.querySelectorAll(".difficulty").forEach(b=>b.addEventListener("click",a
 }));
 document.querySelector("#start-button").addEventListener("click",()=>{
  if(!solution.length)return;
- revealed=false;cells=Array(size*size).fill(0);render();
+ revealed=false;setSaveReady(false);cells=Array(size*size).fill(0);render();
  setStatus("Puzzle restarted. Choose a colour and fill the grid.");
 });
 document.querySelector("#new-button").addEventListener("click",newPuzzle);
