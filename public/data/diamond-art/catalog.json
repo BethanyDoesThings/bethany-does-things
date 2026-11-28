@@ -1,7 +1,56 @@
 {
   "schemaVersion": 1,
   "description": "Diamond Art puzzle library. Add artwork entries here; only published entries appear in the player gallery.",
-  "puzzles": [],
+  "collections": [
+    {
+      "id": "characters",
+      "title": "Character Collection",
+      "description": "The Bethany Does Things family and their characters."
+    },
+    {
+      "id": "taylor-swift-inspired",
+      "title": "Taylor Swift Inspired",
+      "description": "Original album-era-inspired artwork; no album cover reproductions."
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "bethany",
+      "title": "Bethany",
+      "image": "/assets/images/characters/cartoon-bethany.png",
+      "thumbnail": "/assets/images/characters/cartoon-bethany.png",
+      "category": "characters",
+      "description": "Bethany's cartoon character portrait.",
+      "published": true
+    },
+    {
+      "id": "evan",
+      "title": "Evan",
+      "image": "/assets/images/characters/cartoon-evan.png",
+      "thumbnail": "/assets/images/characters/cartoon-evan.png",
+      "category": "characters",
+      "description": "Evan's cartoon character portrait.",
+      "published": true
+    },
+    {
+      "id": "auggie",
+      "title": "Auggie",
+      "image": "/assets/images/characters/cartoon-auggie.png",
+      "thumbnail": "/assets/images/characters/cartoon-auggie.png",
+      "category": "characters",
+      "description": "Auggie's cartoon character portrait.",
+      "published": true
+    },
+    {
+      "id": "rucca",
+      "title": "Rucca",
+      "image": "/assets/images/characters/cartoon-rucca.png",
+      "thumbnail": "/assets/images/characters/cartoon-rucca.png",
+      "category": "characters",
+      "description": "Rucca's cartoon character portrait.",
+      "published": true
+    }
+  ],
   "difficultyPresets": {
     "easy": {
       "gridSize": 30,
@@ -15,14 +64,6 @@
       "gridSize": 70,
       "paletteSize": 14
     }
-  },
-  "palette": {
-    "1": "#fff0e8",
-    "2": "#f21a9b",
-    "3": "#8c19d7",
-    "4": "#1267ef",
-    "5": "#08c9ec",
-    "6": "#082b91"
   },
   "palettes": {
     "easy": {
