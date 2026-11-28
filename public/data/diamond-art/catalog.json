@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "description": "Diamond Art puzzle library. Add artwork entries here; only published entries appear in the player gallery.",
+  "description": "Curated Diamond Art puzzle library. Published puzzles are selected automatically for players.",
   "collections": [
     {
       "id": "characters",
@@ -17,8 +17,8 @@
     {
       "id": "bethany",
       "title": "Bethany",
-      "image": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-bethany.png",
-      "thumbnail": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-bethany.png",
+      "image": "/artwork/characters/cartoon-bethany.png",
+      "thumbnail": "/artwork/characters/cartoon-bethany.png",
       "category": "characters",
       "description": "Bethany's cartoon character portrait.",
       "published": true
@@ -26,8 +26,8 @@
     {
       "id": "evan",
       "title": "Evan",
-      "image": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-evan.png",
-      "thumbnail": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-evan.png",
+      "image": "/artwork/characters/cartoon-evan.png",
+      "thumbnail": "/artwork/characters/cartoon-evan.png",
       "category": "characters",
       "description": "Evan's cartoon character portrait.",
       "published": true
@@ -35,8 +35,8 @@
     {
       "id": "auggie",
       "title": "Auggie",
-      "image": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-auggie.png",
-      "thumbnail": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-auggie.png",
+      "image": "/artwork/characters/cartoon-auggie.png",
+      "thumbnail": "/artwork/characters/cartoon-auggie.png",
       "category": "characters",
       "description": "Auggie's cartoon character portrait.",
       "published": true
@@ -44,8 +44,8 @@
     {
       "id": "rucca",
       "title": "Rucca",
-      "image": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-rucca.png",
-      "thumbnail": "https://raw.githubusercontent.com/BethanyDoesThings/bethany-does-things/homepage-development/assets/images/characters/cartoon-rucca.png",
+      "image": "/artwork/characters/cartoon-rucca.png",
+      "thumbnail": "/artwork/characters/cartoon-rucca.png",
       "category": "characters",
       "description": "Rucca's cartoon character portrait.",
       "published": true
