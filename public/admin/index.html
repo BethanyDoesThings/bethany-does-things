@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10091b">
+<meta name="description" content="Bethany Does Things administration dashboard.">
+<title>Admin Control Center | Bethany Does Things</title>
+<style>
+:root{color-scheme:dark;--bg:#10091b;--panel:#1d1230;--panel2:#26163b;--line:#593775;--pink:#ff62c8;--purple:#b78aff;--muted:#cbbbdc;--white:#fff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--white);font:15px/1.55 Nunito,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 12% 0%,#48215f 0,transparent 35%),radial-gradient(ellipse at 100% 25%,#30154a 0,transparent 32%),var(--bg)}
+a{color:inherit}.shell{width:min(1380px,94vw);margin:auto;padding:28px 0 56px}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 0 24px;border-bottom:1px solid #754b91}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none}.brand img{width:190px;max-height:86px;object-fit:contain;object-position:left center}.brand-copy{border-left:1px solid #80549a;padding-left:16px}.brand-copy strong{display:block;font-size:18px;color:#ffe0fb}.brand-copy span{font-size:12px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.pill-link{display:inline-flex;align-items:center;justify-content:center;padding:10px 15px;border:1px solid #9865b5;border-radius:999px;text-decoration:none;font-weight:800;background:#28173c}.pill-link:hover{border-color:var(--pink);color:#ffd5f2}
+.hero{padding:32px 0 24px}.eyebrow{color:#ff9cdd;font-weight:900;text-transform:uppercase;letter-spacing:.16em;font-size:12px}.hero h1{font-size:clamp(30px,4vw,46px);line-height:1.1;margin:8px 0;color:#fff}.hero p{color:var(--muted);max-width:760px;margin:0}
+.notice{display:flex;gap:13px;align-items:flex-start;margin:0 0 26px;padding:15px 18px;border:1px solid #b77a43;border-radius:14px;background:#392519;color:#ffe3c3}.notice strong{display:block;color:#ffd19c;margin-bottom:2px}.notice p{margin:0;font-size:13px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 0 13px}.section-head h2{font-size:21px;margin:0}.section-head p{color:var(--muted);font-size:13px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.card{position:relative;min-width:0;padding:20px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,#29183eeb,#190f29f5);box-shadow:0 12px 30px #07030d66}
+.card.featured{grid-column:span 2;border-color:#d34ab8;background:linear-gradient(125deg,#3a174d,#21132f 72%);box-shadow:0 0 0 1px #f65fc533,0 12px 34px #07030d88}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.icon{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;background:#45265f;border:1px solid #8152a0;font-size:22px}
+.status{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:5px 9px;border-radius:999px;background:#243b35;color:#a9f4d4;border:1px solid #427e68}.status.planned{background:#30243d;color:#d8c8e7;border-color:#59466d}
+.card h3{font-size:19px;margin:0 0 6px}.card p{color:var(--muted);font-size:13px;margin:0 0 13px}.card ul{margin:10px 0 16px;padding-left:19px;color:#e6d8f1;font-size:13px}.card li{margin:4px 0}
+.action{display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:999px;background:linear-gradient(110deg,#f64ab6,#9b4be0);color:white;text-decoration:none;font-weight:900;border:1px solid #ff9cdd;box-shadow:0 4px 15px #e943b344}.action:hover{filter:brightness(1.1);transform:translateY(-1px)}.action.secondary{background:#342047;border-color:#8555a4;box-shadow:none}
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.spec{padding:10px;border:1px solid #67427f;border-radius:11px;background:#1b102a}.spec strong{display:block;font-size:17px;color:#ffd0f1}.spec span{display:block;font-size:11px;color:var(--muted)}
+.workflow{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0 17px}.step{font-size:11px;color:#f1ddff;background:#38234d;border:1px solid #63437c;border-radius:8px;padding:6px 9px}
+.footer{margin-top:28px;padding-top:18px;border-top:1px solid #4e3565;color:#9e8cac;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.card.featured{grid-column:span 2}}
+@media(max-width:600px){.shell{width:min(94vw,520px);padding-top:18px}.brand img{width:125px}.brand-copy{padding-left:10px}.brand-copy strong{font-size:14px}.header-actions{width:100%}header{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.card.featured{grid-column:span 1}.specs{gap:6px}.spec{padding:8px}.spec strong{font-size:15px}.hero{padding-top:25px}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="shell">
+<header>
+ <a class="brand" href="/" aria-label="Bethany Does Things home">
+  <img src="/assets/images/branding/website-logo.png" alt="Bethany Does Things">
+  <span class="brand-copy"><strong>Admin Control Center</strong><span>Behind the puzzles</span></span>
+ </a>
+ <nav class="header-actions" aria-label="Admin shortcuts">
+  <a class="pill-link" href="/">↗ View public website</a>
+  <a class="pill-link" href="/games/diamond-art/">◇ Diamond Art game</a>
+ </nav>
+</header>
+<main>
+ <section class="hero">
+  <div class="eyebrow">Bethany Does Things · 2.0</div>
+  <h1>Admin Control Center</h1>
+  <p>Your workspace for managing puzzles, artwork, photos, episodes and everything happening behind the scenes.</p>
+ </section>
+
+ <aside class="notice" role="note">
+  <div aria-hidden="true">🔒</div>
+  <div><strong>Administrator sign-in is not connected yet</strong><p>This is the first dashboard layout. Until authentication and permissions are added, this page and its links are not a private admin area. Do not put confidential information here.</p></div>
+ </aside>
+
+ <div class="section-head"><h2>Workspace</h2><p>Tools available now and sections planned next</p></div>
+ <section class="grid" aria-label="Admin tools">
+  <article class="card featured">
+   <div class="card-top"><div class="icon">💎</div><span class="status">Available now</span></div>
+   <h3>Diamond Art Image Preparation Lab</h3>
+   <p>Test character artwork and compare three gemstone-puzzle versions side by side before choosing what should become a playable puzzle.</p>
+   <div class="specs">
+    <div class="spec"><strong>Easy</strong><span>30 × 30 · 6 colours</span></div>
+    <div class="spec"><strong>Standard</strong><span>50 × 50 · 10 colours</span></div>
+    <div class="spec"><strong>Hard</strong><span>70 × 70 · 14 colours</span></div>
+   </div>
+   <ul>
+    <li>Generate a separate, image-specific colour palette for each difficulty.</li>
+    <li>Compare detail, clarity and gemstone appearance before approving a version.</li>
+    <li>Keep the original artwork unchanged and separate from processed puzzle versions.</li>
+   </ul>
+   <div class="workflow"><span class="step">1 · Add artwork</span><span class="step">2 · Generate previews</span><span class="step">3 · Review versions</span><span class="step">4 · Approve for library</span></div>
+   <a class="action" href="/games/diamond-art/preparation-lab/">Open Image Preparation Lab <span aria-hidden="true">→</span></a>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">🖼️</div><span class="status planned">Next phase</span></div>
+   <h3>Diamond Art Library</h3>
+   <p>Manage the approved artwork available to the random puzzle picker.</p>
+   <ul><li>Maximum 30 active images</li><li>Include or exclude images from rotation</li><li>Archive, restore or delete artwork</li><li>Keep originals and approved difficulty versions</li></ul>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">🗂️</div><span class="status planned">Planned</span></div>
+   <h3>Media Library</h3>
+   <p>One organized home for reusable photos, artwork, thumbnails and other site media, with descriptions and alt text.</p>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">🐾</div><span class="status planned">Planned</span></div>
+   <h3>Dogs</h3>
+   <p>Manage Auggie and Rucca profiles, photos, bios, milestones and updates.</p>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">📝</div><span class="status planned">Planned</span></div>
+   <h3>Blog &amp; Latest Things</h3>
+   <p>Create drafts, add cover images, organize categories, preview posts and publish updates.</p>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">📅</div><span class="status planned">Planned</span></div>
+   <h3>Events</h3>
+   <p>Add event details, dates, locations or online links, images and publishing status.</p>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">🏆</div><span class="status planned">Planned</span></div>
+   <h3>Challenges &amp; Episodes</h3>
+   <p>Feature a puzzle challenge, manage schedules and achievements, and organize TikTok episode links and thumbnails.</p>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">🖼</div><span class="status planned">Planned</span></div>
+   <h3>Galleries</h3>
+   <p>Create photo galleries, upload images, add captions, arrange display order and control visibility.</p>
+  </article>
+
+  <article class="card">
+   <div class="card-top"><div class="icon">⚙️</div><span class="status planned">Planned</span></div>
+   <h3>Site Settings</h3>
+   <p>Manage selected homepage text, featured content and announcements without editing website code.</p>
+  </article>
+ </section>
+</main>
+<footer class="footer"><span>Bethany Does Things · Admin Control Center</span><span>Development preview · Changes here do not publish public content</span></footer>
+</div>
+</body>
+</html>
