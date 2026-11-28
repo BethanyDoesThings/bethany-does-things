@@ -279,6 +279,15 @@ body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scro
 @media(prefers-reduced-motion:reduce){
  .celebration-particle{animation-duration:.4s}
 }
+
+.winner-test-button{
+ width:100%;min-height:36px;margin-top:9px;border:2px solid #ffe58a;border-radius:99px;
+ color:#513000;background:linear-gradient(#fff1a8,#e9a91e);
+ font:1000 13px Nunito,system-ui,sans-serif;cursor:pointer;
+ box-shadow:0 3px 0 #95600b,0 0 10px #ffc83d66;
+}
+.winner-test-button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.winner-test-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 </style>
 </head>
 <body>
@@ -315,6 +324,7 @@ body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scro
  <h2 class="save-art-title">Save Your Diamond Art</h2>
  <p class="save-art-help" id="save-art-help">Complete the puzzle to unlock your download.</p>
  <button id="save-art-button" class="save-art-button" type="button" disabled>⬇ Save Your Diamond Art</button>
+ <button id="winner-test-button" class="winner-test-button" type="button">★ Winner Test</button>
 </div>
 </section>
 <div class="right-column">
@@ -437,6 +447,11 @@ function downloadDiamondArt(){
  }, "image/png");
 }
 document.querySelector("#save-art-button").addEventListener("click",downloadDiamondArt);
+document.querySelector("#winner-test-button").addEventListener("click",()=>{
+ launchCelebration();
+ playCompletionCheer();
+ setStatus("Winner celebration preview! Your puzzle progress has not changed.",true);
+});
 function launchCelebration(){
  const overlay=document.querySelector("#celebration-overlay");
  overlay.innerHTML="";
