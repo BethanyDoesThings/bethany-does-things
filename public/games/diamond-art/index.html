@@ -138,6 +138,31 @@ body{
   background-attachment:scroll;
 }
 
+
+/* Individual faceted gems sit inside the unchanged square grid cells */
+.tile.filled{
+ background:transparent!important;
+ box-shadow:inset 0 0 0 1px #d8b9ff55;
+}
+.tile.filled::before{
+ content:"";position:absolute;inset:9%;z-index:1;
+ background-color:var(--gem-color);
+ background-image:
+  linear-gradient(145deg,rgba(255,255,255,.82) 0%,rgba(255,255,255,.18) 27%,transparent 48%),
+  linear-gradient(35deg,transparent 0 42%,rgba(255,255,255,.26) 43% 49%,transparent 50%),
+  linear-gradient(225deg,rgba(0,0,0,.28),transparent 58%);
+ clip-path:polygon(25% 0,75% 0,100% 25%,100% 75%,75% 100%,25% 100%,0 75%,0 25%);
+ filter:drop-shadow(0 1px 1px rgba(12,3,25,.75));
+}
+.tile.filled::after{
+ content:"";display:block;position:absolute;z-index:2;
+ left:23%;top:17%;width:31%;height:23%;
+ background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,255,255,.1));
+ clip-path:polygon(0 0,100% 0,52% 100%);
+ opacity:.9;
+ filter:drop-shadow(0 0 2px rgba(255,255,255,.65));
+}
+
 </style>
 </head>
 <body>
@@ -242,7 +267,7 @@ function render(){
  for(let i=0;i<size*size;i++){
   const b=document.createElement("button");b.type="button";b.className="tile";b.setAttribute("role","gridcell");
   const target=solution[i]||1;
-  if(cells[i]){b.style.background=palette[cells[i]];b.classList.add("filled");}
+  if(cells[i]){b.style.setProperty("--gem-color",palette[cells[i]]);b.classList.add("filled");}
   else{const number=document.createElement("span");number.className="tile-number";number.textContent=target;b.append(number);}
   b.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+(cells[i]?", colour "+cells[i]:", target colour "+target));
   b.addEventListener("click",()=>paint(i));frag.append(b);
@@ -252,7 +277,7 @@ function render(){
 function paint(i){
  if(revealed)return;
  cells[i]=cells[i]===selected?0:selected;
- const tile=grid.children[i];tile.classList.toggle("filled",!!cells[i]);tile.style.background=cells[i]?palette[cells[i]]:"";
+ const tile=grid.children[i];tile.classList.toggle("filled",!!cells[i]);if(cells[i])tile.style.setProperty("--gem-color",palette[cells[i]]);else tile.style.removeProperty("--gem-color");
  tile.innerHTML="";
  if(!cells[i]){const number=document.createElement("span");number.className="tile-number";number.textContent=solution[i];tile.append(number);}
  tile.setAttribute("aria-label","Row "+(Math.floor(i/size)+1)+", column "+(i%size+1)+(cells[i]?", colour "+cells[i]:", blank"));
