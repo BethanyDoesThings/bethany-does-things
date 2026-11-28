@@ -198,6 +198,12 @@ body{
 /* Extend the artwork farther down so the dogs and worktable clear the grid */
 body{background-size:100% 2400px;background-position:center top;background-repeat:no-repeat;background-attachment:scroll}
 
+
+/* Make the full extended background part of the scrollable document */
+html{min-height:100%;height:auto;overflow-y:auto}
+body{min-height:2400px;height:auto;overflow-y:visible;background-attachment:scroll}
+.scene{padding-bottom:80px}
+
 </style>
 </head>
 <body>
