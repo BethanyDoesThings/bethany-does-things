@@ -169,6 +169,27 @@ body{
 @media(max-width:1050px){.game-shell{margin-top:120px}}
 @media(max-width:760px){.game-shell{margin-top:100px}}
 
+
+/* Make the currently selected gem unmistakable */
+.colour-item{position:relative;transition:background .15s,border-color .15s,box-shadow .15s}
+.colour-item.selected{
+ background:linear-gradient(135deg,#fff,#f4d9ff);
+ outline:2px solid #ff58df;
+ outline-offset:1px;
+ box-shadow:0 0 0 3px #7d2c9d,0 0 12px #ff45dfaa;
+}
+.colour-item.selected .colour-number{
+ background:#4a126d;color:#fff;
+ box-shadow:0 0 0 1px #ff9aec,0 0 7px #f84bdc;
+}
+.colour-item.selected .swatch{
+ transform:scale(1.12);
+ filter:drop-shadow(0 0 5px #ff4de1) drop-shadow(0 0 3px #fff);
+}
+.colour-item.selected .swatch::after{
+ box-shadow:0 0 5px #fff,0 0 9px #ffb8f4;
+}
+
 </style>
 </head>
 <body>
@@ -252,11 +273,11 @@ function updateDifficulty(){
 function renderKey(){
  key.innerHTML="";
  for(const [number,colour] of Object.entries(palette)){
-  const item=document.createElement("div");item.className="colour-item";
+  const item=document.createElement("div");item.className="colour-item"+(Number(number)===selected?" selected":"");
   const label=document.createElement("span");label.className="colour-number";label.textContent=number;
   const swatch=document.createElement("button");swatch.type="button";swatch.className="swatch";swatch.dataset.colour=number;
   swatch.style.background=colour;swatch.setAttribute("aria-label","Select colour "+number);swatch.setAttribute("aria-pressed",String(Number(number)===selected));
-  swatch.addEventListener("click",()=>{selected=Number(number);key.querySelectorAll(".swatch").forEach(s=>s.setAttribute("aria-pressed",String(s===swatch)));});
+  swatch.addEventListener("click",()=>{selected=Number(number);key.querySelectorAll(".swatch").forEach(s=>{s.setAttribute("aria-pressed",String(s===swatch));s.closest(".colour-item")?.classList.toggle("selected",s===swatch);});});
   item.append(label,swatch);key.append(item);
  }
  if(!palette[selected])selected=Number(Object.keys(palette)[0]||1);
