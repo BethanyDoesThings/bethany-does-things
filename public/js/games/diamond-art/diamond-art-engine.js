@@ -14,7 +14,7 @@
     for(const [id,hex] of Object.entries(palette)) {
       const p=hexToRgb(hex);
       const distance=(rgb[0]-p[0])**2+(rgb[1]-p[1])**2+(rgb[2]-p[2])**2;
-      if(distance<bestDistance){bestDistance=distance;bestId:Number(id);}
+      if(distance<bestDistance){bestDistance=distance;bestId=Number(id);}
     }
     return bestId;
   }
