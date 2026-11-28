@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "description": "Diamond Art puzzle library. Add artwork entries here; only published entries appear in the player gallery.",
+  "puzzles": [],
+  "difficultyPresets": {
+    "easy": {
+      "gridSize": 30
+    },
+    "standard": {
+      "gridSize": 50
+    },
+    "hard": {
+      "gridSize": 70
+    }
+  },
+  "palette": {
+    "1": "#fff0e8",
+    "2": "#f21a9b",
+    "3": "#8c19d7",
+    "4": "#1267ef",
+    "5": "#08c9ec",
+    "6": "#082b91"
+  }
+}
