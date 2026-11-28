@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diamond Art Image Preparation Lab | Bethany Does Things</title>
+<style>
+:root{color-scheme:dark;--pink:#f04bc9;--purple:#8b45bd;--panel:#1c1030;--ink:#fff}
+*{box-sizing:border-box}body{margin:0;padding:28px;background:radial-gradient(ellipse at top,#45216b,#10091e 65%);color:var(--ink);font:15px/1.5 Arial,sans-serif}
+main{max-width:1500px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+h1{font-size:clamp(24px,4vw,38px);margin:0;color:#ffd8ff}h2{font-size:19px;margin:0 0 12px}.sub{color:#d8c5e8;margin:6px 0 0}
+.controls,.source,.preview{background:#1b102d;border:1px solid #704391;border-radius:16px;padding:16px;box-shadow:0 8px 28px #08030f88}
+.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+label{font-weight:bold}select,button{font:inherit;border-radius:9px;padding:10px 14px;border:1px solid #b783d8}
+select{background:#f8efff;color:#251332;min-width:190px}button{background:linear-gradient(135deg,#f65bd1,#8e35c5);color:white;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}.source{display:flex;gap:18px;align-items:center;margin-bottom:18px}.source img{width:128px;height:128px;object-fit:contain;background:#fff;border-radius:12px}
+#status{color:#f4c7ff;font-weight:bold}.previews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.preview{min-width:0}.preview header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}.preview header strong{font-size:20px}.preview header span{color:#d8b9eb;font-size:13px}
+canvas{display:block;width:100%;height:auto;aspect-ratio:1;background:#fff;border-radius:8px;image-rendering:pixelated}
+.palette{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.chip{width:25px;height:25px;border-radius:7px;border:1px solid #ffffff80;position:relative}.chip span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:9px;font-weight:bold;color:#111;text-shadow:0 0 2px white}
+.note{color:#cdb9df;font-size:13px;margin-top:10px}
+@media(max-width:900px){.previews{grid-template-columns:1fr}.preview canvas{max-width:600px;margin:auto}.source{align-items:flex-start}}
+</style></head><body><main>
+<div class="top"><div><h1>Diamond Art Image Preparation Lab</h1><p class="sub">Experimenting with automatic detail reduction and image-specific gemstone palettes.</p></div><a href="/games/diamond-art/" style="color:#ffd8ff">← Return to Diamond Art</a></div>
+<div class="controls"><label for="artwork">Test artwork</label><select id="artwork">
+<option value="auggie">Auggie</option><option value="bethany">Bethany</option><option value="evan">Evan</option><option value="rucca">Rucca</option>
+</select><button id="generate">Generate all three versions</button></div>
+<div class="source"><img id="source-image" src="/artwork/characters/cartoon-auggie.png" alt="Selected original artwork"><div><h2 id="source-title">Auggie — original artwork</h2><div id="status">Choose an image and generate its previews.</div><p class="note">The original file is not changed. Each preview receives its own automatically generated palette.</p></div></div>
+<div class="previews">
+<section class="preview"><header><strong>Easy</strong><span>30 × 30 · 6 colours</span></header><canvas id="easy" width="360" height="360"></canvas><div class="palette" id="easy-palette"></div><p class="note" id="easy-note">Ready to generate</p></section>
+<section class="preview"><header><strong>Standard</strong><span>50 × 50 · 10 colours</span></header><canvas id="standard" width="500" height="500"></canvas><div class="palette" id="standard-palette"></div><p class="note" id="standard-note">Ready to generate</p></section>
+<section class="preview"><header><strong>Hard</strong><span>70 × 70 · 14 colours</span></header><canvas id="hard" width="560" height="560"></canvas><div class="palette" id="hard-palette"></div><p class="note" id="hard-note">Ready to generate</p></section>
+</div></main>
+<script src="/js/games/diamond-art/diamond-art-engine.js"></script>
+<script>
+const artwork={
+ auggie:{title:"Auggie",url:"/artwork/characters/cartoon-auggie.png"},
+ bethany:{title:"Bethany",url:"/artwork/characters/cartoon-bethany.png"},
+ evan:{title:"Evan",url:"/artwork/characters/cartoon-evan.png"},
+ rucca:{title:"Rucca",url:"/artwork/characters/cartoon-rucca.png"}
+};
+const levels=["easy","standard","hard"],select=document.querySelector("#artwork"),button=document.querySelector("#generate");
+function drawPreview(canvas,result){
+ const ctx=canvas.getContext("2d"),n=result.gridSize,cell=canvas.width/n;
+ ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);
+ for(let i=0;i<result.solution.length;i++){
+  const x=(i%n)*cell,y=Math.floor(i/n)*cell,colour=result.palette[result.solution[i]];
+  const inset=Math.max(1,cell*.12),x0=x+inset,y0=y+inset,w=cell-inset*2,h=cell-inset*2;
+  ctx.fillStyle=colour;ctx.beginPath();
+  const cut=w*.24;ctx.moveTo(x0+cut,y0);ctx.lineTo(x0+w-cut,y0);ctx.lineTo(x0+w,y0+cut);ctx.lineTo(x0+w,y0+h-cut);ctx.lineTo(x0+w-cut,y0+h);ctx.lineTo(x0+cut,y0+h);ctx.lineTo(x0,y0+h-cut);ctx.lineTo(x0,y0+cut);ctx.closePath();ctx.fill();
+  const shine=ctx.createLinearGradient(x0,y0,x0+w,y0+h);shine.addColorStop(0,"rgba(255,255,255,.78)");shine.addColorStop(.35,"rgba(255,255,255,.08)");shine.addColorStop(1,"rgba(0,0,0,.24)");ctx.fillStyle=shine;ctx.fill();
+  ctx.strokeStyle="rgba(55,25,75,.25)";ctx.lineWidth=Math.max(.45,cell*.035);ctx.stroke();
+ }
+}
+function renderPalette(id,palette){
+ const el=document.querySelector("#"+id+"-palette");el.innerHTML="";
+ Object.entries(palette).forEach(([number,hex])=>{const chip=document.createElement("div");chip.className="chip";chip.style.background=hex;chip.title=number+" · "+hex;const n=document.createElement("span");n.textContent=number;chip.append(n);el.append(chip);});
+}
+async function generate(){
+ const item=artwork[select.value];button.disabled=true;document.querySelector("#status").textContent="Preparing all three versions…";
+ document.querySelector("#source-title").textContent=item.title+" — original artwork";
+ document.querySelector("#source-image").src=item.url;
+ try{
+  for(const level of levels){
+   document.querySelector("#"+level+"-note").textContent="Processing…";
+   const result=await DiamondArtEngine.prepareImage(item.url,level);
+   drawPreview(document.querySelector("#"+level),result);renderPalette(level,result.palette);
+   document.querySelector("#"+level+"-note").textContent=Object.keys(result.palette).length+" image-specific colours · "+result.gridSize+" × "+result.gridSize+" cells";
+  }
+  document.querySelector("#status").textContent="All three versions generated. Compare how well each one preserves the character.";
+ }catch(error){document.querySelector("#status").textContent="Could not prepare this image: "+error.message;console.error(error);}
+ finally{button.disabled=false;}
+}
+select.addEventListener("change",()=>{const item=artwork[select.value];document.querySelector("#source-image").src=item.url;document.querySelector("#source-title").textContent=item.title+" — original artwork";});
+button.addEventListener("click",generate);generate();
+</script></body></html>
