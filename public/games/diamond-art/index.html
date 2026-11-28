@@ -111,6 +111,20 @@
 .swatch[aria-pressed=true]{outline:0;filter:drop-shadow(0 0 4px #ff68ef) drop-shadow(0 0 2px #fff)}
 .swatch[aria-pressed=true]::before{opacity:1}
 
+
+/* Improve contrast for the very light first gemstone */
+.swatch[data-colour="1"]{
+ filter:drop-shadow(0 0 1.5px #39204f) drop-shadow(0 2px 2px #16051d99);
+}
+.swatch[data-colour="1"]::before{
+ background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(160,126,181,.34) 48%,rgba(92,59,117,.2) 100%);
+ opacity:1;
+}
+.swatch[data-colour="1"]::after{
+ background:#fff;
+ box-shadow:0 0 3px #fff,0 0 6px #8c6ba5;
+}
+
 </style>
 </head>
 <body>
